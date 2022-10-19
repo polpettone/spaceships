@@ -76,6 +76,8 @@ func main() {
 		spaceship,
 	}
 
+	gameObjects = append(gameObjects, CreateSkyObjects()...)
+
 	g := &Game{
 		BackgroundImage: backgroundImage,
 		GameObjects:     gameObjects,
