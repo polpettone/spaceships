@@ -42,9 +42,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
 
 	for _, o := range g.GameObjects {
-		x, y := o.GetPos()
+		pos := o.GetPos()
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(x), float64(y))
+		op.GeoM.Translate(float64(pos.X), float64(pos.Y))
 		screen.DrawImage(o.GetImage(), op)
 	}
 

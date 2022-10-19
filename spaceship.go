@@ -26,8 +26,8 @@ func NewSpaceship() (*Spaceship, error) {
 	}, nil
 }
 
-func (s *Spaceship) GetPos() (int, int) {
-	return 100, 100
+func (s *Spaceship) GetPos() Pos {
+	return NewPos(100, 100)
 }
 
 func (s *Spaceship) GetImage() *ebiten.Image {
