@@ -20,6 +20,7 @@ const (
 
 type Game struct {
 	BackgroundImage *ebiten.Image
+	Spaceship       *Spaceship
 }
 
 func init() {
@@ -39,7 +40,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
 
 	op := &ebiten.DrawImageOptions{}
-	screen.DrawImage(natalitoImage, op)
+	screen.DrawImage(g.Spaceship.Image, op)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -57,8 +58,15 @@ func main() {
 	}
 	backgroundImage.Fill(color.RGBA{240, 255, 240, 0xff})
 
+	spaceship, err := NewSpaceship()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	g := &Game{
 		BackgroundImage: backgroundImage,
+		Spaceship:       spaceship,
 	}
 
 	if err := ebiten.RunGame(g); err != nil {
