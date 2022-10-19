@@ -7,15 +7,11 @@ import (
 )
 
 const (
-	spaceShipSize = 10
+	spaceshipSize = 40
 )
 
 type Spaceship struct {
 	Image *ebiten.Image
-}
-
-type GameObject interface {
-	GetPos() (int, int)
 }
 
 func NewSpaceship() (*Spaceship, error) {
@@ -32,7 +28,7 @@ func NewSpaceship() (*Spaceship, error) {
 }
 
 func createSpaceshipImage() (*ebiten.Image, error) {
-	img, err := ebiten.NewImage(spaceShipSize, spaceShipSize, ebiten.FilterDefault)
+	img, err := ebiten.NewImage(spaceshipSize, spaceshipSize, ebiten.FilterDefault)
 	if err != nil {
 		return nil, err
 	}

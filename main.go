@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"log"
 
@@ -14,8 +15,8 @@ var (
 )
 
 const (
-	screenWidth  = 1000
-	screenHeight = 500
+	screenWidth  = 2000
+	screenHeight = 700
 )
 
 type Game struct {
@@ -40,7 +41,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
 
 	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(100), float64(400))
 	screen.DrawImage(g.Spaceship.Image, op)
+
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.CurrentTPS()))
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
