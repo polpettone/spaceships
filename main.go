@@ -35,6 +35,11 @@ func init() {
 }
 
 func (g *Game) Update(screen *ebiten.Image) error {
+
+	for _, o := range g.GameObjects {
+		o.Update()
+	}
+
 	return nil
 }
 

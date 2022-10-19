@@ -36,6 +36,10 @@ func (s *Spaceship) GetImage() *ebiten.Image {
 	return s.Image
 }
 
+func (s *Spaceship) Update() {
+	s.Pos.X += 1
+}
+
 func createSpaceshipImage() (*ebiten.Image, error) {
 	img, err := ebiten.NewImage(spaceshipSize, spaceshipSize, ebiten.FilterDefault)
 	if err != nil {

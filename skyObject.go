@@ -45,6 +45,11 @@ func createSkyObjectImage() (*ebiten.Image, error) {
 	return img, nil
 }
 
+func (s *SkyObject) Update() {
+	s.Pos.X += 1
+	s.Pos.Y += 1
+}
+
 func CreateSkyObjects() []GameObject {
 
 	a, _ := NewSkyObject(NewPos(400, 100))
