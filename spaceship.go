@@ -24,7 +24,14 @@ func NewSpaceship() (*Spaceship, error) {
 	return &Spaceship{
 		Image: img,
 	}, nil
+}
 
+func (s *Spaceship) GetPos() (int, int) {
+	return 100, 100
+}
+
+func (s *Spaceship) GetImage() *ebiten.Image {
+	return s.Image
 }
 
 func createSpaceshipImage() (*ebiten.Image, error) {

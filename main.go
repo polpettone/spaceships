@@ -22,6 +22,7 @@ const (
 type Game struct {
 	BackgroundImage *ebiten.Image
 	Spaceship       *Spaceship
+	GameObjects     []GameObject
 }
 
 func init() {
@@ -40,9 +41,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
 
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(100), float64(400))
-	screen.DrawImage(g.Spaceship.Image, op)
+	for _, o := range g.GameObjects {
+		x, y := o.GetPos()
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(x), float64(y))
+		screen.DrawImage(o.GetImage(), op)
+	}
 
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.CurrentTPS()))
 }
@@ -68,9 +72,13 @@ func main() {
 		return
 	}
 
+	gameObjects := []GameObject{
+		spaceship,
+	}
+
 	g := &Game{
 		BackgroundImage: backgroundImage,
-		Spaceship:       spaceship,
+		GameObjects:     gameObjects,
 	}
 
 	if err := ebiten.RunGame(g); err != nil {
