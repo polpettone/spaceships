@@ -66,7 +66,7 @@ func main() {
 	}
 	backgroundImage.Fill(color.RGBA{240, 255, 240, 0xff})
 
-	spaceship, err := NewSpaceship()
+	spaceship, err := NewSpaceship(NewPos(100, 300))
 	if err != nil {
 		log.Fatal(err)
 		return

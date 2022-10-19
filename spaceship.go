@@ -12,9 +12,10 @@ const (
 
 type Spaceship struct {
 	Image *ebiten.Image
+	Pos   Pos
 }
 
-func NewSpaceship() (*Spaceship, error) {
+func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	img, err := createSpaceshipImage()
 
 	if err != nil {
@@ -23,11 +24,12 @@ func NewSpaceship() (*Spaceship, error) {
 
 	return &Spaceship{
 		Image: img,
+		Pos:   initialPos,
 	}, nil
 }
 
 func (s *Spaceship) GetPos() Pos {
-	return NewPos(100, 100)
+	return s.Pos
 }
 
 func (s *Spaceship) GetImage() *ebiten.Image {
