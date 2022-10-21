@@ -52,14 +52,22 @@ func (s *Spaceship) GetID() string {
 	return s.ID
 }
 
-func (s *Spaceship) Update() {
+func (s *Spaceship) Update(maxX, maxY int) {
 
 	handleControls(s)
 
-	s.Pos.X += s.ForwardForce
-	s.Pos.X -= s.BackwardForce
-	s.Pos.Y += s.UpForce
-	s.Pos.Y -= s.DownForce
+	if s.Pos.X < maxX-3 {
+		s.Pos.X += s.ForwardForce
+	}
+	if s.Pos.X > 3 {
+		s.Pos.X -= s.BackwardForce
+	}
+	if s.Pos.Y < maxY-3 {
+		s.Pos.Y += s.UpForce
+	}
+	if s.Pos.Y > 3 {
+		s.Pos.Y -= s.DownForce
+	}
 }
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {

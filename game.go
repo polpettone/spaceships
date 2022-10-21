@@ -64,7 +64,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		os.Exit(0)
 	}
 
-	g.Spaceship.Update()
+	g.Spaceship.Update(g.MaxX, g.MaxY)
 
 	for _, o := range g.GameObjects {
 		o.Update()
