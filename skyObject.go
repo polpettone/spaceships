@@ -11,8 +11,9 @@ const (
 )
 
 type SkyObject struct {
-	Image *ebiten.Image
-	Pos   Pos
+	Image    *ebiten.Image
+	Pos      Pos
+	Velocity int
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
@@ -23,8 +24,9 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 	}
 
 	return &SkyObject{
-		Image: img,
-		Pos:   initialPos,
+		Image:    img,
+		Pos:      initialPos,
+		Velocity: 2,
 	}, nil
 }
 
@@ -46,8 +48,7 @@ func createSkyObjectImage() (*ebiten.Image, error) {
 }
 
 func (s *SkyObject) Update() {
-	s.Pos.X += 1
-	s.Pos.Y += 1
+	s.Pos.X += s.Velocity
 }
 
 func CreateSkyObjects() []GameObject {
