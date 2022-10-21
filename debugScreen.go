@@ -4,31 +4,37 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/text"
 )
 
 type DebugScreen struct {
-	BackgroundImage *ebiten.Image
-	Width           int
-	Height          int
-	Text            string
+	Image  *ebiten.Image
+	Width  int
+	Height int
+	Text   string
 }
 
 func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
-	backgroundImage, err := ebiten.NewImage(
+	image, err := ebiten.NewImage(
 		Width,
 		Height,
 		ebiten.FilterDefault)
 
-	backgroundImage.Fill(color.RGBA{0, 0, 0, 0xff})
+	image.Fill(color.RGBA{0, 0, 0, 0xff})
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &DebugScreen{
-		BackgroundImage: backgroundImage,
-		Width:           Width,
-		Height:          Height,
-		Text:            "Debug Screen",
+		Image:  image,
+		Width:  Width,
+		Height: Height,
+		Text:   "Debug Screen",
 	}, nil
+}
+
+func (d *DebugScreen) SetText(t string) {
+	d.Text = t
+	text.Draw(d.Image, t, mplusNormalFont, 10, 10, color.White)
 }

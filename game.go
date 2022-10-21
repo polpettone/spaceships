@@ -58,6 +58,17 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		o.Update()
 	}
 
+	t :=
+		`
+	Debug Screen
+	-----------------------------
+	Game Object Count: %d
+	`
+
+	g.DebugScreen.SetText(
+		fmt.Sprintf(t, len(g.GameObjects)),
+	)
+
 	return nil
 }
 
@@ -73,7 +84,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(1500), float64(0))
-	screen.DrawImage(g.DebugScreen.BackgroundImage, op)
+	screen.DrawImage(g.DebugScreen.Image, op)
 
 	ebitenutil.DebugPrint(
 		screen,
