@@ -3,7 +3,10 @@ package main
 import (
 	"image/color"
 
+	"os"
+
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 type Game struct {
@@ -55,6 +58,10 @@ func NewGame() (*Game, error) {
 
 func (g *Game) Update(screen *ebiten.Image) error {
 
+	if isQuitHit() {
+		os.Exit(0)
+	}
+
 	for _, o := range g.GameObjects {
 		o.Update()
 	}
@@ -62,7 +69,6 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.DebugScreen.Update(g)
 
 	g.UpdateCounter++
-
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
 		g.GameObjects = append(
@@ -71,6 +77,15 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	}
 
 	return nil
+}
+
+func isQuitHit() bool {
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
+		return true
+	}
+
+	return false
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
