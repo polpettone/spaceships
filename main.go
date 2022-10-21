@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten"
@@ -30,31 +29,15 @@ func init() {
 }
 
 func main() {
+
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Natalito")
 
-	backgroundImage, err := ebiten.NewImage(screenWidth, screenHeight, ebiten.FilterDefault)
+	g, err := NewGame()
+
 	if err != nil {
 		log.Fatal(err)
 		return
-	}
-	backgroundImage.Fill(color.RGBA{240, 255, 240, 0xff})
-
-	spaceship, err := NewSpaceship(NewPos(100, 300))
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	gameObjects := []GameObject{
-		spaceship,
-	}
-
-	gameObjects = append(gameObjects, CreateSkyObjects()...)
-
-	g := &Game{
-		BackgroundImage: backgroundImage,
-		GameObjects:     gameObjects,
 	}
 
 	if err := ebiten.RunGame(g); err != nil {
