@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 const (
@@ -12,9 +13,13 @@ const (
 )
 
 type Spaceship struct {
-	Image *ebiten.Image
-	Pos   Pos
-	ID    string
+	Image         *ebiten.Image
+	Pos           Pos
+	ID            string
+	DownForce     int
+	UpForce       int
+	ForwardForce  int
+	BackwardForce int
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -25,9 +30,13 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	return &Spaceship{
-		Image: img,
-		Pos:   initialPos,
-		ID:    uuid.New().String(),
+		Image:         img,
+		Pos:           initialPos,
+		ID:            uuid.New().String(),
+		DownForce:     0,
+		UpForce:       0,
+		ForwardForce:  0,
+		BackwardForce: 0,
 	}, nil
 }
 
@@ -44,7 +53,40 @@ func (s *Spaceship) GetID() string {
 }
 
 func (s *Spaceship) Update() {
-	s.Pos.X += 1
+
+	handleControls(s)
+
+	s.Pos.X += s.ForwardForce
+	s.Pos.X -= s.BackwardForce
+	s.Pos.Y += s.UpForce
+	s.Pos.Y -= s.DownForce
+}
+
+func handleControls(s *Spaceship) {
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {
+		s.DownForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyK) {
+		s.UpForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyH) {
+		s.BackwardForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyL) {
+		s.ForwardForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+		s.ForwardForce = 0
+		s.BackwardForce = 0
+		s.UpForce = 0
+		s.DownForce = 0
+	}
+
 }
 
 func createSpaceshipImage() (*ebiten.Image, error) {

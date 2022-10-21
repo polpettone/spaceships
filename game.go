@@ -38,9 +38,7 @@ func NewGame() (*Game, error) {
 		return nil, err
 	}
 
-	gameObjects := map[string]GameObject{
-		spaceship.ID: spaceship,
-	}
+	gameObjects := map[string]GameObject{}
 
 	debugScreen, err := NewDebugScreen(500, screenHeight)
 	if err != nil {
@@ -66,6 +64,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		os.Exit(0)
 	}
 
+	g.Spaceship.Update()
+
 	for _, o := range g.GameObjects {
 		o.Update()
 	}
@@ -76,6 +76,27 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	deleteObjectsOutOfView(g)
 
 	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
+
+	for _, o := range g.GameObjects {
+		pos := o.GetPos()
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(pos.X), float64(pos.Y))
+		screen.DrawImage(o.GetImage(), op)
+	}
+
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(g.Spaceship.Pos.X), float64(g.Spaceship.Pos.Y))
+	screen.DrawImage(g.Spaceship.GetImage(), op)
+
+	g.DebugScreen.Draw(screen)
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+	return screenWidth, screenHeight
 }
 
 func putNewObjects(g *Game) {
@@ -110,21 +131,4 @@ func isQuitHit() bool {
 	}
 
 	return false
-}
-
-func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
-
-	for _, o := range g.GameObjects {
-		pos := o.GetPos()
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(pos.X), float64(pos.Y))
-		screen.DrawImage(o.GetImage(), op)
-	}
-
-	g.DebugScreen.Draw(screen)
-}
-
-func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
 }
