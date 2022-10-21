@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/text"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 type DebugScreen struct {
@@ -34,13 +35,28 @@ func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
 	}, nil
 }
 
-func (d *DebugScreen) SetText(t string) {
-	d.Text = t
-	text.Draw(d.Image, t, mplusNormalFont, 10, 10, color.White)
-}
-
 func (d *DebugScreen) Draw(screen *ebiten.Image) {
+
+	ebitenutil.DebugPrintAt(
+		d.Image,
+		d.Text, 10, 10)
+
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(1500), float64(0))
 	screen.DrawImage(d.Image, op)
+}
+
+func (d *DebugScreen) Update(g *Game) {
+
+	t :=
+		`
+	 TPS: %f2.2f
+	 FPS: %f2.2f
+	 Game Object Count: %d`
+
+	d.Text = fmt.Sprintf(
+		t,
+		ebiten.CurrentTPS(),
+		ebiten.CurrentFPS(),
+		len(g.GameObjects))
 }

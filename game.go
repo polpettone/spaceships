@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 type Game struct {
@@ -58,17 +56,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		o.Update()
 	}
 
-	t :=
-		`
-	Debug Screen
-	-----------------------------
-	Game Object Count: %d
-	`
-
-	g.DebugScreen.SetText(
-		fmt.Sprintf(t, len(g.GameObjects)),
-	)
-
+	g.DebugScreen.Update(g)
 	return nil
 }
 
@@ -83,10 +71,6 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	g.DebugScreen.Draw(screen)
-
-	ebitenutil.DebugPrint(
-		screen,
-		fmt.Sprintf("TPS: %0.2f", ebiten.CurrentTPS()))
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
