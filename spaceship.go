@@ -62,6 +62,14 @@ func (s *Spaceship) Update() {
 	s.Pos.Y -= s.DownForce
 }
 
+func (s *Spaceship) Draw(screen *ebiten.Image) {
+
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
+	screen.DrawImage(s.Image, op)
+
+}
+
 func handleControls(s *Spaceship) {
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {

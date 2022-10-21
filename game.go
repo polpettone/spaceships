@@ -88,9 +88,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.DrawImage(o.GetImage(), op)
 	}
 
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(g.Spaceship.Pos.X), float64(g.Spaceship.Pos.Y))
-	screen.DrawImage(g.Spaceship.GetImage(), op)
+	g.Spaceship.Draw(screen)
 
 	g.DebugScreen.Draw(screen)
 }
