@@ -66,6 +66,15 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		os.Exit(0)
 	}
 
+	for _, o := range g.GameObjects {
+
+		if o.GetPos().X == g.Spaceship.Pos.X &&
+			o.GetPos().Y == g.Spaceship.Pos.Y {
+			g.Spaceship.DamageCount += 1
+		}
+
+	}
+
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	g.Spaceship.Update(g.MaxX, g.MaxY)

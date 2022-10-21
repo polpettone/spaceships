@@ -34,7 +34,9 @@ func (d *DebugScreen) Update(g *Game) {
 
 	 UpdateCounter: %d 
 
-	 SpaceShip Pos: %s
+	 Spaceship Pos: %s
+
+	 Spaceship Damage Count: %d
 
 	 Game Object Count: %d
 
@@ -70,6 +72,7 @@ func (d *DebugScreen) Update(g *Game) {
 		ebiten.CurrentFPS(),
 		g.UpdateCounter,
 		spaceshipPos,
+		g.Spaceship.DamageCount,
 		len(g.GameObjects),
 		gameObjectsText,
 	)

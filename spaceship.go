@@ -20,6 +20,7 @@ type Spaceship struct {
 	UpForce       int
 	ForwardForce  int
 	BackwardForce int
+	DamageCount   int
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -37,6 +38,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		UpForce:       0,
 		ForwardForce:  0,
 		BackwardForce: 0,
+		DamageCount:   0,
 	}, nil
 }
 
