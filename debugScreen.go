@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -42,10 +43,19 @@ func (d *DebugScreen) Update(g *Game) {
 
 	 `
 
+	var keys []string
+
+	for k, _ := range g.GameObjects {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
 	gameObjectsText := ""
-	for _, o := range g.GameObjects {
+	for _, k := range keys {
+		gameObject := g.GameObjects[k]
 		gameObjectsText += fmt.Sprintf(
-			"%s - %s \n", o.GetID(), o.GetPos().Print(),
+			"%s - %s \n", gameObject.GetID(), gameObject.GetPos().Print(),
 		)
 	}
 

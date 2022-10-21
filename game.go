@@ -12,7 +12,7 @@ import (
 type Game struct {
 	BackgroundImage *ebiten.Image
 	Spaceship       *Spaceship
-	GameObjects     []GameObject
+	GameObjects     map[string]GameObject
 	DebugScreen     *DebugScreen
 
 	UpdateCounter int
@@ -36,8 +36,8 @@ func NewGame() (*Game, error) {
 		return nil, err
 	}
 
-	gameObjects := []GameObject{
-		spaceship,
+	gameObjects := map[string]GameObject{
+		spaceship.ID: spaceship,
 	}
 
 	debugScreen, err := NewDebugScreen(500, screenHeight)
@@ -71,9 +71,13 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.UpdateCounter++
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
-		g.GameObjects = append(
-			g.GameObjects,
-			CreateSkyObjectAtRandomPosition(screenWidth, screenHeight, 3)...)
+
+		newObjects := CreateSkyObjectAtRandomPosition(screenWidth, screenHeight, 3)
+
+		for _, nO := range newObjects {
+			g.GameObjects[nO.GetID()] = nO
+		}
+
 	}
 
 	return nil
