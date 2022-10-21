@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	skyObjectSize = 60
+	skyObjectSize = 30
 )
 
 type SkyObject struct {

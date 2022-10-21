@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	spaceshipSize = 40
+	spaceshipSize = 10
 )
 
 type Spaceship struct {
