@@ -14,6 +14,8 @@ type Game struct {
 	Spaceship       *Spaceship
 	GameObjects     map[string]GameObject
 	DebugScreen     *DebugScreen
+	MaxX            int
+	MaxY            int
 
 	UpdateCounter int
 }
@@ -51,6 +53,8 @@ func NewGame() (*Game, error) {
 		DebugScreen:     debugScreen,
 		Spaceship:       spaceship,
 		UpdateCounter:   0,
+		MaxX:            screenWidth,
+		MaxY:            screenHeight,
 	}
 
 	return g, nil
@@ -68,19 +72,35 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	g.DebugScreen.Update(g)
 
+	putNewObjects(g)
+	deleteObjectsOutOfView(g)
+
+	return nil
+}
+
+func putNewObjects(g *Game) {
 	g.UpdateCounter++
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
-
 		newObjects := CreateSkyObjectAtRandomPosition(screenWidth, screenHeight, 3)
-
 		for _, nO := range newObjects {
 			g.GameObjects[nO.GetID()] = nO
 		}
-
 	}
+}
 
-	return nil
+func deleteObjectsOutOfView(g *Game) {
+	var ids []string
+	for k, o := range g.GameObjects {
+		x := o.GetPos().X
+		y := o.GetPos().Y
+		if x > g.MaxX || x < 0 || y > g.MaxX || y < 0 {
+			ids = append(ids, k)
+		}
+	}
+	for _, k := range ids {
+		delete(g.GameObjects, k)
+	}
 }
 
 func isQuitHit() bool {
