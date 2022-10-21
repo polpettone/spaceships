@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 
+	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
 )
 
@@ -13,6 +14,7 @@ const (
 type Spaceship struct {
 	Image *ebiten.Image
 	Pos   Pos
+	ID    string
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -25,6 +27,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	return &Spaceship{
 		Image: img,
 		Pos:   initialPos,
+		ID:    uuid.New().String(),
 	}, nil
 }
 
@@ -34,6 +37,10 @@ func (s *Spaceship) GetPos() Pos {
 
 func (s *Spaceship) GetImage() *ebiten.Image {
 	return s.Image
+}
+
+func (s *Spaceship) GetID() string {
+	return s.ID
 }
 
 func (s *Spaceship) Update() {

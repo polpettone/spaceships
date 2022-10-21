@@ -6,4 +6,5 @@ type GameObject interface {
 	GetPos() Pos
 	GetImage() *ebiten.Image
 	Update()
+	GetID() string
 }

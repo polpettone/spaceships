@@ -3,6 +3,7 @@ package main
 import (
 	"image/color"
 
+	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
 )
 
@@ -14,6 +15,7 @@ type SkyObject struct {
 	Image    *ebiten.Image
 	Pos      Pos
 	Velocity int
+	ID       string
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
@@ -27,7 +29,12 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 		Image:    img,
 		Pos:      initialPos,
 		Velocity: 2,
+		ID:       uuid.New().String(),
 	}, nil
+}
+
+func (s *SkyObject) GetID() string {
+	return s.ID
 }
 
 func (s *SkyObject) GetPos() Pos {

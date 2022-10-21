@@ -31,10 +31,21 @@ func (d *DebugScreen) Update(g *Game) {
 	 TPS: %f2.2f
 	 FPS: %f2.2f
 
+	 SpaceShip Pos: %s
+
 	 Game Object Count: %d
 
-	 SpaceShip Pos: %s
+	 Game Objects: 
+	 %s
+
 	 `
+
+	gameObjectsText := ""
+	for _, o := range g.GameObjects {
+		gameObjectsText += fmt.Sprintf(
+			"%s - %s \n", o.GetID(), o.GetPos().Print(),
+		)
+	}
 
 	spaceshipPos := "unknown"
 	if g.Spaceship != nil {
@@ -45,7 +56,8 @@ func (d *DebugScreen) Update(g *Game) {
 		t,
 		ebiten.CurrentTPS(),
 		ebiten.CurrentFPS(),
-		len(g.GameObjects),
 		spaceshipPos,
+		len(g.GameObjects),
+		gameObjectsText,
 	)
 }
