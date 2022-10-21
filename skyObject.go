@@ -65,13 +65,13 @@ func (s *SkyObject) Update() {
 	s.Pos.X -= s.Velocity
 }
 
-func CreateSkyObjectAtRandomPosition(maxX, maxY, count int) []GameObject {
+func CreateSkyObjectAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {
 
 	skyObjects := []GameObject{}
 
 	for n := 0; n < count; n++ {
-		x := rand.Intn(maxX)
-		y := rand.Intn(maxY)
+		x := rand.Intn(maxX-minX) + minX
+		y := rand.Intn(maxY-minY) + minY
 		a, _ := NewSkyObject(NewPos(x, y))
 		skyObjects = append(skyObjects, a)
 	}
