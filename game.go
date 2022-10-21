@@ -11,6 +11,8 @@ type Game struct {
 	Spaceship       *Spaceship
 	GameObjects     []GameObject
 	DebugScreen     *DebugScreen
+
+	UpdateCounter int
 }
 
 func NewGame() (*Game, error) {
@@ -34,7 +36,6 @@ func NewGame() (*Game, error) {
 	gameObjects := []GameObject{
 		spaceship,
 	}
-	gameObjects = append(gameObjects, CreateSkyObjects()...)
 
 	debugScreen, err := NewDebugScreen(500, screenHeight)
 	if err != nil {
@@ -46,6 +47,7 @@ func NewGame() (*Game, error) {
 		GameObjects:     gameObjects,
 		DebugScreen:     debugScreen,
 		Spaceship:       spaceship,
+		UpdateCounter:   0,
 	}
 
 	return g, nil
@@ -58,6 +60,16 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	}
 
 	g.DebugScreen.Update(g)
+
+	g.UpdateCounter++
+
+	if g.UpdateCounter > 100 {
+		g.UpdateCounter = 0
+		g.GameObjects = append(
+			g.GameObjects,
+			CreateSkyObjectAtRandomPosition(screenWidth, screenHeight, 3)...)
+	}
+
 	return nil
 }
 

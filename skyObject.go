@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"math/rand"
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
@@ -55,17 +56,18 @@ func createSkyObjectImage() (*ebiten.Image, error) {
 }
 
 func (s *SkyObject) Update() {
-	s.Pos.X += s.Velocity
+	s.Pos.X -= s.Velocity
 }
 
-func CreateSkyObjects() []GameObject {
+func CreateSkyObjectAtRandomPosition(maxX, maxY, count int) []GameObject {
 
-	a, _ := NewSkyObject(NewPos(400, 100))
-	b, _ := NewSkyObject(NewPos(700, 200))
-	c, _ := NewSkyObject(NewPos(500, 200))
+	skyObjects := []GameObject{}
 
-	skyObjects := []GameObject{
-		a, b, c,
+	for n := 0; n < count; n++ {
+		x := rand.Intn(maxX)
+		y := rand.Intn(maxY)
+		a, _ := NewSkyObject(NewPos(x, y))
+		skyObjects = append(skyObjects, a)
 	}
 
 	return skyObjects
