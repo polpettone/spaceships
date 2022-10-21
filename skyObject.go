@@ -34,6 +34,12 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 	}, nil
 }
 
+func (s *SkyObject) Draw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
+	screen.DrawImage(s.Image, op)
+}
+
 func (s *SkyObject) GetID() string {
 	return s.ID
 }

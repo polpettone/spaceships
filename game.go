@@ -82,10 +82,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
 
 	for _, o := range g.GameObjects {
-		pos := o.GetPos()
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(pos.X), float64(pos.Y))
-		screen.DrawImage(o.GetImage(), op)
+		o.Draw(screen)
 	}
 
 	g.Spaceship.Draw(screen)

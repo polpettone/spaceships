@@ -7,4 +7,5 @@ type GameObject interface {
 	GetImage() *ebiten.Image
 	Update()
 	GetID() string
+	Draw(screen *ebiten.Image)
 }
