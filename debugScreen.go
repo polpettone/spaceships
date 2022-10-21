@@ -38,3 +38,9 @@ func (d *DebugScreen) SetText(t string) {
 	d.Text = t
 	text.Draw(d.Image, t, mplusNormalFont, 10, 10, color.White)
 }
+
+func (d *DebugScreen) Draw(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(1500), float64(0))
+	screen.DrawImage(d.Image, op)
+}

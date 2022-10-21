@@ -82,9 +82,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		screen.DrawImage(o.GetImage(), op)
 	}
 
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(1500), float64(0))
-	screen.DrawImage(g.DebugScreen.Image, op)
+	g.DebugScreen.Draw(screen)
 
 	ebitenutil.DebugPrint(
 		screen,
