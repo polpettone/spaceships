@@ -16,6 +16,7 @@ type Game struct {
 	DebugScreen     *DebugScreen
 	MaxX            int
 	MaxY            int
+	DebugPrint      bool
 
 	UpdateCounter int
 }
@@ -53,6 +54,7 @@ func NewGame() (*Game, error) {
 		UpdateCounter:   0,
 		MaxX:            screenWidth,
 		MaxY:            screenHeight,
+		DebugPrint:      false,
 	}
 
 	return g, nil
@@ -63,6 +65,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	if isQuitHit() {
 		os.Exit(0)
 	}
+
+	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	g.Spaceship.Update(g.MaxX, g.MaxY)
 
@@ -87,7 +91,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	g.Spaceship.Draw(screen)
 
-	g.DebugScreen.Draw(screen)
+	if g.DebugPrint {
+		g.DebugScreen.Draw(screen)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -126,4 +132,14 @@ func isQuitHit() bool {
 	}
 
 	return false
+}
+
+func handleDebugPrintControl(current bool) bool {
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
+		return !current
+	} else {
+		return current
+	}
+
 }
