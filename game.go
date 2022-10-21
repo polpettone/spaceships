@@ -45,6 +45,7 @@ func NewGame() (*Game, error) {
 		BackgroundImage: backgroundImage,
 		GameObjects:     gameObjects,
 		DebugScreen:     debugScreen,
+		Spaceship:       spaceship,
 	}
 
 	return g, nil
