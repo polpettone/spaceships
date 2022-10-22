@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 const (
@@ -20,7 +21,7 @@ type SkyObject struct {
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
-	img, err := createSkyObjectImage()
+	img, err := createSkyObjectImageFromAsset()
 
 	if err != nil {
 		return nil, err
@@ -58,6 +59,17 @@ func createSkyObjectImage() (*ebiten.Image, error) {
 		return nil, err
 	}
 	img.Fill(color.RGBA{192, 192, 192, 0xff})
+	return img, nil
+}
+
+func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
+	img, _, err := ebitenutil.NewImageFromFile(
+		"assets/enemy-1.gif",
+		ebiten.FilterDefault)
+
+	if err != nil {
+		return nil, err
+	}
 	return img, nil
 }
 
