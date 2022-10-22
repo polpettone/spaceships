@@ -1,11 +1,10 @@
 package main
 
 import (
-	"image/color"
-
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
@@ -25,15 +24,13 @@ type Game struct {
 
 func NewGame() (*Game, error) {
 
-	backgroundImage, err := ebiten.NewImage(
-		screenWidth,
-		screenHeight,
+	backgroundImage, _, err := ebitenutil.NewImageFromFile(
+		"assets/earth-space-sunset.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
 		return nil, err
 	}
-	backgroundImage.Fill(color.RGBA{240, 255, 240, 0xff})
 
 	spaceship, err := NewSpaceship(NewPos(100, 300))
 
@@ -107,7 +104,9 @@ func (g *Game) Update(screen *ebiten.Image) error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.Fill(color.RGBA{0x80, 0xa0, 0xc0, 0xff})
+
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(g.BackgroundImage, op)
 
 	for _, o := range g.GameObjects {
 		o.Draw(screen)
