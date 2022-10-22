@@ -21,6 +21,7 @@ type Spaceship struct {
 	ForwardForce  int
 	BackwardForce int
 	DamageCount   int
+	Size          int
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -39,6 +40,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		ForwardForce:  0,
 		BackwardForce: 0,
 		DamageCount:   0,
+		Size:          spaceshipSize,
 	}, nil
 }
 
@@ -82,11 +84,11 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 func handleControls(s *Spaceship) {
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyK) {
 		s.DownForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyK) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {
 		s.UpForce += 1
 	}
 

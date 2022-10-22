@@ -19,6 +19,8 @@ type Game struct {
 	DebugPrint      bool
 
 	UpdateCounter int
+
+	Pause bool
 }
 
 func NewGame() (*Game, error) {
@@ -55,6 +57,7 @@ func NewGame() (*Game, error) {
 		MaxX:            screenWidth,
 		MaxY:            screenHeight,
 		DebugPrint:      false,
+		Pause:           false,
 	}
 
 	return g, nil
@@ -66,10 +69,22 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		os.Exit(0)
 	}
 
+	g.Pause = handlePauseControl(g.Pause)
+
+	if g.Pause {
+		return nil
+	}
+
 	for _, o := range g.GameObjects {
 
-		if o.GetPos().X == g.Spaceship.Pos.X &&
-			o.GetPos().Y == g.Spaceship.Pos.Y {
+		oX := o.GetPos().X
+		oY := o.GetPos().Y
+		sX := g.Spaceship.Pos.X
+		sY := g.Spaceship.Pos.Y
+		sSize := g.Spaceship.Size
+
+		if oX == sX && oY == sY ||
+			((sX+sSize) == oX || sX == oX) && ((sY+sSize) == oY || (sY-sSize) == oY || sY == oY) {
 			g.Spaceship.DamageCount += 1
 		}
 
@@ -135,20 +150,22 @@ func deleteObjectsOutOfView(g *Game) {
 }
 
 func isQuitHit() bool {
-
 	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
 		return true
 	}
-
 	return false
 }
 
-func handleDebugPrintControl(current bool) bool {
+func handlePauseControl(current bool) bool {
+	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
+		return !current
+	}
+	return current
+}
 
+func handleDebugPrintControl(current bool) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
 		return !current
-	} else {
-		return current
 	}
-
+	return current
 }
