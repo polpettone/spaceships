@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
@@ -25,7 +26,7 @@ type Spaceship struct {
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
-	img, err := createSpaceshipImage()
+	img, err := createSpaceshipImageFromAsset()
 
 	if err != nil {
 		return nil, err
@@ -115,5 +116,16 @@ func createSpaceshipImage() (*ebiten.Image, error) {
 		return nil, err
 	}
 	img.Fill(color.RGBA{0, 0, 0, 0xff})
+	return img, nil
+}
+
+func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
+	img, _, err := ebitenutil.NewImageFromFile(
+		"assets/spaceship-1.gif",
+		ebiten.FilterDefault)
+
+	if err != nil {
+		return nil, err
+	}
 	return img, nil
 }
