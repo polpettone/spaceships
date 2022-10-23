@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"math/rand"
 
 	"github.com/google/uuid"
@@ -51,15 +50,6 @@ func (s *SkyObject) GetPos() Pos {
 
 func (s *SkyObject) GetImage() *ebiten.Image {
 	return s.Image
-}
-
-func createSkyObjectImage() (*ebiten.Image, error) {
-	img, err := ebiten.NewImage(skyObjectSize, skyObjectSize, ebiten.FilterDefault)
-	if err != nil {
-		return nil, err
-	}
-	img.Fill(color.RGBA{192, 192, 192, 0xff})
-	return img, nil
 }
 
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {

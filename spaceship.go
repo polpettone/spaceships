@@ -80,11 +80,9 @@ func (s *Spaceship) Update(g *Game) {
 }
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {
-
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image, op)
-
 }
 
 //TODO: err handling
