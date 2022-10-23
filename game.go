@@ -17,7 +17,6 @@ type Game struct {
 	MaxX            int
 	MaxY            int
 	DebugPrint      bool
-	AudioContext    *audio.Context
 
 	BackgroundSound *audio.Player
 
@@ -27,8 +26,6 @@ type Game struct {
 }
 
 func NewGame() (*Game, error) {
-
-	audioContext := audio.NewContext(44100)
 
 	backgroundSound, err := InitSoundPlayer(
 		"assets/background-sound-1.mp3",
@@ -70,7 +67,6 @@ func NewGame() (*Game, error) {
 		DebugPrint:      false,
 		Pause:           false,
 		BackgroundSound: backgroundSound,
-		AudioContext:    audioContext,
 	}
 
 	g.BackgroundSound.Play()

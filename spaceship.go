@@ -7,6 +7,7 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
 const (
@@ -24,10 +25,20 @@ type Spaceship struct {
 	DamageCount   int
 	Size          int
 	ShootBullet   bool
+
+	ShootSound *audio.Player
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	img, err := createSpaceshipImageFromAsset()
+
+	if err != nil {
+		return nil, err
+	}
+
+	shootSound, err := InitSoundPlayer(
+		"assets/gunshot.mp3",
+		audioContext)
 
 	if err != nil {
 		return nil, err
@@ -43,6 +54,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		BackwardForce: 0,
 		DamageCount:   0,
 		Size:          spaceshipSize,
+		ShootSound:    shootSound,
 	}, nil
 }
 
@@ -81,6 +93,8 @@ func (s *Spaceship) Update(g *Game) {
 		bullet, _ := NewBullet(pos)
 		s.ShootBullet = false
 		g.GameObjects[bullet.ID] = bullet
+		s.ShootSound.Rewind()
+		s.ShootSound.Play()
 	}
 }
 

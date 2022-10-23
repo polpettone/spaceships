@@ -5,11 +5,11 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 
-	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
 var (
-	natalitoImage *ebiten.Image
+	audioContext *audio.Context
 )
 
 const (
@@ -18,14 +18,7 @@ const (
 )
 
 func init() {
-	var err error
-	natalitoImage, _, err = ebitenutil.NewImageFromFile(
-		"assets/natalito-front.png",
-		ebiten.FilterDefault)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	audioContext = audio.NewContext(44100)
 }
 
 func main() {
