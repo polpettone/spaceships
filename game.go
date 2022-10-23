@@ -87,7 +87,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.Pause = handlePauseControl(g.Pause)
 
 	if g.Pause {
+		g.BackgroundSound.Pause()
 		return nil
+	}
+
+	if !g.BackgroundSound.IsPlaying() {
+		g.BackgroundSound.Play()
 	}
 
 	for _, o := range g.GameObjects {
