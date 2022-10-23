@@ -38,8 +38,6 @@ func NewGame() (*Game, error) {
 		return nil, err
 	}
 
-	backgroundSound.Play()
-
 	backgroundImage, _, err := ebitenutil.NewImageFromFile(
 		"assets/earth-space-sunset.png",
 		ebiten.FilterDefault)
@@ -71,7 +69,11 @@ func NewGame() (*Game, error) {
 		MaxY:            screenHeight,
 		DebugPrint:      false,
 		Pause:           false,
+		BackgroundSound: backgroundSound,
+		AudioContext:    audioContext,
 	}
+
+	g.BackgroundSound.Play()
 
 	return g, nil
 }
