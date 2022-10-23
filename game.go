@@ -6,6 +6,7 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
 type Game struct {
@@ -16,6 +17,9 @@ type Game struct {
 	MaxX            int
 	MaxY            int
 	DebugPrint      bool
+	AudioContext    *audio.Context
+
+	BackgroundSound *audio.Player
 
 	UpdateCounter int
 
@@ -23,6 +27,18 @@ type Game struct {
 }
 
 func NewGame() (*Game, error) {
+
+	audioContext := audio.NewContext(44100)
+
+	backgroundSound, err := InitSoundPlayer(
+		"assets/background-sound-1.mp3",
+		audioContext)
+
+	if err != nil {
+		return nil, err
+	}
+
+	backgroundSound.Play()
 
 	backgroundImage, _, err := ebitenutil.NewImageFromFile(
 		"assets/earth-space-sunset.png",
