@@ -1,8 +1,6 @@
 package main
 
 import (
-	"image/color"
-
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -75,6 +73,33 @@ func (s *Spaceship) Update(g *Game) {
 
 	handleControls(s)
 
+	updatePosition(s, g)
+
+	updateWeapons(s, g)
+
+}
+
+func (s *Spaceship) Draw(screen *ebiten.Image) {
+
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
+	screen.DrawImage(s.Image, op)
+
+}
+
+//TODO: err handling
+func updateWeapons(s *Spaceship, g *Game) {
+	if s.ShootBullet {
+		pos := NewPos(s.Pos.X, s.Pos.Y+20)
+		bullet, _ := NewBullet(pos)
+		s.ShootBullet = false
+		g.GameObjects[bullet.ID] = bullet
+		s.ShootSound.Rewind()
+		s.ShootSound.Play()
+	}
+}
+
+func updatePosition(s *Spaceship, g *Game) {
 	if s.Pos.X < g.MaxX-3 {
 		s.Pos.X += s.ForwardForce
 	}
@@ -87,23 +112,6 @@ func (s *Spaceship) Update(g *Game) {
 	if s.Pos.Y > 3 {
 		s.Pos.Y -= s.DownForce
 	}
-
-	if s.ShootBullet {
-		pos := NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := NewBullet(pos)
-		s.ShootBullet = false
-		g.GameObjects[bullet.ID] = bullet
-		s.ShootSound.Rewind()
-		s.ShootSound.Play()
-	}
-}
-
-func (s *Spaceship) Draw(screen *ebiten.Image) {
-
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
-	screen.DrawImage(s.Image, op)
-
 }
 
 func handleControls(s *Spaceship) {
@@ -135,15 +143,6 @@ func handleControls(s *Spaceship) {
 		s.ShootBullet = true
 	}
 
-}
-
-func createSpaceshipImage() (*ebiten.Image, error) {
-	img, err := ebiten.NewImage(spaceshipSize, spaceshipSize, ebiten.FilterDefault)
-	if err != nil {
-		return nil, err
-	}
-	img.Fill(color.RGBA{0, 0, 0, 0xff})
-	return img, nil
 }
 
 func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
