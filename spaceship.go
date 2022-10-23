@@ -23,6 +23,7 @@ type Spaceship struct {
 	BackwardForce int
 	DamageCount   int
 	Size          int
+	ShootBullet   bool
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -57,21 +58,29 @@ func (s *Spaceship) GetID() string {
 	return s.ID
 }
 
-func (s *Spaceship) Update(maxX, maxY int) {
+//TODO: err handling
+func (s *Spaceship) Update(g *Game) {
 
 	handleControls(s)
 
-	if s.Pos.X < maxX-3 {
+	if s.Pos.X < g.MaxX-3 {
 		s.Pos.X += s.ForwardForce
 	}
 	if s.Pos.X > 3 {
 		s.Pos.X -= s.BackwardForce
 	}
-	if s.Pos.Y < maxY-3 {
+	if s.Pos.Y < g.MaxY-3 {
 		s.Pos.Y += s.UpForce
 	}
 	if s.Pos.Y > 3 {
 		s.Pos.Y -= s.DownForce
+	}
+
+	if s.ShootBullet {
+		pos := NewPos(s.Pos.X, s.Pos.Y+20)
+		bullet, _ := NewBullet(pos)
+		s.ShootBullet = false
+		g.GameObjects[bullet.ID] = bullet
 	}
 }
 
@@ -106,6 +115,10 @@ func handleControls(s *Spaceship) {
 		s.BackwardForce = 0
 		s.UpForce = 0
 		s.DownForce = 0
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
+		s.ShootBullet = true
 	}
 
 }

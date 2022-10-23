@@ -112,7 +112,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
-	g.Spaceship.Update(g.MaxX, g.MaxY)
+	g.Spaceship.Update(g)
 
 	for _, o := range g.GameObjects {
 		o.Update()
@@ -150,7 +150,8 @@ func putNewObjects(g *Game) {
 	g.UpdateCounter++
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
-		newObjects := CreateSkyObjectAtRandomPosition((screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+		newObjects := CreateSkyObjectAtRandomPosition(
+			(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 		for _, nO := range newObjects {
 			g.GameObjects[nO.GetID()] = nO
 		}
