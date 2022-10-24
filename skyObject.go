@@ -64,7 +64,7 @@ func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	return img, nil
 }
 
-func (s *SkyObject) Update() {
+func (s *SkyObject) Update(g *Game) {
 	s.Pos.X -= s.Velocity
 }
 

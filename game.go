@@ -91,27 +91,14 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		g.BackgroundSound.Play()
 	}
 
-	for _, o := range g.GameObjects {
-
-		oX := o.GetPos().X
-		oY := o.GetPos().Y
-		sX := g.Spaceship.Pos.X
-		sY := g.Spaceship.Pos.Y
-		sSize := g.Spaceship.Size
-
-		if oX == sX && oY == sY ||
-			((sX+sSize) == oX || sX == oX) && ((sY+sSize) == oY || (sY-sSize) == oY || sY == oY) {
-			g.Spaceship.DamageCount += 1
-		}
-
-	}
-
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
+
+	spaceshipCollisionDetection(g.Spaceship, g.GameObjects)
 
 	g.Spaceship.Update(g)
 
 	for _, o := range g.GameObjects {
-		o.Update()
+		o.Update(g)
 	}
 
 	g.DebugScreen.Update(g)
@@ -120,6 +107,17 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	deleteObjectsOutOfView(g)
 
 	return nil
+}
+
+func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
+
+	for _, o := range gameObjects {
+
+		if collisionDetection(s, o, 0) {
+			s.DamageCount += 1
+		}
+
+	}
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {

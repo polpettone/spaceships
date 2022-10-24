@@ -64,6 +64,6 @@ func createBulletImage(size int) (*ebiten.Image, error) {
 	return img, nil
 }
 
-func (s *Bullet) Update() {
+func (s *Bullet) Update(g *Game) {
 	s.Pos.X += s.Velocity
 }

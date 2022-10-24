@@ -68,6 +68,10 @@ func (s *Spaceship) GetID() string {
 	return s.ID
 }
 
+func (s *Spaceship) GetSize() (width, height int) {
+	return s.Image.Size()
+}
+
 //TODO: err handling
 func (s *Spaceship) Update(g *Game) {
 
