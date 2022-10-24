@@ -8,5 +8,5 @@ type GameObject interface {
 	Update()
 	GetID() string
 	Draw(screen *ebiten.Image)
-	GetSize() int
+	GetSize() (width, height int)
 }

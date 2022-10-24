@@ -56,8 +56,9 @@ func (d *DebugScreen) Update(g *Game) {
 	gameObjectsText := ""
 	for _, k := range keys {
 		gameObject := g.GameObjects[k]
+		w, h := gameObject.GetSize()
 		gameObjectsText += fmt.Sprintf(
-			"%s - %s - %d \n", gameObject.GetID(), gameObject.GetPos().Print(), gameObject.GetSize(),
+			"%s - %s - (%d, %d) \n", gameObject.GetID(), gameObject.GetPos().Print(), w, h,
 		)
 	}
 

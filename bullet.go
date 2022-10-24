@@ -16,7 +16,6 @@ type Bullet struct {
 	Pos      Pos
 	Velocity int
 	ID       string
-	Size     int
 }
 
 func NewBullet(initialPos Pos) (*Bullet, error) {
@@ -31,7 +30,6 @@ func NewBullet(initialPos Pos) (*Bullet, error) {
 		Pos:      initialPos,
 		Velocity: 5,
 		ID:       uuid.New().String(),
-		Size:     bulletSize,
 	}, nil
 }
 
@@ -53,8 +51,8 @@ func (s *Bullet) GetImage() *ebiten.Image {
 	return s.Image
 }
 
-func (s *Bullet) GetSize() int {
-	return s.Size
+func (s *Bullet) GetSize() (width, height int) {
+	return s.Image.Size()
 }
 
 func createBulletImage(size int) (*ebiten.Image, error) {

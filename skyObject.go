@@ -8,16 +8,11 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
-const (
-	skyObjectSize = 30
-)
-
 type SkyObject struct {
 	Image    *ebiten.Image
 	Pos      Pos
 	Velocity int
 	ID       string
-	Size     int
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
@@ -32,12 +27,12 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 		Pos:      initialPos,
 		Velocity: 2,
 		ID:       uuid.New().String(),
-		Size:     skyObjectSize,
 	}, nil
 }
 
 func (s *SkyObject) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(1, 1)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image, op)
 }
@@ -54,8 +49,8 @@ func (s *SkyObject) GetImage() *ebiten.Image {
 	return s.Image
 }
 
-func (s *SkyObject) GetSize() int {
-	return s.Size
+func (s *SkyObject) GetSize() (width, height int) {
+	return s.Image.Size()
 }
 
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
