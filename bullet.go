@@ -55,6 +55,13 @@ func (s *Bullet) GetSize() (width, height int) {
 	return s.Image.Size()
 }
 
+func (s *Bullet) GetCentrePos() Pos {
+	w, h := s.GetSize()
+	x := (w / 2) + s.Pos.X
+	y := (h / 2) + s.Pos.Y
+	return NewPos(x, y)
+}
+
 func createBulletImage(size int) (*ebiten.Image, error) {
 	img, err := ebiten.NewImage(size, size, ebiten.FilterDefault)
 	if err != nil {

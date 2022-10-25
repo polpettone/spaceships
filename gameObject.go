@@ -9,4 +9,5 @@ type GameObject interface {
 	GetID() string
 	Draw(screen *ebiten.Image)
 	GetSize() (width, height int)
+	GetCentrePos() Pos
 }

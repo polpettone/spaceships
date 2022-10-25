@@ -72,6 +72,13 @@ func (s *Spaceship) GetSize() (width, height int) {
 	return s.Image.Size()
 }
 
+func (s *Spaceship) GetCentrePos() Pos {
+	w, h := s.GetSize()
+	x := (w / 2) + s.Pos.X
+	y := (h / 2) + s.Pos.Y
+	return NewPos(x, y)
+}
+
 //TODO: err handling
 func (s *Spaceship) Update(g *Game) {
 

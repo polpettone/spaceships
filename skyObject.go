@@ -53,6 +53,13 @@ func (s *SkyObject) GetSize() (width, height int) {
 	return s.Image.Size()
 }
 
+func (s *SkyObject) GetCentrePos() Pos {
+	w, h := s.GetSize()
+	x := (w / 2) + s.Pos.X
+	y := (h / 2) + s.Pos.Y
+	return NewPos(x, y)
+}
+
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		"assets/enemy-1.gif",
