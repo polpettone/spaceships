@@ -23,6 +23,8 @@ type Game struct {
 	UpdateCounter int
 
 	Pause bool
+
+	SoundOn bool
 }
 
 func NewGame() (*Game, error) {
@@ -67,9 +69,8 @@ func NewGame() (*Game, error) {
 		DebugPrint:      false,
 		Pause:           false,
 		BackgroundSound: backgroundSound,
+		SoundOn:         false,
 	}
-
-	g.BackgroundSound.Play()
 
 	return g, nil
 }
@@ -81,13 +82,14 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	}
 
 	g.Pause = handlePauseControl(g.Pause)
+	g.SoundOn = handleSoundControl(g.SoundOn)
 
 	if g.Pause {
 		g.BackgroundSound.Pause()
 		return nil
 	}
 
-	if !g.BackgroundSound.IsPlaying() {
+	if !g.BackgroundSound.IsPlaying() && g.SoundOn {
 		g.BackgroundSound.Play()
 	}
 
@@ -175,6 +177,13 @@ func deleteObjectsOutOfView(g *Game) {
 	for _, k := range ids {
 		delete(g.GameObjects, k)
 	}
+}
+
+func handleSoundControl(current bool) bool {
+	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
+		return !current
+	}
+	return current
 }
 
 func isQuitHit() bool {
