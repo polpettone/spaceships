@@ -93,6 +93,10 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		g.BackgroundSound.Play()
 	}
 
+	if g.BackgroundSound.IsPlaying() && !g.SoundOn {
+		g.BackgroundSound.Pause()
+	}
+
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	spaceshipCollisionDetection(g.Spaceship, g.GameObjects)
