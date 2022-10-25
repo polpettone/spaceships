@@ -79,6 +79,10 @@ func (s *Spaceship) GetCentrePos() Pos {
 	return NewPos(x, y)
 }
 
+func (s *Spaceship) GetType() string {
+	return "spaceship"
+}
+
 //TODO: err handling
 func (s *Spaceship) Update(g *Game) {
 

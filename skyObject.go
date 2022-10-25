@@ -60,6 +60,10 @@ func (s *SkyObject) GetCentrePos() Pos {
 	return NewPos(x, y)
 }
 
+func (s *SkyObject) GetType() string {
+	return "skyObject"
+}
+
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		"assets/enemy-1.gif",

@@ -101,6 +101,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	spaceshipCollisionDetection(g.Spaceship, g.GameObjects)
 
+	bulletSkyObjectCollisionDetection(g.GameObjects)
+
 	g.Spaceship.Update(g)
 
 	for _, o := range g.GameObjects {
@@ -113,6 +115,34 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	deleteObjectsOutOfView(g)
 
 	return nil
+}
+
+func bulletSkyObjectCollisionDetection(gameObjects map[string]GameObject) {
+
+	for _, o := range gameObjects {
+
+		if o.GetType() == "bullet" {
+			for k, x := range gameObjects {
+				if x.GetType() == "skyObject" {
+					oW, _ := o.GetSize()
+					xW, _ := x.GetSize()
+					if collisionDetection(
+						o.GetPos().X,
+						o.GetPos().Y,
+						x.GetPos().X,
+						x.GetPos().Y,
+						oW,
+						xW,
+						0) {
+
+						delete(gameObjects, k)
+
+					}
+				}
+			}
+		}
+	}
+
 }
 
 func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {

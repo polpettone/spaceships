@@ -55,6 +55,10 @@ func (s *Bullet) GetSize() (width, height int) {
 	return s.Image.Size()
 }
 
+func (s *Bullet) GetType() string {
+	return "bullet"
+}
+
 func (s *Bullet) GetCentrePos() Pos {
 	w, h := s.GetSize()
 	x := (w / 2) + s.Pos.X
