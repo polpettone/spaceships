@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"os"
 
@@ -26,6 +27,8 @@ type Game struct {
 	Pause bool
 
 	SoundOn bool
+
+	KilledEnemies int
 }
 
 func NewGame() (*Game, error) {
@@ -102,7 +105,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	spaceshipCollisionDetection(g.Spaceship, g.GameObjects)
 
-	bulletSkyObjectCollisionDetection(g.GameObjects)
+	bulletSkyObjectCollisionDetection(g)
 
 	g.Spaceship.Update(g)
 
@@ -118,12 +121,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	return nil
 }
 
-func bulletSkyObjectCollisionDetection(gameObjects map[string]GameObject) {
+func bulletSkyObjectCollisionDetection(g *Game) {
 
-	for _, o := range gameObjects {
+	for _, o := range g.GameObjects {
 
 		if o.GetType() == "bullet" {
-			for k, x := range gameObjects {
+			for k, x := range g.GameObjects {
 				if x.GetType() == "skyObject" {
 					oW, _ := o.GetSize()
 					xW, _ := x.GetSize()
@@ -136,7 +139,8 @@ func bulletSkyObjectCollisionDetection(gameObjects map[string]GameObject) {
 						xW,
 						0) {
 
-						delete(gameObjects, k)
+						delete(g.GameObjects, k)
+						g.KilledEnemies += 1
 
 					}
 				}
@@ -189,7 +193,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func drawGameState(g *Game, screen *ebiten.Image) {
-	text.Draw(screen, "Sample Text", mplusNormalFont, 1800, 30, color.White)
+	t := fmt.Sprintf("Killed: %d", g.KilledEnemies)
+	text.Draw(screen, t, mplusNormalFont, 1800, 30, color.White)
 }
 
 func putNewObjects(g *Game) {
