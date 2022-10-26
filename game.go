@@ -1,11 +1,12 @@
 package main
 
 import (
+	"image/color"
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
-	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
@@ -179,10 +180,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	if g.DebugPrint {
 		g.DebugScreen.Draw(screen)
 	}
+
+	drawGameState(g, screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
+}
+
+func drawGameState(g *Game, screen *ebiten.Image) {
+	text.Draw(screen, "Sample Text", mplusNormalFont, 1800, 30, color.White)
 }
 
 func putNewObjects(g *Game) {
@@ -209,32 +216,4 @@ func deleteObjectsOutOfView(g *Game) {
 	for _, k := range ids {
 		delete(g.GameObjects, k)
 	}
-}
-
-func handleSoundControl(current bool) bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
-		return !current
-	}
-	return current
-}
-
-func isQuitHit() bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return true
-	}
-	return false
-}
-
-func handlePauseControl(current bool) bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
-		return !current
-	}
-	return current
-}
-
-func handleDebugPrintControl(current bool) bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
-		return !current
-	}
-	return current
 }
