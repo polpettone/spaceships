@@ -11,6 +11,13 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
+type GameState int64
+
+const (
+	Running GameState = iota
+	GameOver
+)
+
 type Game struct {
 	BackgroundImage *ebiten.Image
 	Spaceship       *Spaceship
@@ -29,6 +36,8 @@ type Game struct {
 	SoundOn bool
 
 	KilledEnemies int
+
+	State GameState
 }
 
 func NewGame() (*Game, error) {
@@ -74,6 +83,7 @@ func NewGame() (*Game, error) {
 		Pause:           false,
 		BackgroundSound: backgroundSound,
 		SoundOn:         false,
+		State:           Running,
 	}
 
 	return g, nil
@@ -81,12 +91,18 @@ func NewGame() (*Game, error) {
 
 func (g *Game) Update(screen *ebiten.Image) error {
 
+	checkGameOverCriteria(g)
+
 	if isQuitHit() {
 		os.Exit(0)
 	}
 
 	g.Pause = handlePauseControl(g.Pause)
 	g.SoundOn = handleSoundControl(g.SoundOn)
+
+	if g.State == GameOver {
+		return nil
+	}
 
 	if g.Pause {
 		g.BackgroundSound.Pause()
@@ -119,6 +135,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	deleteObjectsOutOfView(g)
 
 	return nil
+}
+
+func checkGameOverCriteria(g *Game) {
+	if g.Spaceship.Health < 0 {
+		g.State = GameOver
+	}
 }
 
 func bulletSkyObjectCollisionDetection(g *Game) {
@@ -186,6 +208,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 
 	drawGameState(g, screen)
+
+	if g.State == GameOver {
+		drawGameOverScreen(g, screen)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -198,6 +224,11 @@ func drawGameState(g *Game, screen *ebiten.Image) {
 		g.KilledEnemies,
 		g.Spaceship.Health)
 	text.Draw(screen, t, mplusNormalFont, 1800, 30, color.White)
+}
+
+func drawGameOverScreen(g *Game, screen *ebiten.Image) {
+	t := fmt.Sprintf("GAME OVER")
+	text.Draw(screen, t, mplusNormalFont, 1000, 300, color.White)
 }
 
 func putNewObjects(g *Game) {
