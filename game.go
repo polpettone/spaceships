@@ -227,12 +227,12 @@ func drawGameState(g *Game, screen *ebiten.Image) {
 		"Killed: %d  \n Health: %d",
 		g.KilledEnemies,
 		g.Spaceship.Health)
-	text.Draw(screen, t, mplusNormalFont, 1800, 30, color.White)
+	text.Draw(screen, t, engine.MplusNormalFont, 1800, 30, color.White)
 }
 
 func drawGameOverScreen(g *Game, screen *ebiten.Image) {
 	t := fmt.Sprintf("GAME OVER")
-	text.Draw(screen, t, mplusNormalFont, 1000, 300, color.White)
+	text.Draw(screen, t, engine.MplusNormalFont, 1000, 300, color.White)
 }
 
 func putNewObjects(g *Game) {

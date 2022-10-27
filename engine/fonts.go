@@ -1,4 +1,4 @@
-package main
+package engine
 
 import (
 	"log"
@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	mplusNormalFont font.Face
-	mplusBigFont    font.Face
+	MplusNormalFont font.Face
+	MplusBigFont    font.Face
 )
 
 func init() {
@@ -25,7 +25,7 @@ func init() {
 	}
 
 	const dpi = 72
-	mplusNormalFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+	MplusNormalFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
 		Size:    16,
 		DPI:     dpi,
 		Hinting: font.HintingFull,
@@ -33,7 +33,7 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	mplusBigFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
+	MplusBigFont, err = opentype.NewFace(tt, &opentype.FaceOptions{
 		Size:    48,
 		DPI:     dpi,
 		Hinting: font.HintingFull,
