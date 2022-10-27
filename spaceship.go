@@ -6,6 +6,7 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/polpettone/gaming/natalito/engine"
 )
 
 const (
@@ -36,7 +37,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		return nil, err
 	}
 
-	shootSound, err := InitSoundPlayer(
+	shootSound, err := engine.InitSoundPlayer(
 		"assets/gunshot.mp3",
 		audioContext)
 

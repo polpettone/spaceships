@@ -9,6 +9,7 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/polpettone/gaming/natalito/engine"
 )
 
 type GameState int64
@@ -42,7 +43,7 @@ type Game struct {
 
 func NewGame() (*Game, error) {
 
-	backgroundSound, err := InitSoundPlayer(
+	backgroundSound, err := engine.InitSoundPlayer(
 		"assets/background-sound-1.mp3",
 		audioContext)
 
@@ -137,6 +138,32 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	return nil
 }
 
+func (g *Game) Draw(screen *ebiten.Image) {
+
+	op := &ebiten.DrawImageOptions{}
+	screen.DrawImage(g.BackgroundImage, op)
+
+	for _, o := range g.GameObjects {
+		o.Draw(screen)
+	}
+
+	g.Spaceship.Draw(screen)
+
+	if g.DebugPrint {
+		g.DebugScreen.Draw(screen)
+	}
+
+	drawGameState(g, screen)
+
+	if g.State == GameOver {
+		drawGameOverScreen(g, screen)
+	}
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+	return screenWidth, screenHeight
+}
+
 func checkGameOverCriteria(g *Game) {
 	if g.Spaceship.Health < 0 {
 		g.State = GameOver
@@ -152,7 +179,7 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 				if x.GetType() == "skyObject" {
 					oW, _ := o.GetSize()
 					xW, _ := x.GetSize()
-					if collisionDetection(
+					if engine.CollisionDetection(
 						o.GetPos().X,
 						o.GetPos().Y,
 						x.GetPos().X,
@@ -180,7 +207,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
-			if collisionDetection(
+			if engine.CollisionDetection(
 				s.Pos.X,
 				s.Pos.Y,
 				o.GetPos().X,
@@ -193,32 +220,6 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 			}
 		}
 	}
-}
-
-func (g *Game) Draw(screen *ebiten.Image) {
-
-	op := &ebiten.DrawImageOptions{}
-	screen.DrawImage(g.BackgroundImage, op)
-
-	for _, o := range g.GameObjects {
-		o.Draw(screen)
-	}
-
-	g.Spaceship.Draw(screen)
-
-	if g.DebugPrint {
-		g.DebugScreen.Draw(screen)
-	}
-
-	drawGameState(g, screen)
-
-	if g.State == GameOver {
-		drawGameOverScreen(g, screen)
-	}
-}
-
-func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
 }
 
 func drawGameState(g *Game, screen *ebiten.Image) {

@@ -1,8 +1,8 @@
-package main
+package engine
 
 import "math"
 
-func collisionDetection(x1, y1, x2, y2, w1, w2, tolerance int) bool {
+func CollisionDetection(x1, y1, x2, y2, w1, w2, tolerance int) bool {
 
 	d := calcDistance(x1, y1, x2, y2)
 
