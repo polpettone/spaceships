@@ -56,7 +56,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		DamageCount:   0,
 		Size:          spaceshipSize,
 		ShootSound:    shootSound,
-		Health:        100,
+		Health:        1,
 	}, nil
 }
 

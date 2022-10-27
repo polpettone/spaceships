@@ -245,8 +245,13 @@ func drawGameState(g *Game, screen *ebiten.Image) {
 }
 
 func drawGameOverScreen(g *Game, screen *ebiten.Image) {
-	t := fmt.Sprintf("GAME OVER")
-	text.Draw(screen, t, engine.MplusNormalFont, 1000, 300, color.White)
+	t := fmt.Sprintf(
+		"GAME OVER \n"+
+			"You Killed %d Enemies \n"+
+			"Press R for New Game \n"+
+			"Press Q for Quit",
+		g.KilledEnemies)
+	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
 func putNewObjects(g *Game) {
