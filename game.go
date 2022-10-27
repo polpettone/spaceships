@@ -165,8 +165,8 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 			oW,
 			0) {
 			s.DamageCount += 1
+			s.Health -= 1
 		}
-
 	}
 }
 
@@ -193,7 +193,10 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func drawGameState(g *Game, screen *ebiten.Image) {
-	t := fmt.Sprintf("Killed: %d", g.KilledEnemies)
+	t := fmt.Sprintf(
+		"Killed: %d  \n Health: %d",
+		g.KilledEnemies,
+		g.Spaceship.Health)
 	text.Draw(screen, t, mplusNormalFont, 1800, 30, color.White)
 }
 
