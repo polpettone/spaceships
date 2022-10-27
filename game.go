@@ -176,18 +176,21 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 
 	for _, o := range gameObjects {
 
-		sW, _ := s.GetSize()
-		oW, _ := o.GetSize()
-		if collisionDetection(
-			s.Pos.X,
-			s.Pos.Y,
-			o.GetPos().X,
-			o.GetPos().Y,
-			sW,
-			oW,
-			0) {
-			s.DamageCount += 1
-			s.Health -= 1
+		if o.GetType() == "skyObject" {
+
+			sW, _ := s.GetSize()
+			oW, _ := o.GetSize()
+			if collisionDetection(
+				s.Pos.X,
+				s.Pos.Y,
+				o.GetPos().X,
+				o.GetPos().Y,
+				sW,
+				oW,
+				0) {
+				s.DamageCount += 1
+				s.Health -= 1
+			}
 		}
 	}
 }
