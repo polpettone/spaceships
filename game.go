@@ -59,6 +59,11 @@ func NewGame() (*Game, error) {
 		return nil, err
 	}
 
+	debugScreen, err := NewDebugScreen(500, screenHeight)
+	if err != nil {
+		return nil, err
+	}
+
 	spaceship, err := NewSpaceship(NewPos(100, 300))
 
 	if err != nil {
@@ -66,11 +71,6 @@ func NewGame() (*Game, error) {
 	}
 
 	gameObjects := map[string]GameObject{}
-
-	debugScreen, err := NewDebugScreen(500, screenHeight)
-	if err != nil {
-		return nil, err
-	}
 
 	g := &Game{
 		BackgroundImage: backgroundImage,
@@ -90,12 +90,26 @@ func NewGame() (*Game, error) {
 	return g, nil
 }
 
+func (g *Game) Reset() {
+	g.GameObjects = map[string]GameObject{}
+	g.Spaceship, _ = NewSpaceship(NewPos(100, 300))
+	g.UpdateCounter = 0
+	g.Pause = false
+	g.State = Running
+	g.KilledEnemies = 0
+}
+
 func (g *Game) Update(screen *ebiten.Image) error {
 
 	checkGameOverCriteria(g)
 
 	if isQuitHit() {
 		os.Exit(0)
+	}
+
+	if handleResetGameControl() && g.State == GameOver {
+		g.Reset()
+		g.State = Running
 	}
 
 	g.Pause = handlePauseControl(g.Pause)

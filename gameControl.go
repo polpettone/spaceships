@@ -19,6 +19,13 @@ func isQuitHit() bool {
 	return false
 }
 
+func handleResetGameControl() bool {
+	if inpututil.IsKeyJustPressed(ebiten.KeyR) {
+		return true
+	}
+	return false
+}
+
 func handlePauseControl(current bool) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		return !current
