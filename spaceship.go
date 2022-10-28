@@ -27,7 +27,8 @@ type Spaceship struct {
 
 	ShootSound *audio.Player
 
-	Health int
+	BulletCount int
+	Health      int
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
@@ -57,6 +58,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		Size:          spaceshipSize,
 		ShootSound:    shootSound,
 		Health:        1,
+		BulletCount:   30,
 	}, nil
 }
 
@@ -106,13 +108,14 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 //TODO: err handling
 func updateWeapons(s *Spaceship, g *Game) {
-	if s.ShootBullet {
+	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
 		bullet, _ := NewBullet(pos)
 		s.ShootBullet = false
 		g.GameObjects[bullet.ID] = bullet
 		s.ShootSound.Rewind()
 		s.ShootSound.Play()
+		s.BulletCount = s.BulletCount - 1
 	}
 }
 
