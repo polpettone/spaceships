@@ -29,9 +29,30 @@ type Spaceship struct {
 
 	BulletCount int
 	Health      int
+
+	ControlMap SpaceshipControlMap
+}
+
+type SpaceshipControlMap struct {
+	Up    ebiten.Key
+	Down  ebiten.Key
+	Left  ebiten.Key
+	Right ebiten.Key
+	Break ebiten.Key
+	Shoot ebiten.Key
 }
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
+
+	controlMap := SpaceshipControlMap{
+		Up:    ebiten.KeyK,
+		Down:  ebiten.KeyJ,
+		Left:  ebiten.KeyH,
+		Right: ebiten.KeyL,
+		Break: ebiten.KeySpace,
+		Shoot: ebiten.KeyN,
+	}
+
 	img, err := createSpaceshipImageFromAsset()
 
 	if err != nil {
@@ -59,6 +80,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		ShootSound:    shootSound,
 		Health:        1,
 		BulletCount:   30,
+		ControlMap:    controlMap,
 	}, nil
 }
 
@@ -127,39 +149,39 @@ func updatePosition(s *Spaceship, g *Game) {
 		s.Pos.X -= s.BackwardForce
 	}
 	if s.Pos.Y < g.MaxY-3 {
-		s.Pos.Y += s.UpForce
+		s.Pos.Y -= s.UpForce
 	}
 	if s.Pos.Y > 3 {
-		s.Pos.Y -= s.DownForce
+		s.Pos.Y += s.DownForce
 	}
 }
 
 func handleControls(s *Spaceship) {
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyK) {
-		s.DownForce += 1
-	}
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyJ) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Up) {
 		s.UpForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyH) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Down) {
+		s.DownForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(s.ControlMap.Left) {
 		s.BackwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyL) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Right) {
 		s.ForwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Break) {
 		s.ForwardForce = 0
 		s.BackwardForce = 0
 		s.UpForce = 0
 		s.DownForce = 0
 	}
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyN) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Shoot) {
 		s.ShootBullet = true
 	}
 
