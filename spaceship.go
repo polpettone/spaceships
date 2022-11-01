@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math"
+
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
@@ -31,6 +33,8 @@ type Spaceship struct {
 	Health      int
 
 	ControlMap SpaceshipControlMap
+
+	ImageScale float64
 }
 
 type SpaceshipControlMap struct {
@@ -78,9 +82,10 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		DamageCount:   0,
 		Size:          spaceshipSize,
 		ShootSound:    shootSound,
-		Health:        1,
+		Health:        1000,
 		BulletCount:   30,
 		ControlMap:    controlMap,
+		ImageScale:    0.1,
 	}, nil
 }
 
@@ -97,7 +102,9 @@ func (s *Spaceship) GetID() string {
 }
 
 func (s *Spaceship) GetSize() (width, height int) {
-	return s.Image.Size()
+	w, h := s.Image.Size()
+	return int(s.ImageScale * float64(w)), int(s.ImageScale * float64(h))
+
 }
 
 func (s *Spaceship) GetCentrePos() Pos {
@@ -123,7 +130,21 @@ func (s *Spaceship) Update(g *Game) {
 }
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {
+
+	w, h := s.Image.Size()
 	op := &ebiten.DrawImageOptions{}
+
+	// Move the image's center to the screen's upper-left corner.
+	// This is a preparation for rotating. When geometry matrices are applied,
+	// the origin point is the upper-left corner.
+	op.GeoM.Translate(-float64(w)/2, -float64(h)/2)
+
+	// Rotate the image. As a result, the anchor point of this rotate is
+	// the center of the image.
+
+	op.GeoM.Rotate(float64(90%360) * 2 * math.Pi / 360)
+
+	op.GeoM.Scale(s.ImageScale, s.ImageScale)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image, op)
 }
@@ -189,7 +210,7 @@ func handleControls(s *Spaceship) {
 
 func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/spaceship-1.gif",
+		"assets/ship2.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
