@@ -14,7 +14,7 @@ var (
 
 const (
 	screenWidth  = 2000
-	screenHeight = 700
+	screenHeight = 1000
 )
 
 func init() {
