@@ -32,13 +32,13 @@ type Spaceship struct {
 	BulletCount int
 	Health      int
 
-	ControlMap        SpaceshipControlMap
-	ControlMapGamepad SpaceshipGamepadControlMap
+	KeyboardControlMap SpaceshipKeyboardControlMap
+	GamepadControlMap  SpaceshipGamepadControlMap
 
 	ImageScale float64
 }
 
-type SpaceshipControlMap struct {
+type SpaceshipKeyboardControlMap struct {
 	Up    ebiten.Key
 	Down  ebiten.Key
 	Left  ebiten.Key
@@ -58,7 +58,7 @@ type SpaceshipGamepadControlMap struct {
 
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 
-	controlMap := SpaceshipControlMap{
+	keyboardControlMap := SpaceshipKeyboardControlMap{
 		Up:    ebiten.KeyK,
 		Down:  ebiten.KeyJ,
 		Left:  ebiten.KeyH,
@@ -91,21 +91,21 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	return &Spaceship{
-		Image:             img,
-		Pos:               initialPos,
-		ID:                uuid.New().String(),
-		DownForce:         0,
-		UpForce:           0,
-		ForwardForce:      0,
-		BackwardForce:     0,
-		DamageCount:       0,
-		Size:              spaceshipSize,
-		ShootSound:        shootSound,
-		Health:            1000,
-		BulletCount:       30,
-		ControlMap:        controlMap,
-		ControlMapGamepad: gamepadControlMap,
-		ImageScale:        0.1,
+		Image:              img,
+		Pos:                initialPos,
+		ID:                 uuid.New().String(),
+		DownForce:          0,
+		UpForce:            0,
+		ForwardForce:       0,
+		BackwardForce:      0,
+		DamageCount:        0,
+		Size:               spaceshipSize,
+		ShootSound:         shootSound,
+		Health:             1000,
+		BulletCount:        30,
+		KeyboardControlMap: keyboardControlMap,
+		GamepadControlMap:  gamepadControlMap,
+		ImageScale:         0.1,
 	}, nil
 }
 
@@ -199,36 +199,36 @@ func updatePosition(s *Spaceship, g *Game) {
 
 func handleControls(s *Spaceship) {
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Up) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Up) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Up) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Up) {
 		s.UpForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Down) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Down) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Down) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Down) {
 		s.DownForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Left) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Left) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Left) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Left) {
 		s.BackwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Right) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Right) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Right) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Right) {
 		s.ForwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Break) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Break) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Break) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Break) {
 		s.ForwardForce = 0
 		s.BackwardForce = 0
 		s.UpForce = 0
 		s.DownForce = 0
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Shoot) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Shoot) {
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Shoot) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Shoot) {
 		s.ShootBullet = true
 	}
 
