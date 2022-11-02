@@ -55,4 +55,14 @@ func updateGamepads(g *Game) {
 			delete(g.GamepadIDs, id)
 		}
 	}
+
+	for id := range g.GamepadIDs {
+		maxButton := ebiten.GamepadButton(ebiten.GamepadButtonNum(id))
+
+		for b := ebiten.GamepadButton(id); b < maxButton; b++ {
+			if inpututil.IsGamepadButtonJustPressed(id, b) {
+				log.Printf("button pressed: id: %d, button: %d", id, b)
+			}
+		}
+	}
 }
