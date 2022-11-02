@@ -3,12 +3,10 @@ package main
 import (
 	"fmt"
 	"image/color"
-	"log"
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
-	"github.com/hajimehoshi/ebiten/inpututil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
@@ -106,10 +104,7 @@ func (g *Game) Reset() {
 
 func (g *Game) Update(screen *ebiten.Image) error {
 
-	for _, id := range inpututil.JustConnectedGamepadIDs() {
-		log.Printf("connected gamepad ID: %d", id)
-		g.GamepadIDs[id] = struct{}{}
-	}
+	updateGamepads(g)
 
 	checkGameOverCriteria(g)
 

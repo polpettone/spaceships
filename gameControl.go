@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
@@ -38,4 +40,19 @@ func handleDebugPrintControl(current bool) bool {
 		return !current
 	}
 	return current
+}
+
+func updateGamepads(g *Game) {
+
+	for _, id := range inpututil.JustConnectedGamepadIDs() {
+		log.Printf("connected gamepad ID: %d", id)
+		g.GamepadIDs[id] = struct{}{}
+	}
+
+	for id := range g.GamepadIDs {
+		if inpututil.IsGamepadJustDisconnected(id) {
+			log.Printf("disconnected gamepad ID: %d", id)
+			delete(g.GamepadIDs, id)
+		}
+	}
 }
