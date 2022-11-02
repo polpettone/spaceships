@@ -32,7 +32,8 @@ type Spaceship struct {
 	BulletCount int
 	Health      int
 
-	ControlMap SpaceshipControlMap
+	ControlMap        SpaceshipControlMap
+	ControlMapGamepad SpaceshipGamepadControlMap
 
 	ImageScale float64
 }
@@ -46,6 +47,15 @@ type SpaceshipControlMap struct {
 	Shoot ebiten.Key
 }
 
+type SpaceshipGamepadControlMap struct {
+	Up    ebiten.GamepadButton
+	Down  ebiten.GamepadButton
+	Left  ebiten.GamepadButton
+	Right ebiten.GamepadButton
+	Break ebiten.GamepadButton
+	Shoot ebiten.GamepadButton
+}
+
 func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 
 	controlMap := SpaceshipControlMap{
@@ -55,6 +65,15 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		Right: ebiten.KeyL,
 		Break: ebiten.KeySpace,
 		Shoot: ebiten.KeyN,
+	}
+
+	gamepadControlMap := SpaceshipGamepadControlMap{
+		Up:    ebiten.GamepadButton11,
+		Down:  ebiten.GamepadButton13,
+		Left:  ebiten.GamepadButton14,
+		Right: ebiten.GamepadButton12,
+		Break: ebiten.GamepadButton4,
+		Shoot: ebiten.GamepadButton0,
 	}
 
 	img, err := createSpaceshipImageFromAsset()
@@ -72,20 +91,21 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	return &Spaceship{
-		Image:         img,
-		Pos:           initialPos,
-		ID:            uuid.New().String(),
-		DownForce:     0,
-		UpForce:       0,
-		ForwardForce:  0,
-		BackwardForce: 0,
-		DamageCount:   0,
-		Size:          spaceshipSize,
-		ShootSound:    shootSound,
-		Health:        1000,
-		BulletCount:   30,
-		ControlMap:    controlMap,
-		ImageScale:    0.1,
+		Image:             img,
+		Pos:               initialPos,
+		ID:                uuid.New().String(),
+		DownForce:         0,
+		UpForce:           0,
+		ForwardForce:      0,
+		BackwardForce:     0,
+		DamageCount:       0,
+		Size:              spaceshipSize,
+		ShootSound:        shootSound,
+		Health:            1000,
+		BulletCount:       30,
+		ControlMap:        controlMap,
+		ControlMapGamepad: gamepadControlMap,
+		ImageScale:        0.1,
 	}, nil
 }
 
@@ -179,30 +199,36 @@ func updatePosition(s *Spaceship, g *Game) {
 
 func handleControls(s *Spaceship) {
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Up) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Up) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Up) {
 		s.UpForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Down) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Down) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Down) {
 		s.DownForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Left) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Left) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Left) {
 		s.BackwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Right) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Right) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Right) {
 		s.ForwardForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Break) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Break) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Break) {
 		s.ForwardForce = 0
 		s.BackwardForce = 0
 		s.UpForce = 0
 		s.DownForce = 0
 	}
 
-	if inpututil.IsKeyJustPressed(s.ControlMap.Shoot) {
+	if inpututil.IsKeyJustPressed(s.ControlMap.Shoot) ||
+		inpututil.IsGamepadButtonJustPressed(0, s.ControlMapGamepad.Shoot) {
 		s.ShootBullet = true
 	}
 
