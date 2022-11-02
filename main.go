@@ -25,6 +25,7 @@ func main() {
 
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowTitle("Natalito")
+	ebiten.SetWindowResizable(true)
 
 	g, err := NewGame()
 
