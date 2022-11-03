@@ -183,17 +183,17 @@ func updateWeapons(s *Spaceship, g *Game) {
 }
 
 func updatePosition(s *Spaceship, g *Game) {
-	if s.Pos.X < g.MaxX-3 {
+	if s.Pos.X < g.MaxX-spaceshipWallTolerance {
 		s.Pos.X += s.ForwardForce
 	}
-	if s.Pos.X > 3 {
+	if s.Pos.X > spaceshipWallTolerance {
 		s.Pos.X -= s.BackwardForce
 	}
-	if s.Pos.Y < g.MaxY-3 {
-		s.Pos.Y -= s.UpForce
-	}
-	if s.Pos.Y > 3 {
+	if s.Pos.Y < g.MaxY-spaceshipWallTolerance {
 		s.Pos.Y += s.DownForce
+	}
+	if s.Pos.Y > spaceshipWallTolerance {
+		s.Pos.Y -= s.UpForce
 	}
 }
 
