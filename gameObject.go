@@ -5,12 +5,17 @@ import "github.com/hajimehoshi/ebiten"
 type GameObject interface {
 	GetPos() Pos
 	GetImage() *ebiten.Image
-	Update(g *Game)
+
 	GetID() string
-	Draw(screen *ebiten.Image)
-	GetSize() (width, height int)
-	GetCentrePos() Pos
 
 	//TODO: think about
 	GetType() string
+
+	GetSize() (width, height int)
+	GetCentrePos() Pos
+
+	Draw(screen *ebiten.Image)
+	Destroy()
+
+	Update(g *Game)
 }

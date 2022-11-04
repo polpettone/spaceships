@@ -194,7 +194,7 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 	for _, o := range g.GameObjects {
 
 		if o.GetType() == "bullet" {
-			for k, x := range g.GameObjects {
+			for _, x := range g.GameObjects {
 				if x.GetType() == "skyObject" {
 					oW, _ := o.GetSize()
 					xW, _ := x.GetSize()
@@ -206,8 +206,7 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 						oW,
 						xW,
 						0) {
-
-						delete(g.GameObjects, k)
+						x.Destroy()
 						g.KilledEnemies += 1
 
 					}

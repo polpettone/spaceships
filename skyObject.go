@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"math/rand"
 
 	"github.com/google/uuid"
@@ -9,24 +10,35 @@ import (
 )
 
 type SkyObject struct {
-	Image    *ebiten.Image
-	Pos      Pos
-	Velocity int
-	ID       string
+	CurrentImage   *ebiten.Image
+	AliveImage     *ebiten.Image
+	DestroyedImage *ebiten.Image
+	Pos            Pos
+	Velocity       int
+	ID             string
+	Alive          bool
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
-	img, err := createSkyObjectImageFromAsset()
 
+	img, err := createSkyObjectImageFromAsset()
+	if err != nil {
+		return nil, err
+	}
+
+	destroyedImg, err := createDestroyedImage(25)
 	if err != nil {
 		return nil, err
 	}
 
 	return &SkyObject{
-		Image:    img,
-		Pos:      initialPos,
-		Velocity: 2,
-		ID:       uuid.New().String(),
+		CurrentImage:   img,
+		AliveImage:     img,
+		DestroyedImage: destroyedImg,
+		Pos:            initialPos,
+		Velocity:       2,
+		ID:             uuid.New().String(),
+		Alive:          true,
 	}, nil
 }
 
@@ -34,7 +46,7 @@ func (s *SkyObject) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(1, 1)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
-	screen.DrawImage(s.Image, op)
+	screen.DrawImage(s.CurrentImage, op)
 }
 
 func (s *SkyObject) GetID() string {
@@ -46,11 +58,16 @@ func (s *SkyObject) GetPos() Pos {
 }
 
 func (s *SkyObject) GetImage() *ebiten.Image {
-	return s.Image
+	return s.CurrentImage
 }
 
 func (s *SkyObject) GetSize() (width, height int) {
-	return s.Image.Size()
+	return s.CurrentImage.Size()
+}
+
+func (s *SkyObject) Destroy() {
+	s.Alive = false
+	s.CurrentImage = s.DestroyedImage
 }
 
 func (s *SkyObject) GetCentrePos() Pos {
@@ -75,8 +92,18 @@ func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	return img, nil
 }
 
+func createDestroyedImage(size int) (*ebiten.Image, error) {
+	img, err := ebiten.NewImage(size, size, ebiten.FilterDefault)
+	if err != nil {
+		return nil, err
+	}
+	img.Fill(color.RGBA{47, 79, 79, 0xff})
+	return img, nil
+}
 func (s *SkyObject) Update(g *Game) {
-	s.Pos.X -= s.Velocity
+	if s.Alive {
+		s.Pos.X -= s.Velocity
+	}
 }
 
 func CreateSkyObjectAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {
