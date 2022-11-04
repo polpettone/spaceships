@@ -191,7 +191,7 @@ func checkGameOverCriteria(g *Game) {
 
 func bulletSkyObjectCollisionDetection(g *Game) {
 
-	for _, o := range g.GameObjects {
+	for k, o := range g.GameObjects {
 
 		if o.GetType() == "bullet" {
 			for _, x := range g.GameObjects {
@@ -208,6 +208,7 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 						0) {
 						x.Destroy()
 						g.KilledEnemies += 1
+						delete(g.GameObjects, k)
 					}
 				}
 			}
