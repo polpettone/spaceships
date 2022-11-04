@@ -219,10 +219,9 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 
 func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
 
-	for _, o := range gameObjects {
+	for k, o := range gameObjects {
 
 		if o.GetType() == Enemy {
-
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
 			if engine.CollisionDetection(
@@ -237,6 +236,23 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 				s.Health -= 1
 			}
 		}
+
+		if o.GetType() == Item {
+			sW, _ := s.GetSize()
+			oW, _ := o.GetSize()
+			if engine.CollisionDetection(
+				s.Pos.X,
+				s.Pos.Y,
+				o.GetPos().X,
+				o.GetPos().Y,
+				sW,
+				oW,
+				0) {
+				s.BulletCount += 1
+				delete(gameObjects, k)
+			}
+		}
+
 	}
 }
 
@@ -264,11 +280,21 @@ func putNewObjects(g *Game) {
 	g.UpdateCounter++
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
-		newObjects := CreateSkyObjectAtRandomPosition(
+
+		newSkyObjects := CreateSkyObjectAtRandomPosition(
 			(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
-		for _, nO := range newObjects {
+
+		newAmmos := CreateAmmoAtRandomPosition(
+			(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+
+		for _, nO := range newSkyObjects {
 			g.GameObjects[nO.GetID()] = nO
 		}
+
+		for _, nO := range newAmmos {
+			g.GameObjects[nO.GetID()] = nO
+		}
+
 	}
 }
 
