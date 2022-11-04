@@ -81,8 +81,8 @@ func (s *SkyObject) GetCentrePos() Pos {
 	return NewPos(x, y)
 }
 
-func (s *SkyObject) GetType() string {
-	return "skyObject"
+func (s *SkyObject) GetType() GameObjectType {
+	return Enemy
 }
 
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {

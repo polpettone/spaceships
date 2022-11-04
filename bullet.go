@@ -57,8 +57,8 @@ func (s *Bullet) GetSize() (width, height int) {
 	return s.Image.Size()
 }
 
-func (s *Bullet) GetType() string {
-	return "bullet"
+func (s *Bullet) GetType() GameObjectType {
+	return Weapon
 }
 
 func (s *Bullet) Destroy() {

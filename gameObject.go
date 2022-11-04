@@ -2,6 +2,14 @@ package main
 
 import "github.com/hajimehoshi/ebiten"
 
+type GameObjectType int64
+
+const (
+	Weapon GameObjectType = iota
+	Enemy
+	Item
+)
+
 type GameObject interface {
 	GetID() string
 
@@ -10,8 +18,7 @@ type GameObject interface {
 
 	GetImage() *ebiten.Image
 
-	//TODO: think about
-	GetType() string
+	GetType() GameObjectType
 
 	GetSize() (width, height int)
 

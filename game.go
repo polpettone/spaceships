@@ -193,9 +193,9 @@ func bulletSkyObjectCollisionDetection(g *Game) {
 
 	for k, o := range g.GameObjects {
 
-		if o.GetType() == "bullet" {
+		if o.GetType() == Weapon {
 			for _, x := range g.GameObjects {
-				if x.GetType() == "skyObject" && x.IsAlive() {
+				if x.GetType() == Enemy && x.IsAlive() {
 					oW, _ := o.GetSize()
 					xW, _ := x.GetSize()
 					if engine.CollisionDetection(
@@ -221,7 +221,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 
 	for _, o := range gameObjects {
 
-		if o.GetType() == "skyObject" {
+		if o.GetType() == Enemy {
 
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
