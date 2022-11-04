@@ -49,6 +49,10 @@ func (s *SkyObject) Draw(screen *ebiten.Image) {
 	screen.DrawImage(s.CurrentImage, op)
 }
 
+func (s *SkyObject) IsAlive() bool {
+	return s.Alive
+}
+
 func (s *SkyObject) GetID() string {
 	return s.ID
 }

@@ -16,6 +16,7 @@ type Bullet struct {
 	Pos      Pos
 	Velocity int
 	ID       string
+	Alive    bool
 }
 
 func NewBullet(initialPos Pos) (*Bullet, error) {
@@ -30,6 +31,7 @@ func NewBullet(initialPos Pos) (*Bullet, error) {
 		Pos:      initialPos,
 		Velocity: 5,
 		ID:       uuid.New().String(),
+		Alive:    true,
 	}, nil
 }
 
@@ -60,7 +62,11 @@ func (s *Bullet) GetType() string {
 }
 
 func (s *Bullet) Destroy() {
+	s.Alive = false
+}
 
+func (s *Bullet) IsAlive() bool {
+	return s.Alive
 }
 
 func (s *Bullet) GetCentrePos() Pos {
