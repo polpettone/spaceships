@@ -84,6 +84,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
 		"assets/gunshot.mp3",
+		engine.TypeMP3,
 		audioContext)
 
 	if err != nil {

@@ -47,6 +47,7 @@ func NewGame() (*Game, error) {
 
 	backgroundSound, err := engine.InitSoundPlayer(
 		"assets/background-sound-1.mp3",
+		engine.TypeMP3,
 		audioContext)
 
 	if err != nil {
