@@ -28,6 +28,7 @@ type Spaceship struct {
 
 	ShootSound   *audio.Player
 	ImpulseSound *audio.Player
+	ImpactSound  *audio.Player
 
 	BulletCount int
 	Health      int
@@ -100,6 +101,15 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		return nil, err
 	}
 
+	impactSound, err := engine.InitSoundPlayer(
+		"assets/sounds/big-impact-7054.mp3",
+		engine.TypeMP3,
+		audioContext)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &Spaceship{
 		Image:              img,
 		Pos:                initialPos,
@@ -108,6 +118,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		Size:               spaceshipSize,
 		ShootSound:         shootSound,
 		ImpulseSound:       impulseSound,
+		ImpactSound:        impactSound,
 		Health:             1000,
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
@@ -154,6 +165,15 @@ func (s *Spaceship) Update(g *Game) {
 
 	updateWeapons(s, g)
 
+}
+
+func (s *Spaceship) Damage() {
+	s.DamageCount += 1
+	s.Health -= 1
+	if !s.ImpactSound.IsPlaying() {
+		s.ImpactSound.Rewind()
+		s.ImpactSound.Play()
+	}
 }
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {

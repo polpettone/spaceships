@@ -233,8 +233,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 				sW,
 				oW,
 				0) {
-				s.DamageCount += 1
-				s.Health -= 1
+				s.Damage()
 			}
 		}
 
