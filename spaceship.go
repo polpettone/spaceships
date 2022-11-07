@@ -16,16 +16,15 @@ const (
 )
 
 type Spaceship struct {
-	Image         *ebiten.Image
-	Pos           Pos
-	ID            string
-	DownForce     int
-	UpForce       int
-	ForwardForce  int
-	BackwardForce int
-	DamageCount   int
-	Size          int
-	ShootBullet   bool
+	Image       *ebiten.Image
+	Pos         Pos
+	ID          string
+	DamageCount int
+	Size        int
+	ShootBullet bool
+
+	XAxisForce int
+	YAxisForce int
 
 	ShootSound   *audio.Player
 	ImpulseSound *audio.Player
@@ -105,10 +104,6 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		Image:              img,
 		Pos:                initialPos,
 		ID:                 uuid.New().String(),
-		DownForce:          0,
-		UpForce:            0,
-		ForwardForce:       0,
-		BackwardForce:      0,
 		DamageCount:        0,
 		Size:               spaceshipSize,
 		ShootSound:         shootSound,
@@ -196,25 +191,25 @@ func updateWeapons(s *Spaceship, g *Game) {
 
 func updatePosition(s *Spaceship, g *Game) {
 	if s.Pos.X < g.MaxX-spaceshipWallTolerance {
-		s.Pos.X += s.ForwardForce
+		s.Pos.X += s.XAxisForce
 	}
 	if s.Pos.X > spaceshipWallTolerance {
-		s.Pos.X -= s.BackwardForce
+		s.Pos.X += s.XAxisForce
 	}
 	if s.Pos.Y < g.MaxY-spaceshipWallTolerance {
-		s.Pos.Y += s.DownForce
+		s.Pos.Y += s.YAxisForce
 	}
 	if s.Pos.Y > spaceshipWallTolerance {
-		s.Pos.Y -= s.UpForce
+		s.Pos.Y += s.YAxisForce
 	}
 
-	if s.ForwardForce > 0 {
+	if s.XAxisForce != 0 {
 		if !s.ImpulseSound.IsPlaying() {
 			s.ImpulseSound.Rewind()
 			s.ImpulseSound.Play()
 		}
 	}
-	if s.ForwardForce == 0 {
+	if s.XAxisForce == 0 {
 		if !s.ImpulseSound.IsPlaying() {
 			s.ImpulseSound.Pause()
 		}
@@ -226,30 +221,28 @@ func handleControls(s *Spaceship) {
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Up) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Up) {
-		s.UpForce += 1
+		s.YAxisForce -= 1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Down) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Down) {
-		s.DownForce += 1
+		s.YAxisForce += 1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Left) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Left) {
-		s.BackwardForce += 1
+		s.XAxisForce -= 1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Right) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Right) {
-		s.ForwardForce += 1
+		s.XAxisForce += 1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Break) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Break) {
-		s.ForwardForce = 0
-		s.BackwardForce = 0
-		s.UpForce = 0
-		s.DownForce = 0
+		s.YAxisForce = 0
+		s.XAxisForce = 0
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Shoot) ||
