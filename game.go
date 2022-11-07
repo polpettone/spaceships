@@ -46,7 +46,7 @@ type Game struct {
 func NewGame() (*Game, error) {
 
 	backgroundSound, err := engine.InitSoundPlayer(
-		"assets/background-sound-1.mp3",
+		"assets/sounds/background-sound-1.mp3",
 		engine.TypeMP3,
 		audioContext)
 

@@ -27,7 +27,8 @@ type Spaceship struct {
 	Size          int
 	ShootBullet   bool
 
-	ShootSound *audio.Player
+	ShootSound   *audio.Player
+	ImpulseSound *audio.Player
 
 	BulletCount int
 	Health      int
@@ -83,8 +84,17 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	shootSound, err := engine.InitSoundPlayer(
-		"assets/gunshot.mp3",
+		"assets/sounds/gunshot.mp3",
 		engine.TypeMP3,
+		audioContext)
+
+	if err != nil {
+		return nil, err
+	}
+
+	impulseSound, err := engine.InitSoundPlayer(
+		"assets/sounds/impulse.wav",
+		engine.TypeWAV,
 		audioContext)
 
 	if err != nil {
@@ -102,6 +112,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		DamageCount:        0,
 		Size:               spaceshipSize,
 		ShootSound:         shootSound,
+		ImpulseSound:       impulseSound,
 		Health:             1000,
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
@@ -196,6 +207,19 @@ func updatePosition(s *Spaceship, g *Game) {
 	if s.Pos.Y > spaceshipWallTolerance {
 		s.Pos.Y -= s.UpForce
 	}
+
+	if s.ForwardForce > 0 {
+		if !s.ImpulseSound.IsPlaying() {
+			s.ImpulseSound.Rewind()
+			s.ImpulseSound.Play()
+		}
+	}
+	if s.ForwardForce == 0 {
+		if !s.ImpulseSound.IsPlaying() {
+			s.ImpulseSound.Pause()
+		}
+	}
+
 }
 
 func handleControls(s *Spaceship) {
