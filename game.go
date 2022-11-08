@@ -155,7 +155,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.UpdateCounter++
 	if g.UpdateCounter > 100 {
 		g.UpdateCounter = 0
-		putNewObjects(g)
+		putNewEnemies(g)
+		putNewAmmos(g)
 	}
 
 	deleteObjectsOutOfView(g)
@@ -282,21 +283,22 @@ func drawGameOverScreen(g *Game, screen *ebiten.Image) {
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
-func putNewObjects(g *Game) {
+func putNewEnemies(g *Game) {
 	newSkyObjects := CreateSkyObjectAtRandomPosition(
-		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
-
-	newAmmos := CreateAmmoAtRandomPosition(
 		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO
 	}
+}
+
+func putNewAmmos(g *Game) {
+	newAmmos := CreateAmmoAtRandomPosition(
+		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
 	for _, nO := range newAmmos {
 		g.GameObjects[nO.GetID()] = nO
 	}
-
 }
 
 func deleteObjectsOutOfView(g *Game) {
