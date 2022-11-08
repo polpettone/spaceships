@@ -222,7 +222,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 
 	for k, o := range gameObjects {
 
-		if o.GetType() == Enemy {
+		if o.GetType() == Enemy && o.IsAlive() {
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
 			if engine.CollisionDetection(
@@ -234,6 +234,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 				oW,
 				0) {
 				s.Damage()
+				o.Destroy()
 			}
 		}
 
