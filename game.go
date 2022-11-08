@@ -152,6 +152,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	g.DebugScreen.Update(g)
 
+	//TODO: refactoring!
 	g.UpdateCounter++
 	if g.UpdateCounter%100 == 0 {
 		putNewEnemies(g)
