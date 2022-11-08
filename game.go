@@ -283,8 +283,6 @@ func drawGameOverScreen(g *Game, screen *ebiten.Image) {
 }
 
 func putNewObjects(g *Game) {
-	g.UpdateCounter = 0
-
 	newSkyObjects := CreateSkyObjectAtRandomPosition(
 		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
