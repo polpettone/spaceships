@@ -152,7 +152,12 @@ func (g *Game) Update(screen *ebiten.Image) error {
 
 	g.DebugScreen.Update(g)
 
-	putNewObjects(g)
+	g.UpdateCounter++
+	if g.UpdateCounter > 100 {
+		g.UpdateCounter = 0
+		putNewObjects(g)
+	}
+
 	deleteObjectsOutOfView(g)
 
 	return nil
@@ -278,25 +283,22 @@ func drawGameOverScreen(g *Game, screen *ebiten.Image) {
 }
 
 func putNewObjects(g *Game) {
-	g.UpdateCounter++
-	if g.UpdateCounter > 100 {
-		g.UpdateCounter = 0
+	g.UpdateCounter = 0
 
-		newSkyObjects := CreateSkyObjectAtRandomPosition(
-			(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+	newSkyObjects := CreateSkyObjectAtRandomPosition(
+		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
-		newAmmos := CreateAmmoAtRandomPosition(
-			(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+	newAmmos := CreateAmmoAtRandomPosition(
+		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
-		for _, nO := range newSkyObjects {
-			g.GameObjects[nO.GetID()] = nO
-		}
-
-		for _, nO := range newAmmos {
-			g.GameObjects[nO.GetID()] = nO
-		}
-
+	for _, nO := range newSkyObjects {
+		g.GameObjects[nO.GetID()] = nO
 	}
+
+	for _, nO := range newAmmos {
+		g.GameObjects[nO.GetID()] = nO
+	}
+
 }
 
 func deleteObjectsOutOfView(g *Game) {
