@@ -153,10 +153,14 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.DebugScreen.Update(g)
 
 	g.UpdateCounter++
-	if g.UpdateCounter > 100 {
-		g.UpdateCounter = 0
+	if g.UpdateCounter%100 == 0 {
 		putNewEnemies(g)
-		putNewAmmos(g)
+	}
+	if g.UpdateCounter%500 == 0 {
+		putNewAmmos(g, 1)
+	}
+	if g.UpdateCounter%10000 == 0 {
+		g.UpdateCounter = 0
 	}
 
 	deleteObjectsOutOfView(g)
@@ -292,9 +296,9 @@ func putNewEnemies(g *Game) {
 	}
 }
 
-func putNewAmmos(g *Game) {
+func putNewAmmos(g *Game, count int) {
 	newAmmos := CreateAmmoAtRandomPosition(
-		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+		0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newAmmos {
 		g.GameObjects[nO.GetID()] = nO
