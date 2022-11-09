@@ -22,24 +22,42 @@ func (d *DebugScreen) Draw(screen *ebiten.Image, g *Game) {
 	ebitenutil.DebugPrintAt(
 		screen,
 		d.Text, 10, 10)
+	drawDebugCoordinate(screen, g)
+}
 
+func drawDebugCoordinate(screen *ebiten.Image, g *Game) {
 	marginX := 55
 	marginY := 20
 
-	oneX := g.MaxX
-	oneY := g.MaxY
-
 	ebitenutil.DebugPrintAt(
 		screen,
-		"600,600", 600, 600,
+		fmt.Sprintf("%d,%d", 0, 0),
+		0, 0,
 	)
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		fmt.Sprintf("%d,%d", oneX, oneY),
-		oneX-marginX, oneY-marginY,
+		fmt.Sprintf("%d,%d", g.MaxX/2, g.MaxY/2),
+		g.MaxX/2-marginX, g.MaxY/2-marginY,
 	)
 
+	ebitenutil.DebugPrintAt(
+		screen,
+		fmt.Sprintf("%d,%d", 0, g.MaxY),
+		0, g.MaxY-marginY,
+	)
+
+	ebitenutil.DebugPrintAt(
+		screen,
+		fmt.Sprintf("%d,%d", g.MaxX, 0),
+		g.MaxX-marginX, 0,
+	)
+
+	ebitenutil.DebugPrintAt(
+		screen,
+		fmt.Sprintf("%d,%d", g.MaxX, g.MaxY),
+		g.MaxX-marginX, g.MaxY-marginY,
+	)
 }
 
 func (d *DebugScreen) Update(g *Game) {
