@@ -274,7 +274,7 @@ func handleControls(s *Spaceship) {
 
 func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/ship2.png",
+		"assets/images/spaceships/ship2.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
