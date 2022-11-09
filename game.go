@@ -181,7 +181,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.Spaceship.Draw(screen)
 
 	if g.DebugPrint {
-		g.DebugScreen.Draw(screen)
+		g.DebugScreen.Draw(screen, g)
 	}
 
 	drawGameState(g, screen)

@@ -18,11 +18,28 @@ func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
 	}, nil
 }
 
-func (d *DebugScreen) Draw(screen *ebiten.Image) {
-
+func (d *DebugScreen) Draw(screen *ebiten.Image, g *Game) {
 	ebitenutil.DebugPrintAt(
 		screen,
 		d.Text, 10, 10)
+
+	marginX := 55
+	marginY := 20
+
+	oneX := g.MaxX
+	oneY := g.MaxY
+
+	ebitenutil.DebugPrintAt(
+		screen,
+		"600,600", 600, 600,
+	)
+
+	ebitenutil.DebugPrintAt(
+		screen,
+		fmt.Sprintf("%d,%d", oneX, oneY),
+		oneX-marginX, oneY-marginY,
+	)
+
 }
 
 func (d *DebugScreen) Update(g *Game) {
@@ -31,6 +48,8 @@ func (d *DebugScreen) Update(g *Game) {
 		`
 	 TPS: %f2.2f
 	 FPS: %f2.2f
+
+	 Screen Size:  %d, %d
 
 	 UpdateCounter: %d 
 
@@ -82,6 +101,8 @@ func (d *DebugScreen) Update(g *Game) {
 		t,
 		ebiten.CurrentTPS(),
 		ebiten.CurrentFPS(),
+		g.MaxX,
+		g.MaxY,
 		g.UpdateCounter,
 		spaceshipText,
 		g.Spaceship.DamageCount,
