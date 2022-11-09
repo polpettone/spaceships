@@ -55,7 +55,7 @@ func NewGame() (*Game, error) {
 	}
 
 	backgroundImage, _, err := ebitenutil.NewImageFromFile(
-		"assets/earth-space-sunset.png",
+		"assets/images/backgrounds/background7",
 		ebiten.FilterDefault)
 
 	if err != nil {
@@ -172,6 +172,8 @@ func (g *Game) Update(screen *ebiten.Image) error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
+
+	op.GeoM.Scale(1, 1)
 	screen.DrawImage(g.BackgroundImage, op)
 
 	for _, o := range g.GameObjects {
