@@ -19,6 +19,16 @@ const (
 	GameOver
 )
 
+type IGame interface {
+	MaxX() int
+	MaxY() int
+	AddGameObject(o GameObject)
+}
+
+func (g *Game) AddGameObject(o GameObject) {
+	g.GameObjects[o.GetID()] = o
+}
+
 type Game struct {
 	BackgroundImage *ebiten.Image
 	Spaceship       *Spaceship
@@ -147,7 +157,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	g.Spaceship.Update(g)
 
 	for _, o := range g.GameObjects {
-		o.Update(g)
+		o.Update()
 	}
 
 	g.DebugScreen.Update(g)

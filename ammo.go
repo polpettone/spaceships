@@ -82,7 +82,7 @@ func createAmmoImage(size int) (*ebiten.Image, error) {
 	return img, nil
 }
 
-func (a *Ammo) Update(g *Game) {
+func (a *Ammo) Update() {
 }
 
 func CreateAmmoAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {

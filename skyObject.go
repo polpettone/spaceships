@@ -104,7 +104,7 @@ func createDestroyedImage(size int) (*ebiten.Image, error) {
 	img.Fill(color.RGBA{47, 79, 79, 0xff})
 	return img, nil
 }
-func (s *SkyObject) Update(g *Game) {
+func (s *SkyObject) Update() {
 	if s.Alive {
 		s.Pos.X -= s.Velocity
 	}

@@ -202,7 +202,7 @@ func updateWeapons(s *Spaceship, g *Game) {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
 		bullet, _ := NewBullet(pos)
 		s.ShootBullet = false
-		g.GameObjects[bullet.ID] = bullet
+		g.AddGameObject(bullet)
 		s.ShootSound.Rewind()
 		s.ShootSound.Play()
 		s.BulletCount = s.BulletCount - 1

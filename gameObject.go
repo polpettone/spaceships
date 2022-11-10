@@ -25,7 +25,7 @@ type GameObject interface {
 	Destroy()
 
 	Draw(screen *ebiten.Image)
-	Update(g *Game)
+	Update()
 
 	IsAlive() bool
 }
