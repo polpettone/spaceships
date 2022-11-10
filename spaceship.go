@@ -157,7 +157,7 @@ func (s *Spaceship) GetType() string {
 }
 
 //TODO: err handling
-func (s *Spaceship) Update(g *Game) {
+func (s *Spaceship) Update(g Game) {
 
 	handleControls(s)
 
@@ -197,7 +197,7 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 }
 
 //TODO: err handling
-func updateWeapons(s *Spaceship, g *Game) {
+func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
 		bullet, _ := NewBullet(pos)
@@ -209,14 +209,14 @@ func updateWeapons(s *Spaceship, g *Game) {
 	}
 }
 
-func updatePosition(s *Spaceship, g *Game) {
-	if s.Pos.X < g.MaxX-spaceshipWallTolerance {
+func updatePosition(s *Spaceship, g Game) {
+	if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance {
 		s.Pos.X += s.XAxisForce
 	}
 	if s.Pos.X > spaceshipWallTolerance {
 		s.Pos.X += s.XAxisForce
 	}
-	if s.Pos.Y < g.MaxY-spaceshipWallTolerance {
+	if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance {
 		s.Pos.Y += s.YAxisForce
 	}
 	if s.Pos.Y > spaceshipWallTolerance {

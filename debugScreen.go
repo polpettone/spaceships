@@ -18,14 +18,14 @@ func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
 	}, nil
 }
 
-func (d *DebugScreen) Draw(screen *ebiten.Image, g *Game) {
+func (d *DebugScreen) Draw(screen *ebiten.Image, g Game) {
 	ebitenutil.DebugPrintAt(
 		screen,
 		d.Text, 10, 10)
 	drawDebugCoordinate(screen, g)
 }
 
-func drawDebugCoordinate(screen *ebiten.Image, g *Game) {
+func drawDebugCoordinate(screen *ebiten.Image, g Game) {
 	marginX := 55
 	marginY := 20
 
@@ -37,30 +37,30 @@ func drawDebugCoordinate(screen *ebiten.Image, g *Game) {
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		fmt.Sprintf("%d,%d", g.MaxX/2, g.MaxY/2),
-		g.MaxX/2-marginX, g.MaxY/2-marginY,
+		fmt.Sprintf("%d,%d", g.GetMaxX()/2, g.GetMaxY()/2),
+		g.GetMaxX()/2-marginX, g.GetMaxY()/2-marginY,
 	)
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		fmt.Sprintf("%d,%d", 0, g.MaxY),
-		0, g.MaxY-marginY,
+		fmt.Sprintf("%d,%d", 0, g.GetMaxY()),
+		0, g.GetMaxY()-marginY,
 	)
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		fmt.Sprintf("%d,%d", g.MaxX, 0),
-		g.MaxX-marginX, 0,
+		fmt.Sprintf("%d,%d", g.GetMaxX(), 0),
+		g.GetMaxX()-marginX, 0,
 	)
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		fmt.Sprintf("%d,%d", g.MaxX, g.MaxY),
-		g.MaxX-marginX, g.MaxY-marginY,
+		fmt.Sprintf("%d,%d", g.GetMaxX(), g.GetMaxY()),
+		g.GetMaxX()-marginX, g.GetMaxY()-marginY,
 	)
 }
 
-func (d *DebugScreen) Update(g *Game) {
+func (d *DebugScreen) Update(g Game) {
 
 	t :=
 		`
@@ -84,7 +84,7 @@ func (d *DebugScreen) Update(g *Game) {
 
 	var keys []string
 
-	for k, _ := range g.GameObjects {
+	for k, _ := range g.GetGameObjects() {
 		keys = append(keys, k)
 	}
 
@@ -92,7 +92,7 @@ func (d *DebugScreen) Update(g *Game) {
 
 	gameObjectsText := ""
 	for _, k := range keys {
-		gameObject := g.GameObjects[k]
+		gameObject := g.GetGameObjects()[k]
 		w, h := gameObject.GetSize()
 		gameObjectsText += fmt.Sprintf(
 			"%s - %s - (%d, %d) - %s \n",
@@ -105,11 +105,11 @@ func (d *DebugScreen) Update(g *Game) {
 
 	spaceshipPos := "n/a"
 	centrePos := "n/a"
-	if g.Spaceship != nil {
-		spaceshipPos = g.Spaceship.Pos.Print()
-		centrePos = g.Spaceship.GetCentrePos().Print()
+	if g.GetSpaceship() != nil {
+		spaceshipPos = g.GetSpaceship().Pos.Print()
+		centrePos = g.GetSpaceship().GetCentrePos().Print()
 	}
-	sW, sH := g.Spaceship.GetSize()
+	sW, sH := g.GetSpaceship().GetSize()
 
 	spaceshipText := fmt.Sprintf(
 		"%s - %d,%d - %s", spaceshipPos, sW, sH, centrePos,
@@ -119,12 +119,12 @@ func (d *DebugScreen) Update(g *Game) {
 		t,
 		ebiten.CurrentTPS(),
 		ebiten.CurrentFPS(),
-		g.MaxX,
-		g.MaxY,
-		g.UpdateCounter,
+		g.GetMaxX(),
+		g.GetMaxY(),
+		g.GetUpdateCounter(),
 		spaceshipText,
-		g.Spaceship.DamageCount,
-		len(g.GameObjects),
+		g.GetSpaceship().DamageCount,
+		len(g.GetGameObjects()),
 		gameObjectsText,
 	)
 }

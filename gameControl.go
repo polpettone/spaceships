@@ -42,7 +42,7 @@ func handleDebugPrintControl(current bool) bool {
 	return current
 }
 
-func updateGamepads(g *Game) {
+func updateGamepads(g *SpaceshipGame) {
 
 	for _, id := range inpututil.JustConnectedGamepadIDs() {
 		log.Printf("connected gamepad ID: %d", id)

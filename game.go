@@ -19,18 +19,42 @@ const (
 	GameOver
 )
 
-type IGame interface {
-	MaxX() int
-	MaxY() int
+type Game interface {
+	GetMaxX() int
+	GetMaxY() int
 	AddGameObject(o GameObject)
-	GameObjects() map[string]GameObject
+	GetGameObjects() map[string]GameObject
+	GetSpaceship() *Spaceship
+	GetUpdateCounter() int
+	Layout(outsideWidth, outsideHeight int) (int, int)
+	Update(screen *ebiten.Image) error
 }
 
-func (g *Game) AddGameObject(o GameObject) {
+func (g *SpaceshipGame) GetMaxX() int {
+	return g.MaxX
+}
+
+func (g *SpaceshipGame) GetMaxY() int {
+	return g.MaxY
+}
+
+func (g *SpaceshipGame) GetUpdateCounter() int {
+	return g.UpdateCounter
+}
+
+func (g *SpaceshipGame) AddGameObject(o GameObject) {
 	g.GameObjects[o.GetID()] = o
 }
 
-type Game struct {
+func (g *SpaceshipGame) GetGameObjects() map[string]GameObject {
+	return g.GameObjects
+}
+
+func (g *SpaceshipGame) GetSpaceship() *Spaceship {
+	return g.Spaceship
+}
+
+type SpaceshipGame struct {
 	BackgroundImage *ebiten.Image
 	Spaceship       *Spaceship
 	GameObjects     map[string]GameObject
@@ -54,7 +78,7 @@ type Game struct {
 	GamepadIDs map[int]struct{}
 }
 
-func NewGame() (*Game, error) {
+func NewGame() (Game, error) {
 
 	backgroundSound, err := engine.InitSoundPlayer(
 		"assets/sounds/background-sound-1.mp3",
@@ -86,7 +110,7 @@ func NewGame() (*Game, error) {
 
 	gameObjects := map[string]GameObject{}
 
-	g := &Game{
+	g := &SpaceshipGame{
 		BackgroundImage: backgroundImage,
 		GameObjects:     gameObjects,
 		DebugScreen:     debugScreen,
@@ -105,7 +129,7 @@ func NewGame() (*Game, error) {
 	return g, nil
 }
 
-func (g *Game) Reset() {
+func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]GameObject{}
 	g.Spaceship, _ = NewSpaceship(NewPos(100, 300))
 	g.UpdateCounter = 0
@@ -114,7 +138,7 @@ func (g *Game) Reset() {
 	g.KilledEnemies = 0
 }
 
-func (g *Game) Update(screen *ebiten.Image) error {
+func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
@@ -180,7 +204,7 @@ func (g *Game) Update(screen *ebiten.Image) error {
 	return nil
 }
 
-func (g *Game) Draw(screen *ebiten.Image) {
+func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 
 	op := &ebiten.DrawImageOptions{}
 
@@ -204,17 +228,17 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 }
 
-func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 
-func checkGameOverCriteria(g *Game) {
+func checkGameOverCriteria(g *SpaceshipGame) {
 	if g.Spaceship.Health < 0 {
 		g.State = GameOver
 	}
 }
 
-func bulletSkyObjectCollisionDetection(g *Game) {
+func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 
 	for k, o := range g.GameObjects {
 
@@ -281,7 +305,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 	}
 }
 
-func drawGameState(g *Game, screen *ebiten.Image) {
+func drawGameState(g *SpaceshipGame, screen *ebiten.Image) {
 	t := fmt.Sprintf(
 		"Killed: %d  \n Health: %d \n Bullets %d",
 		g.KilledEnemies,
@@ -291,7 +315,7 @@ func drawGameState(g *Game, screen *ebiten.Image) {
 	text.Draw(screen, t, engine.MplusNormalFont, 1800, 30, color.White)
 }
 
-func drawGameOverScreen(g *Game, screen *ebiten.Image) {
+func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 	t := fmt.Sprintf(
 		"GAME OVER \n"+
 			"You Killed %d Enemies \n"+
@@ -301,7 +325,7 @@ func drawGameOverScreen(g *Game, screen *ebiten.Image) {
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
-func putNewEnemies(g *Game) {
+func putNewEnemies(g *SpaceshipGame) {
 	newSkyObjects := CreateSkyObjectAtRandomPosition(
 		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
 
@@ -310,7 +334,7 @@ func putNewEnemies(g *Game) {
 	}
 }
 
-func putNewAmmos(g *Game, count int) {
+func putNewAmmos(g *SpaceshipGame, count int) {
 	newAmmos := CreateAmmoAtRandomPosition(
 		0, 0, screenWidth, screenHeight, count)
 
@@ -319,7 +343,7 @@ func putNewAmmos(g *Game, count int) {
 	}
 }
 
-func deleteObjectsOutOfView(g *Game) {
+func deleteObjectsOutOfView(g *SpaceshipGame) {
 	var ids []string
 	for k, o := range g.GameObjects {
 		x := o.GetPos().X
