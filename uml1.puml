@@ -23,7 +23,7 @@ namespace main {
         + Destroy() 
         + IsAlive() bool
         + GetCentrePos() Pos
-        + Update(g *Game) 
+        + Update() 
 
     }
     class Bullet << (S,Aquamarine) >> {
@@ -42,7 +42,7 @@ namespace main {
         + Destroy() 
         + IsAlive() bool
         + GetCentrePos() Pos
-        + Update(g *Game) 
+        + Update() 
 
     }
     class DebugScreen << (S,Aquamarine) >> {
@@ -68,6 +68,7 @@ namespace main {
         + State GameState
         + GamepadIDs <font color=blue>map</font>[int]<font color=blue>struct</font>{}
 
+        + AddGameObject(o GameObject) 
         + Reset() 
         + Update(screen *ebiten.Image) error
         + Draw(screen *ebiten.Image) 
@@ -83,8 +84,14 @@ namespace main {
         + GetSize() (int, int)
         + Destroy() 
         + Draw(screen *ebiten.Image) 
-        + Update(g *Game) 
+        + Update() 
         + IsAlive() bool
+
+    }
+    interface IGame  {
+        + MaxX() int
+        + MaxY() int
+        + AddGameObject(o GameObject) 
 
     }
     class Pos << (S,Aquamarine) >> {
@@ -112,7 +119,7 @@ namespace main {
         + Destroy() 
         + GetCentrePos() Pos
         + GetType() GameObjectType
-        + Update(g *Game) 
+        + Update() 
 
     }
     class Spaceship << (S,Aquamarine) >> {

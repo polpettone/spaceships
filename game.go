@@ -23,6 +23,7 @@ type IGame interface {
 	MaxX() int
 	MaxY() int
 	AddGameObject(o GameObject)
+	GameObjects() map[string]GameObject
 }
 
 func (g *Game) AddGameObject(o GameObject) {
