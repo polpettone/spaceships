@@ -341,7 +341,7 @@ func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 
 func putNewEnemies(g *SpaceshipGame) {
 	newSkyObjects := CreateSkyObjectAtRandomPosition(
-		(screenWidth/3)*2, 0, screenWidth, screenHeight, 3)
+		(screenWidth/3)*2, 0, screenWidth, screenHeight, 1)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO

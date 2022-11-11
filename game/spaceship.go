@@ -125,7 +125,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
-		ImageScale:         0.3,
+		ImageScale:         0.2,
 		MoveDirection:      1,
 	}, nil
 }

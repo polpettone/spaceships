@@ -17,6 +17,7 @@ type SkyObject struct {
 	Velocity       int
 	ID             string
 	Alive          bool
+	ImageScale     float64
 }
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
@@ -39,12 +40,13 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 		Velocity:       2,
 		ID:             uuid.New().String(),
 		Alive:          true,
+		ImageScale:     0.1,
 	}, nil
 }
 
 func (s *SkyObject) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(1, 1)
+	op.GeoM.Scale(-1*s.ImageScale, s.ImageScale)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.CurrentImage, op)
 }
@@ -66,7 +68,8 @@ func (s *SkyObject) GetImage() *ebiten.Image {
 }
 
 func (s *SkyObject) GetSize() (width, height int) {
-	return s.CurrentImage.Size()
+	w, h := s.CurrentImage.Size()
+	return int(s.ImageScale * float64(w)), int(s.ImageScale * float64(h))
 }
 
 func (s *SkyObject) Destroy() {
@@ -87,7 +90,7 @@ func (s *SkyObject) GetType() GameObjectType {
 
 func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/enemy-1.gif",
+		"assets/images/spaceships/star-wars-1.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
