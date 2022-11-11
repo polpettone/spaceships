@@ -84,7 +84,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	shootSound, err := engine.InitSoundPlayer(
-		"assets/sounds/nintendosfx/SFX_Laser-Shoot/Laser_shoot 39.wav",
+		"assets/sounds/Laser_shoot 39.wav",
 		engine.TypeWAV,
 		audioContext)
 

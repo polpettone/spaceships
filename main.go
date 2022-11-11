@@ -11,6 +11,11 @@ func main() {
 
 	g, err := game.NewGame()
 
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	ebiten.SetWindowSize(g.GetMaxX(), g.GetMaxY())
 	ebiten.SetWindowTitle("Natalito")
 	ebiten.SetWindowResizable(true)

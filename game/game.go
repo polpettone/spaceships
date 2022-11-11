@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
@@ -94,23 +93,6 @@ type SpaceshipGame struct {
 
 func NewGame() (Game, error) {
 
-	backgroundSound, err := engine.InitSoundPlayer(
-		"assets/sounds/background-sound-1.mp3",
-		engine.TypeMP3,
-		audioContext)
-
-	if err != nil {
-		return nil, err
-	}
-
-	backgroundImage, _, err := ebitenutil.NewImageFromFile(
-		"assets/images/backgrounds/background7",
-		ebiten.FilterDefault)
-
-	if err != nil {
-		return nil, err
-	}
-
 	debugScreen, err := NewDebugScreen(500, screenHeight)
 	if err != nil {
 		return nil, err
@@ -125,19 +107,17 @@ func NewGame() (Game, error) {
 	gameObjects := map[string]GameObject{}
 
 	g := &SpaceshipGame{
-		BackgroundImage: backgroundImage,
-		GameObjects:     gameObjects,
-		DebugScreen:     debugScreen,
-		Spaceship:       spaceship,
-		UpdateCounter:   0,
-		MaxX:            screenWidth,
-		MaxY:            screenHeight,
-		DebugPrint:      false,
-		Pause:           false,
-		BackgroundSound: backgroundSound,
-		SoundOn:         false,
-		State:           Running,
-		GamepadIDs:      map[int]struct{}{},
+		GameObjects:   gameObjects,
+		DebugScreen:   debugScreen,
+		Spaceship:     spaceship,
+		UpdateCounter: 0,
+		MaxX:          screenWidth,
+		MaxY:          screenHeight,
+		DebugPrint:    false,
+		Pause:         false,
+		SoundOn:       false,
+		State:         Running,
+		GamepadIDs:    map[int]struct{}{},
 	}
 
 	return g, nil
@@ -150,6 +130,22 @@ func (g *SpaceshipGame) Reset() {
 	g.Pause = false
 	g.State = Running
 	g.KilledEnemies = 0
+}
+
+func handleBackgroundSound(g *SpaceshipGame) {
+	if g.BackgroundSound != nil {
+		if g.Pause {
+			g.BackgroundSound.Pause()
+		}
+
+		if !g.BackgroundSound.IsPlaying() && g.SoundOn {
+			g.BackgroundSound.Play()
+		}
+
+		if g.BackgroundSound.IsPlaying() && !g.SoundOn {
+			g.BackgroundSound.Pause()
+		}
+	}
 }
 
 func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
@@ -175,16 +171,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	}
 
 	if g.Pause {
-		g.BackgroundSound.Pause()
 		return nil
-	}
-
-	if !g.BackgroundSound.IsPlaying() && g.SoundOn {
-		g.BackgroundSound.Play()
-	}
-
-	if g.BackgroundSound.IsPlaying() && !g.SoundOn {
-		g.BackgroundSound.Pause()
 	}
 
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
@@ -219,11 +206,6 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 }
 
 func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
-
-	op := &ebiten.DrawImageOptions{}
-
-	op.GeoM.Scale(1, 1)
-	screen.DrawImage(g.BackgroundImage, op)
 
 	for _, o := range g.GameObjects {
 		o.Draw(screen)
