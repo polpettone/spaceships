@@ -36,8 +36,6 @@ type Spaceship struct {
 	KeyboardControlMap SpaceshipKeyboardControlMap
 	GamepadControlMap  SpaceshipGamepadControlMap
 
-	ImageScale float64
-
 	MoveDirection int
 }
 
@@ -86,8 +84,8 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 	}
 
 	shootSound, err := engine.InitSoundPlayer(
-		"assets/sounds/gunshot.mp3",
-		engine.TypeMP3,
+		"assets/sounds/nintendosfx/SFX_Laser-Shoot/Laser_shoot 39.wav",
+		engine.TypeWAV,
 		audioContext)
 
 	if err != nil {
@@ -125,7 +123,6 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
-		ImageScale:         0.2,
 		MoveDirection:      1,
 	}, nil
 }
@@ -286,7 +283,7 @@ func createSpaceshipImageFromAsset() (*GameObjectImage, error) {
 
 	gameObjectImage := &GameObjectImage{
 		Image:     img,
-		Scale:     0.3,
+		Scale:     0.2,
 		Direction: -1,
 	}
 
