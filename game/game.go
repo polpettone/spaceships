@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	screenWidth            = 1000
+	screenWidth            = 2000
 	screenHeight           = 1000
 	spaceshipWallTolerance = 10
 )
