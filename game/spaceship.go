@@ -37,6 +37,8 @@ type Spaceship struct {
 	GamepadControlMap  SpaceshipGamepadControlMap
 
 	ImageScale float64
+
+	MoveDirection int
 }
 
 type SpaceshipKeyboardControlMap struct {
@@ -124,6 +126,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
 		ImageScale:         0.1,
+		MoveDirection:      1,
 	}, nil
 }
 
@@ -191,7 +194,7 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 	op.GeoM.Rotate(float64(90%360) * 2 * math.Pi / 360)
 
-	op.GeoM.Scale(s.ImageScale, s.ImageScale)
+	op.GeoM.Scale(float64(s.MoveDirection)*s.ImageScale, s.ImageScale)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image, op)
 }
@@ -252,11 +255,13 @@ func handleControls(s *Spaceship) {
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Left) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Left) {
 		s.XAxisForce -= 1
+		s.MoveDirection = -1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Right) ||
 		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Right) {
 		s.XAxisForce += 1
+		s.MoveDirection = 1
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Break) ||
