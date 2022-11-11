@@ -10,9 +10,9 @@ import (
 )
 
 type SkyObject struct {
-	CurrentImage   *ebiten.Image
-	AliveImage     *ebiten.Image
-	DestroyedImage *ebiten.Image
+	CurrentImage   *GameObjectImage
+	AliveImage     *GameObjectImage
+	DestroyedImage *GameObjectImage
 	Pos            Pos
 	Velocity       int
 	ID             string
@@ -46,9 +46,9 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 
 func (s *SkyObject) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(-1*s.ImageScale, s.ImageScale)
+	op.GeoM.Scale(float64(s.CurrentImage.Direction)*s.CurrentImage.Scale, s.CurrentImage.Scale)
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
-	screen.DrawImage(s.CurrentImage, op)
+	screen.DrawImage(s.CurrentImage.Image, op)
 }
 
 func (s *SkyObject) IsAlive() bool {
@@ -64,12 +64,12 @@ func (s *SkyObject) GetPos() Pos {
 }
 
 func (s *SkyObject) GetImage() *ebiten.Image {
-	return s.CurrentImage
+	return s.CurrentImage.Image
 }
 
 func (s *SkyObject) GetSize() (width, height int) {
-	w, h := s.CurrentImage.Size()
-	return int(s.ImageScale * float64(w)), int(s.ImageScale * float64(h))
+	w, h := s.CurrentImage.Image.Size()
+	return int(s.CurrentImage.Scale * float64(w)), int(s.CurrentImage.Scale * float64(h))
 }
 
 func (s *SkyObject) Destroy() {
@@ -88,7 +88,7 @@ func (s *SkyObject) GetType() GameObjectType {
 	return Enemy
 }
 
-func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
+func createSkyObjectImageFromAsset() (*GameObjectImage, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		"assets/images/spaceships/star-wars-1.png",
 		ebiten.FilterDefault)
@@ -96,16 +96,30 @@ func createSkyObjectImageFromAsset() (*ebiten.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	return img, nil
+
+	gameObjectImage := &GameObjectImage{
+		Image:     img,
+		Scale:     0.1,
+		Direction: -1,
+	}
+
+	return gameObjectImage, nil
 }
 
-func createDestroyedImage(size int) (*ebiten.Image, error) {
+func createDestroyedImage(size int) (*GameObjectImage, error) {
 	img, err := ebiten.NewImage(size, size, ebiten.FilterDefault)
 	if err != nil {
 		return nil, err
 	}
 	img.Fill(color.RGBA{47, 79, 79, 0xff})
-	return img, nil
+
+	gameObjectImage := &GameObjectImage{
+		Image:     img,
+		Scale:     1,
+		Direction: 1,
+	}
+
+	return gameObjectImage, nil
 }
 func (s *SkyObject) Update() {
 	if s.Alive {
