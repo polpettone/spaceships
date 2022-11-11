@@ -125,7 +125,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
-		ImageScale:         0.1,
+		ImageScale:         0.3,
 		MoveDirection:      1,
 	}, nil
 }
@@ -192,9 +192,10 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 	// Rotate the image. As a result, the anchor point of this rotate is
 	// the center of the image.
 
-	op.GeoM.Rotate(float64(90%360) * 2 * math.Pi / 360)
+	op.GeoM.Rotate(float64(360%360) * 2 * math.Pi / 360)
 
-	op.GeoM.Scale(float64(s.MoveDirection)*s.ImageScale, s.ImageScale)
+	op.GeoM.Scale(float64(s.MoveDirection)*s.ImageScale*-1, s.ImageScale)
+
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image, op)
 }
@@ -279,7 +280,7 @@ func handleControls(s *Spaceship) {
 
 func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/images/spaceships/ship2.png",
+		"assets/images/spaceships/star-wars-2.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
