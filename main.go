@@ -4,31 +4,16 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten"
-
-	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/polpettone/gaming/natalito/game"
 )
-
-var (
-	audioContext *audio.Context
-)
-
-const (
-	screenWidth            = 1000
-	screenHeight           = 1000
-	spaceshipWallTolerance = 10
-)
-
-func init() {
-	audioContext = audio.NewContext(44100)
-}
 
 func main() {
 
-	ebiten.SetWindowSize(screenWidth, screenHeight)
+	g, err := game.NewGame()
+
+	ebiten.SetWindowSize(g.GetMaxX(), g.GetMaxY())
 	ebiten.SetWindowTitle("Natalito")
 	ebiten.SetWindowResizable(true)
-
-	g, err := NewGame()
 
 	if err != nil {
 		log.Fatal(err)

@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"fmt"
@@ -11,6 +11,20 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
 )
+
+const (
+	screenWidth            = 1000
+	screenHeight           = 1000
+	spaceshipWallTolerance = 10
+)
+
+var (
+	audioContext *audio.Context
+)
+
+func init() {
+	audioContext = audio.NewContext(44100)
+}
 
 type GameState int64
 
@@ -312,7 +326,7 @@ func drawGameState(g *SpaceshipGame, screen *ebiten.Image) {
 		g.Spaceship.Health,
 		g.Spaceship.BulletCount,
 	)
-	text.Draw(screen, t, engine.MplusNormalFont, 1800, 30, color.White)
+	text.Draw(screen, t, engine.MplusNormalFont, g.GetMaxX()-200, 30, color.White)
 }
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {

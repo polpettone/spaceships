@@ -1,0 +1,216 @@
+@startuml
+namespace engine {
+    class engine.SoundFileType << (T, #FF7700) >>  {
+    }
+}
+
+
+
+namespace main {
+    class Ammo << (S,Aquamarine) >> {
+        + Image *ebiten.Image
+        + Pos Pos
+        + Velocity int
+        + ID string
+        + Alive bool
+
+        + Draw(screen *ebiten.Image) 
+        + GetID() string
+        + GetPos() Pos
+        + GetImage() *ebiten.Image
+        + GetSize() (int, int)
+        + GetType() GameObjectType
+        + Destroy() 
+        + IsAlive() bool
+        + GetCentrePos() Pos
+        + Update() 
+
+    }
+    class Bullet << (S,Aquamarine) >> {
+        + Image *ebiten.Image
+        + Pos Pos
+        + Velocity int
+        + ID string
+        + Alive bool
+
+        + Draw(screen *ebiten.Image) 
+        + GetID() string
+        + GetPos() Pos
+        + GetImage() *ebiten.Image
+        + GetSize() (int, int)
+        + GetType() GameObjectType
+        + Destroy() 
+        + IsAlive() bool
+        + GetCentrePos() Pos
+        + Update() 
+
+    }
+    class DebugScreen << (S,Aquamarine) >> {
+        + Text string
+
+        + Draw(screen *ebiten.Image, g Game) 
+        + Update(g Game) 
+
+    }
+    interface Game  {
+        + GetMaxX() int
+        + GetMaxY() int
+        + AddGameObject(o GameObject) 
+        + GetGameObjects() <font color=blue>map</font>[string]GameObject
+        + GetSpaceship() *Spaceship
+        + GetUpdateCounter() int
+        + Layout(outsideWidth int, outsideHeight int) (int, int)
+        + Update(screen *ebiten.Image) error
+
+    }
+    interface GameObject  {
+        + GetID() string
+        + GetPos() Pos
+        + GetCentrePos() Pos
+        + GetImage() *ebiten.Image
+        + GetType() GameObjectType
+        + GetSize() (int, int)
+        + Destroy() 
+        + Draw(screen *ebiten.Image) 
+        + Update() 
+        + IsAlive() bool
+
+    }
+    class Pos << (S,Aquamarine) >> {
+        + X int
+        + Y int
+
+        + Print() string
+
+    }
+    class SkyObject << (S,Aquamarine) >> {
+        + CurrentImage *ebiten.Image
+        + AliveImage *ebiten.Image
+        + DestroyedImage *ebiten.Image
+        + Pos Pos
+        + Velocity int
+        + ID string
+        + Alive bool
+
+        + Draw(screen *ebiten.Image) 
+        + IsAlive() bool
+        + GetID() string
+        + GetPos() Pos
+        + GetImage() *ebiten.Image
+        + GetSize() (int, int)
+        + Destroy() 
+        + GetCentrePos() Pos
+        + GetType() GameObjectType
+        + Update() 
+
+    }
+    class Spaceship << (S,Aquamarine) >> {
+        + Image *ebiten.Image
+        + Pos Pos
+        + ID string
+        + DamageCount int
+        + Size int
+        + ShootBullet bool
+        + XAxisForce int
+        + YAxisForce int
+        + ShootSound *audio.Player
+        + ImpulseSound *audio.Player
+        + ImpactSound *audio.Player
+        + BulletCount int
+        + Health int
+        + KeyboardControlMap SpaceshipKeyboardControlMap
+        + GamepadControlMap SpaceshipGamepadControlMap
+        + ImageScale float64
+
+        + GetPos() Pos
+        + GetImage() *ebiten.Image
+        + GetID() string
+        + GetSize() (int, int)
+        + GetCentrePos() Pos
+        + GetType() string
+        + Update(g Game) 
+        + Damage() 
+        + Draw(screen *ebiten.Image) 
+
+    }
+    class SpaceshipGame << (S,Aquamarine) >> {
+        + BackgroundImage *ebiten.Image
+        + Spaceship *Spaceship
+        + GameObjects <font color=blue>map</font>[string]GameObject
+        + DebugScreen *DebugScreen
+        + MaxX int
+        + MaxY int
+        + DebugPrint bool
+        + BackgroundSound *audio.Player
+        + UpdateCounter int
+        + Pause bool
+        + SoundOn bool
+        + KilledEnemies int
+        + State GameState
+        + GamepadIDs <font color=blue>map</font>[int]<font color=blue>struct</font>{}
+
+        + GetMaxX() int
+        + GetMaxY() int
+        + GetUpdateCounter() int
+        + AddGameObject(o GameObject) 
+        + GetGameObjects() <font color=blue>map</font>[string]GameObject
+        + GetSpaceship() *Spaceship
+        + Reset() 
+        + Update(screen *ebiten.Image) error
+        + Draw(screen *ebiten.Image) 
+        + Layout(outsideWidth int, outsideHeight int) (int, int)
+
+    }
+    class SpaceshipGamepadControlMap << (S,Aquamarine) >> {
+        + Up ebiten.GamepadButton
+        + Down ebiten.GamepadButton
+        + Left ebiten.GamepadButton
+        + Right ebiten.GamepadButton
+        + Break ebiten.GamepadButton
+        + Shoot ebiten.GamepadButton
+
+    }
+    class SpaceshipKeyboardControlMap << (S,Aquamarine) >> {
+        + Up ebiten.Key
+        + Down ebiten.Key
+        + Left ebiten.Key
+        + Right ebiten.Key
+        + Break ebiten.Key
+        + Shoot ebiten.Key
+
+    }
+    class main.GameObjectType << (T, #FF7700) >>  {
+    }
+    class main.GameState << (T, #FF7700) >>  {
+    }
+}
+
+"main.GameObject" <|-- "main.Ammo"
+"main.GameObject" <|-- "main.Bullet"
+"main.GameObject" <|-- "main.SkyObject"
+"main.Game" <|-- "main.SpaceshipGame"
+
+"main.Ammo" o-- "ebiten.Image"
+"main.Ammo" o-- "main.Pos"
+"main.Bullet" o-- "ebiten.Image"
+"main.Bullet" o-- "main.Pos"
+"main.SkyObject" o-- "ebiten.Image"
+"main.SkyObject" o-- "main.Pos"
+"main.Spaceship" o-- "audio.Player"
+"main.Spaceship" o-- "ebiten.Image"
+"main.Spaceship" o-- "main.Pos"
+"main.Spaceship" o-- "main.SpaceshipGamepadControlMap"
+"main.Spaceship" o-- "main.SpaceshipKeyboardControlMap"
+"main.SpaceshipGame" o-- "audio.Player"
+"main.SpaceshipGame" o-- "ebiten.Image"
+"main.SpaceshipGame" o-- "main.DebugScreen"
+"main.SpaceshipGame" o-- "main.GameObject"
+"main.SpaceshipGame" o-- "main.GameState"
+"main.SpaceshipGame" o-- "main.Spaceship"
+"main.SpaceshipGamepadControlMap" o-- "ebiten.GamepadButton"
+"main.SpaceshipKeyboardControlMap" o-- "ebiten.Key"
+
+"__builtin__.int" #.. "engine.SoundFileType"
+"__builtin__.int64" #.. "main.GameObjectType"
+"__builtin__.int64" #.. "main.GameState"
+@enduml
