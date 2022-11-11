@@ -203,7 +203,7 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := NewBullet(pos)
+		bullet, _ := NewBullet(pos, s.MoveDirection)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
 		s.ShootSound.Rewind()

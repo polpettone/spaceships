@@ -12,14 +12,15 @@ const (
 )
 
 type Bullet struct {
-	Image    *ebiten.Image
-	Pos      Pos
-	Velocity int
-	ID       string
-	Alive    bool
+	Image         *ebiten.Image
+	Pos           Pos
+	Velocity      int
+	ID            string
+	Alive         bool
+	MoveDirection int
 }
 
-func NewBullet(initialPos Pos) (*Bullet, error) {
+func NewBullet(initialPos Pos, moveDirection int) (*Bullet, error) {
 	img, err := createBulletImage(bulletSize)
 
 	if err != nil {
@@ -27,11 +28,12 @@ func NewBullet(initialPos Pos) (*Bullet, error) {
 	}
 
 	return &Bullet{
-		Image:    img,
-		Pos:      initialPos,
-		Velocity: 5,
-		ID:       uuid.New().String(),
-		Alive:    true,
+		Image:         img,
+		Pos:           initialPos,
+		Velocity:      5,
+		ID:            uuid.New().String(),
+		Alive:         true,
+		MoveDirection: moveDirection,
 	}, nil
 }
 
@@ -86,5 +88,5 @@ func createBulletImage(size int) (*ebiten.Image, error) {
 }
 
 func (s *Bullet) Update() {
-	s.Pos.X += s.Velocity
+	s.Pos.X += s.MoveDirection * s.Velocity
 }
