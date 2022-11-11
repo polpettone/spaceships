@@ -16,7 +16,7 @@ const (
 )
 
 type Spaceship struct {
-	Image       *ebiten.Image
+	Image       *GameObjectImage
 	Pos         Pos
 	ID          string
 	DamageCount int
@@ -134,17 +134,13 @@ func (s *Spaceship) GetPos() Pos {
 	return s.Pos
 }
 
-func (s *Spaceship) GetImage() *ebiten.Image {
-	return s.Image
-}
-
 func (s *Spaceship) GetID() string {
 	return s.ID
 }
 
 func (s *Spaceship) GetSize() (width, height int) {
-	w, h := s.Image.Size()
-	return int(s.ImageScale * float64(w)), int(s.ImageScale * float64(h))
+	w, h := s.Image.Image.Size()
+	return int(s.Image.Scale * float64(w)), int(s.Image.Scale * float64(h))
 
 }
 
@@ -181,7 +177,7 @@ func (s *Spaceship) Damage() {
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {
 
-	w, h := s.Image.Size()
+	w, h := s.Image.Image.Size()
 	op := &ebiten.DrawImageOptions{}
 
 	// Move the image's center to the screen's upper-left corner.
@@ -194,10 +190,11 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 	op.GeoM.Rotate(float64(360%360) * 2 * math.Pi / 360)
 
-	op.GeoM.Scale(float64(s.MoveDirection)*s.ImageScale*-1, s.ImageScale)
+	op.GeoM.Scale(float64(s.MoveDirection)*s.Image.Scale*float64(s.Image.Direction),
+		s.Image.Scale)
 
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
-	screen.DrawImage(s.Image, op)
+	screen.DrawImage(s.Image.Image, op)
 }
 
 //TODO: err handling
@@ -278,7 +275,7 @@ func handleControls(s *Spaceship) {
 
 }
 
-func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
+func createSpaceshipImageFromAsset() (*GameObjectImage, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		"assets/images/spaceships/star-wars-2.png",
 		ebiten.FilterDefault)
@@ -286,5 +283,12 @@ func createSpaceshipImageFromAsset() (*ebiten.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	return img, nil
+
+	gameObjectImage := &GameObjectImage{
+		Image:     img,
+		Scale:     0.3,
+		Direction: -1,
+	}
+
+	return gameObjectImage, nil
 }
