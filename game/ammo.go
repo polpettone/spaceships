@@ -9,11 +9,12 @@ import (
 )
 
 type Ammo struct {
-	Image    *ebiten.Image
-	Pos      Pos
-	Velocity int
-	ID       string
-	Alive    bool
+	Image         *ebiten.Image
+	Pos           Pos
+	Velocity      int
+	ID            string
+	Alive         bool
+	MoveDirection int
 }
 
 func NewAmmo(initialPos Pos) (*Ammo, error) {
@@ -24,11 +25,12 @@ func NewAmmo(initialPos Pos) (*Ammo, error) {
 	}
 
 	return &Ammo{
-		Image:    img,
-		Pos:      initialPos,
-		Velocity: 5,
-		ID:       uuid.New().String(),
-		Alive:    true,
+		Image:         img,
+		Pos:           initialPos,
+		Velocity:      1,
+		ID:            uuid.New().String(),
+		Alive:         true,
+		MoveDirection: -1,
 	}, nil
 }
 
@@ -78,11 +80,12 @@ func createAmmoImage(size int) (*ebiten.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	img.Fill(color.RGBA{240, 240, 240, 0xff})
+	img.Fill(color.RGBA{24, 0, 255, 0xff})
 	return img, nil
 }
 
 func (a *Ammo) Update() {
+	a.Pos.X += a.MoveDirection * a.Velocity
 }
 
 func CreateAmmoAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {

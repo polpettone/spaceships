@@ -8,6 +8,7 @@ const (
 	Weapon GameObjectType = iota
 	Enemy
 	Item
+	Passive
 )
 
 type GameObject interface {

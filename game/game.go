@@ -193,6 +193,9 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	if g.UpdateCounter%100 == 0 {
 		putNewEnemies(g)
 	}
+	if g.UpdateCounter%40 == 0 {
+		putStars(g)
+	}
 	if g.UpdateCounter%500 == 0 {
 		putNewAmmos(g, 1)
 	}
@@ -319,6 +322,14 @@ func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 			"Press Q for Quit",
 		g.KilledEnemies)
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
+}
+
+func putStars(g *SpaceshipGame) {
+	newSkyObjects := CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, 10)
+
+	for _, nO := range newSkyObjects {
+		g.GameObjects[nO.GetID()] = nO
+	}
 }
 
 func putNewEnemies(g *SpaceshipGame) {

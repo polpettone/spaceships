@@ -75,6 +75,7 @@ func (s *SkyObject) GetSize() (width, height int) {
 func (s *SkyObject) Destroy() {
 	s.Alive = false
 	s.CurrentImage = s.DestroyedImage
+	s.Velocity = 1
 }
 
 func (s *SkyObject) GetCentrePos() Pos {
@@ -122,9 +123,7 @@ func createDestroyedImage(size int) (*GameObjectImage, error) {
 	return gameObjectImage, nil
 }
 func (s *SkyObject) Update() {
-	if s.Alive {
-		s.Pos.X -= s.Velocity
-	}
+	s.Pos.X -= s.Velocity
 }
 
 func CreateSkyObjectAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {
