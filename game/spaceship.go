@@ -208,16 +208,16 @@ func updateWeapons(s *Spaceship, g Game) {
 }
 
 func updatePosition(s *Spaceship, g Game) {
-	if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance {
+	if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {
 		s.Pos.X += s.XAxisForce
 	}
-	if s.Pos.X > spaceshipWallTolerance {
+	if s.Pos.X > spaceshipWallTolerance && s.XAxisForce < 0 {
 		s.Pos.X += s.XAxisForce
 	}
-	if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance {
+	if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance && s.YAxisForce > 0 {
 		s.Pos.Y += s.YAxisForce
 	}
-	if s.Pos.Y > spaceshipWallTolerance {
+	if s.Pos.Y > spaceshipWallTolerance && s.YAxisForce < 0 {
 		s.Pos.Y += s.YAxisForce
 	}
 
@@ -274,7 +274,7 @@ func handleControls(s *Spaceship) {
 
 func createSpaceshipImageFromAsset() (*GameObjectImage, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/images/spaceships/star-wars-3.png",
+		"assets/images/spaceships/star-wars-2.png",
 		ebiten.FilterDefault)
 
 	if err != nil {
