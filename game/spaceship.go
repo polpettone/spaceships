@@ -119,7 +119,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		ShootSound:         shootSound,
 		ImpulseSound:       impulseSound,
 		ImpactSound:        impactSound,
-		Health:             1000,
+		Health:             20,
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,

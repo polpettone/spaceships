@@ -296,7 +296,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 				sW,
 				oW,
 				0) {
-				s.BulletCount += 1
+				s.BulletCount += 10
 				delete(gameObjects, k)
 			}
 		}
