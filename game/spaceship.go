@@ -1,12 +1,15 @@
 package game
 
 import (
+	"fmt"
+	"image/color"
 	"math"
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
 )
@@ -30,8 +33,9 @@ type Spaceship struct {
 	ImpulseSound *audio.Player
 	ImpactSound  *audio.Player
 
-	BulletCount int
-	Health      int
+	BulletCount   int
+	Health        int
+	KilledEnemies int
 
 	KeyboardControlMap *SpaceshipKeyboardControlMap
 	GamepadControlMap  *SpaceshipGamepadControlMap
@@ -184,6 +188,15 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
 	screen.DrawImage(s.Image.Image, op)
+}
+
+func (s *Spaceship) drawState(screen *ebiten.Image, x int, y int) {
+	t := fmt.Sprintf(
+		"\n Health: %d \n Bullets %d",
+		s.Health,
+		s.BulletCount,
+	)
+	text.Draw(screen, t, engine.MplusNormalFont, x, y, color.White)
 }
 
 //TODO: err handling
