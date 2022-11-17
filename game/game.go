@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
@@ -130,6 +131,41 @@ type SpaceshipGame struct {
 	GamepadIDs map[int]struct{}
 }
 
+func createSpaceships() (*Spaceship, *Spaceship, error) {
+
+	img1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	spaceship1, err := NewSpaceship(
+		NewPos(100, 300),
+		nil,
+		ps3GamepadControlMap,
+		img1)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	img2, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3.png")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	spaceship2, err := NewSpaceship(
+		NewPos(800, 300),
+		keyboardControlMap,
+		nil,
+		img2)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return spaceship1, spaceship2, nil
+}
+
 func NewGame() (Game, error) {
 
 	debugScreen, err := NewDebugScreen(500, screenHeight)
@@ -137,12 +173,7 @@ func NewGame() (Game, error) {
 		return nil, err
 	}
 
-	spaceship1, err := NewSpaceship(NewPos(100, 300), nil, ps3GamepadControlMap)
-	if err != nil {
-		return nil, err
-	}
-
-	spaceship2, err := NewSpaceship(NewPos(800, 300), keyboardControlMap, nil)
+	spaceship1, spaceship2, err := createSpaceships()
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +200,23 @@ func NewGame() (Game, error) {
 
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]GameObject{}
-	g.Spaceship1, _ = NewSpaceship(NewPos(100, 300), nil, gamepadControlMap)
-	g.Spaceship2, _ = NewSpaceship(NewPos(100, 800), keyboardControlMap, nil)
+
+	img1, _ := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
+
+	g.Spaceship1, _ = NewSpaceship(
+		NewPos(100, 300),
+		nil,
+		ps3GamepadControlMap,
+		img1)
+
+	img2, _ := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3.png")
+
+	g.Spaceship2, _ = NewSpaceship(
+		NewPos(800, 300),
+		keyboardControlMap,
+		nil,
+		img2)
+
 	g.UpdateCounter = 0
 	g.Pause = false
 	g.State = Running
@@ -401,4 +447,22 @@ func deleteObjectsOutOfView(g *SpaceshipGame) {
 	for _, k := range ids {
 		delete(g.GameObjects, k)
 	}
+}
+
+func createSpaceshipImageFromAsset(filePath string) (*GameObjectImage, error) {
+	img, _, err := ebitenutil.NewImageFromFile(
+		filePath,
+		ebiten.FilterDefault)
+
+	if err != nil {
+		return nil, err
+	}
+
+	gameObjectImage := &GameObjectImage{
+		Image:     img,
+		Scale:     0.2,
+		Direction: -1,
+	}
+
+	return gameObjectImage, nil
 }

@@ -7,7 +7,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/inpututil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
@@ -65,13 +64,8 @@ type SpaceshipGamepadControlMap struct {
 
 func NewSpaceship(initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
-	gamepadControlMap *SpaceshipGamepadControlMap) (*Spaceship, error) {
-
-	img, err := createSpaceshipImageFromAsset()
-
-	if err != nil {
-		return nil, err
-	}
+	gamepadControlMap *SpaceshipGamepadControlMap,
+	img *GameObjectImage) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
 		"assets/sounds/Laser_shoot 39.wav",
@@ -316,21 +310,4 @@ func handleKeyboardControls(s *Spaceship) {
 		s.ShootBullet = true
 	}
 
-}
-func createSpaceshipImageFromAsset() (*GameObjectImage, error) {
-	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/images/spaceships/star-wars-2.png",
-		ebiten.FilterDefault)
-
-	if err != nil {
-		return nil, err
-	}
-
-	gameObjectImage := &GameObjectImage{
-		Image:     img,
-		Scale:     0.2,
-		Direction: -1,
-	}
-
-	return gameObjectImage, nil
 }
