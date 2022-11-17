@@ -19,10 +19,32 @@ const (
 
 var (
 	audioContext *audio.Context
+
+	keyboardControlMap *SpaceshipKeyboardControlMap
+
+	gamepadControlMap *SpaceshipGamepadControlMap
 )
 
 func init() {
 	audioContext = audio.NewContext(44100)
+
+	keyboardControlMap = &SpaceshipKeyboardControlMap{
+		Up:    ebiten.KeyK,
+		Down:  ebiten.KeyJ,
+		Left:  ebiten.KeyH,
+		Right: ebiten.KeyL,
+		Break: ebiten.KeySpace,
+		Shoot: ebiten.KeyN,
+	}
+
+	gamepadControlMap = &SpaceshipGamepadControlMap{
+		Up:    ebiten.GamepadButton11,
+		Down:  ebiten.GamepadButton13,
+		Left:  ebiten.GamepadButton14,
+		Right: ebiten.GamepadButton12,
+		Break: ebiten.GamepadButton4,
+		Shoot: ebiten.GamepadButton0,
+	}
 }
 
 type GameState int64
@@ -37,7 +59,8 @@ type Game interface {
 	GetMaxY() int
 	AddGameObject(o GameObject)
 	GetGameObjects() map[string]GameObject
-	GetSpaceship() *Spaceship
+	GetSpaceship1() *Spaceship
+	GetSpaceship2() *Spaceship
 	GetUpdateCounter() int
 	Layout(outsideWidth, outsideHeight int) (int, int)
 	Update(screen *ebiten.Image) error
@@ -63,13 +86,18 @@ func (g *SpaceshipGame) GetGameObjects() map[string]GameObject {
 	return g.GameObjects
 }
 
-func (g *SpaceshipGame) GetSpaceship() *Spaceship {
-	return g.Spaceship
+func (g *SpaceshipGame) GetSpaceship1() *Spaceship {
+	return g.Spaceship1
+}
+
+func (g *SpaceshipGame) GetSpaceship2() *Spaceship {
+	return g.Spaceship2
 }
 
 type SpaceshipGame struct {
 	BackgroundImage *ebiten.Image
-	Spaceship       *Spaceship
+	Spaceship1      *Spaceship
+	Spaceship2      *Spaceship
 	GameObjects     map[string]GameObject
 	DebugScreen     *DebugScreen
 	MaxX            int
@@ -98,8 +126,12 @@ func NewGame() (Game, error) {
 		return nil, err
 	}
 
-	spaceship, err := NewSpaceship(NewPos(100, 300))
+	spaceship1, err := NewSpaceship(NewPos(100, 300), nil, gamepadControlMap)
+	if err != nil {
+		return nil, err
+	}
 
+	spaceship2, err := NewSpaceship(NewPos(800, 300), keyboardControlMap, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +141,8 @@ func NewGame() (Game, error) {
 	g := &SpaceshipGame{
 		GameObjects:   gameObjects,
 		DebugScreen:   debugScreen,
-		Spaceship:     spaceship,
+		Spaceship1:    spaceship1,
+		Spaceship2:    spaceship2,
 		UpdateCounter: 0,
 		MaxX:          screenWidth,
 		MaxY:          screenHeight,
@@ -125,7 +158,8 @@ func NewGame() (Game, error) {
 
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]GameObject{}
-	g.Spaceship, _ = NewSpaceship(NewPos(100, 300))
+	g.Spaceship1, _ = NewSpaceship(NewPos(100, 300), nil, gamepadControlMap)
+	g.Spaceship2, _ = NewSpaceship(NewPos(100, 800), keyboardControlMap, nil)
 	g.UpdateCounter = 0
 	g.Pause = false
 	g.State = Running
@@ -176,11 +210,13 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
-	spaceshipCollisionDetection(g.Spaceship, g.GameObjects)
+	spaceshipCollisionDetection(g.Spaceship1, g.GameObjects)
+	spaceshipCollisionDetection(g.Spaceship2, g.GameObjects)
 
 	bulletSkyObjectCollisionDetection(g)
 
-	g.Spaceship.Update(g)
+	g.Spaceship1.Update(g)
+	g.Spaceship2.Update(g)
 
 	for _, o := range g.GameObjects {
 		o.Update()
@@ -214,7 +250,8 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 		o.Draw(screen)
 	}
 
-	g.Spaceship.Draw(screen)
+	g.Spaceship1.Draw(screen)
+	g.Spaceship2.Draw(screen)
 
 	if g.DebugPrint {
 		g.DebugScreen.Draw(screen, g)
@@ -232,7 +269,7 @@ func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func checkGameOverCriteria(g *SpaceshipGame) {
-	if g.Spaceship.Health < 0 {
+	if g.Spaceship1.Health < 0 {
 		g.State = GameOver
 	}
 }
@@ -308,8 +345,8 @@ func drawGameState(g *SpaceshipGame, screen *ebiten.Image) {
 	t := fmt.Sprintf(
 		"Killed: %d  \n Health: %d \n Bullets %d",
 		g.KilledEnemies,
-		g.Spaceship.Health,
-		g.Spaceship.BulletCount,
+		g.Spaceship1.Health,
+		g.Spaceship1.BulletCount,
 	)
 	text.Draw(screen, t, engine.MplusNormalFont, g.GetMaxX()-200, 30, color.White)
 }

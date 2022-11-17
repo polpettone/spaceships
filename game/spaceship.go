@@ -33,10 +33,12 @@ type Spaceship struct {
 	BulletCount int
 	Health      int
 
-	KeyboardControlMap SpaceshipKeyboardControlMap
-	GamepadControlMap  SpaceshipGamepadControlMap
+	KeyboardControlMap *SpaceshipKeyboardControlMap
+	GamepadControlMap  *SpaceshipGamepadControlMap
 
 	MoveDirection int
+
+	SoundOn bool
 }
 
 type SpaceshipKeyboardControlMap struct {
@@ -57,25 +59,9 @@ type SpaceshipGamepadControlMap struct {
 	Shoot ebiten.GamepadButton
 }
 
-func NewSpaceship(initialPos Pos) (*Spaceship, error) {
-
-	keyboardControlMap := SpaceshipKeyboardControlMap{
-		Up:    ebiten.KeyK,
-		Down:  ebiten.KeyJ,
-		Left:  ebiten.KeyH,
-		Right: ebiten.KeyL,
-		Break: ebiten.KeySpace,
-		Shoot: ebiten.KeyN,
-	}
-
-	gamepadControlMap := SpaceshipGamepadControlMap{
-		Up:    ebiten.GamepadButton11,
-		Down:  ebiten.GamepadButton13,
-		Left:  ebiten.GamepadButton14,
-		Right: ebiten.GamepadButton12,
-		Break: ebiten.GamepadButton4,
-		Shoot: ebiten.GamepadButton0,
-	}
+func NewSpaceship(initialPos Pos,
+	keyboardControlMap *SpaceshipKeyboardControlMap,
+	gamepadControlMap *SpaceshipGamepadControlMap) (*Spaceship, error) {
 
 	img, err := createSpaceshipImageFromAsset()
 
@@ -124,6 +110,7 @@ func NewSpaceship(initialPos Pos) (*Spaceship, error) {
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
 		MoveDirection:      1,
+		SoundOn:            false,
 	}, nil
 }
 
@@ -155,7 +142,9 @@ func (s *Spaceship) GetType() string {
 //TODO: err handling
 func (s *Spaceship) Update(g Game) {
 
-	handleControls(s)
+	handleGamepadControls(s)
+
+	handleKeyboardControls(s)
 
 	updatePosition(s, g)
 
@@ -166,9 +155,12 @@ func (s *Spaceship) Update(g Game) {
 func (s *Spaceship) Damage() {
 	s.DamageCount += 1
 	s.Health -= 1
-	if !s.ImpactSound.IsPlaying() {
-		s.ImpactSound.Rewind()
-		s.ImpactSound.Play()
+
+	if s.SoundOn {
+		if !s.ImpactSound.IsPlaying() {
+			s.ImpactSound.Rewind()
+			s.ImpactSound.Play()
+		}
 	}
 }
 
@@ -201,8 +193,12 @@ func updateWeapons(s *Spaceship, g Game) {
 		bullet, _ := NewBullet(pos, s.MoveDirection)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
-		s.ShootSound.Rewind()
-		s.ShootSound.Play()
+
+		if s.SoundOn {
+			s.ShootSound.Rewind()
+			s.ShootSound.Play()
+		}
+
 		s.BulletCount = s.BulletCount - 1
 	}
 }
@@ -222,56 +218,92 @@ func updatePosition(s *Spaceship, g Game) {
 	}
 
 	if s.XAxisForce != 0 {
-		if !s.ImpulseSound.IsPlaying() {
-			s.ImpulseSound.Rewind()
-			s.ImpulseSound.Play()
+		if s.SoundOn {
+			if !s.ImpulseSound.IsPlaying() {
+				s.ImpulseSound.Rewind()
+				s.ImpulseSound.Play()
+			}
 		}
 	}
 	if s.XAxisForce == 0 {
-		if !s.ImpulseSound.IsPlaying() {
-			s.ImpulseSound.Pause()
+		if s.SoundOn {
+			if !s.ImpulseSound.IsPlaying() {
+				s.ImpulseSound.Pause()
+			}
 		}
 	}
 
 }
 
-func handleControls(s *Spaceship) {
+func handleGamepadControls(s *Spaceship) {
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Up) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Up) {
+	if s.GamepadControlMap == nil {
+		return
+	}
+
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Up) {
 		s.YAxisForce -= 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Down) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Down) {
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Down) {
 		s.YAxisForce += 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Left) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Left) {
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Left) {
 		s.XAxisForce -= 1
 		s.MoveDirection = -1
 	}
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Right) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Right) {
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Right) {
 		s.XAxisForce += 1
 		s.MoveDirection = 1
 	}
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Break) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Break) {
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Break) {
 		s.YAxisForce = 0
 		s.XAxisForce = 0
 	}
 
-	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Shoot) ||
-		inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Shoot) {
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Shoot) {
 		s.ShootBullet = true
 	}
 
 }
 
+func handleKeyboardControls(s *Spaceship) {
+
+	if s.KeyboardControlMap == nil {
+		return
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Up) {
+		s.YAxisForce -= 1
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Down) {
+		s.YAxisForce += 1
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Left) {
+		s.XAxisForce -= 1
+		s.MoveDirection = -1
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Right) {
+		s.XAxisForce += 1
+		s.MoveDirection = 1
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Break) {
+		s.YAxisForce = 0
+		s.XAxisForce = 0
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Shoot) {
+		s.ShootBullet = true
+	}
+
+}
 func createSpaceshipImageFromAsset() (*GameObjectImage, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		"assets/images/spaceships/star-wars-2.png",
