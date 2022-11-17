@@ -257,7 +257,7 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 		g.DebugScreen.Draw(screen, g)
 	}
 
-	drawGameState(g, screen)
+	drawSpaceshipState(g, screen, g.GetMaxX()-200, 30)
 
 	if g.State == GameOver {
 		drawGameOverScreen(g, screen)
@@ -341,14 +341,14 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 	}
 }
 
-func drawGameState(g *SpaceshipGame, screen *ebiten.Image) {
+func drawSpaceshipState(g *SpaceshipGame, screen *ebiten.Image, x int, y int) {
 	t := fmt.Sprintf(
 		"Killed: %d  \n Health: %d \n Bullets %d",
 		g.KilledEnemies,
 		g.Spaceship1.Health,
 		g.Spaceship1.BulletCount,
 	)
-	text.Draw(screen, t, engine.MplusNormalFont, g.GetMaxX()-200, 30, color.White)
+	text.Draw(screen, t, engine.MplusNormalFont, x, y, color.White)
 }
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
