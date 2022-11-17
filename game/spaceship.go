@@ -190,7 +190,7 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 	screen.DrawImage(s.Image.Image, op)
 }
 
-func (s *Spaceship) drawState(screen *ebiten.Image, x int, y int) {
+func (s *Spaceship) DrawState(screen *ebiten.Image, x int, y int) {
 	t := fmt.Sprintf(
 		"\n Health: %d \n Bullets %d",
 		s.Health,

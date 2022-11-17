@@ -22,7 +22,8 @@ var (
 
 	keyboardControlMap *SpaceshipKeyboardControlMap
 
-	gamepadControlMap *SpaceshipGamepadControlMap
+	gamepadControlMap    *SpaceshipGamepadControlMap
+	ps3GamepadControlMap *SpaceshipGamepadControlMap
 )
 
 func init() {
@@ -45,6 +46,16 @@ func init() {
 		Break: ebiten.GamepadButton4,
 		Shoot: ebiten.GamepadButton0,
 	}
+
+	ps3GamepadControlMap = &SpaceshipGamepadControlMap{
+		Up:    ebiten.GamepadButton13,
+		Down:  ebiten.GamepadButton14,
+		Left:  ebiten.GamepadButton15,
+		Right: ebiten.GamepadButton16,
+		Break: ebiten.GamepadButton6,
+		Shoot: ebiten.GamepadButton0,
+	}
+
 }
 
 type GameState int64
@@ -126,7 +137,7 @@ func NewGame() (Game, error) {
 		return nil, err
 	}
 
-	spaceship1, err := NewSpaceship(NewPos(100, 300), nil, gamepadControlMap)
+	spaceship1, err := NewSpaceship(NewPos(100, 300), nil, ps3GamepadControlMap)
 	if err != nil {
 		return nil, err
 	}
@@ -257,8 +268,8 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 		g.DebugScreen.Draw(screen, g)
 	}
 
-	g.Spaceship1.drawState(screen, 100, 10)
-	g.Spaceship2.drawState(screen, g.GetMaxX()-200, 10)
+	g.Spaceship1.DrawState(screen, 100, 10)
+	g.Spaceship2.DrawState(screen, g.GetMaxX()-200, 10)
 
 	if g.State == GameOver {
 		drawGameOverScreen(g, screen)
