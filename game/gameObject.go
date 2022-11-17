@@ -29,4 +29,6 @@ type GameObject interface {
 	Update()
 
 	IsAlive() bool
+
+	GetSignature() string
 }

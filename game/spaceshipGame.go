@@ -129,7 +129,8 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 		NewPos(100, 300),
 		nil,
 		ps3GamepadControlMap,
-		img1)
+		img1,
+		"s1")
 
 	if err != nil {
 		return nil, nil, err
@@ -144,7 +145,8 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 		NewPos(800, 300),
 		keyboardControlMap,
 		nil,
-		img2)
+		img2,
+		"s2")
 
 	if err != nil {
 		return nil, nil, err
@@ -194,7 +196,8 @@ func (g *SpaceshipGame) Reset() {
 		NewPos(100, 300),
 		nil,
 		ps3GamepadControlMap,
-		img1)
+		img1,
+		"s1")
 
 	img2, _ := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3.png")
 
@@ -202,7 +205,8 @@ func (g *SpaceshipGame) Reset() {
 		NewPos(800, 300),
 		keyboardControlMap,
 		nil,
-		img2)
+		img2,
+		"s2")
 
 	g.UpdateCounter = 0
 	g.Pause = false
@@ -322,7 +326,6 @@ func checkGameOverCriteria(g *SpaceshipGame) {
 func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 
 	for k, o := range g.GameObjects {
-
 		if o.GetType() == Weapon {
 			for _, x := range g.GameObjects {
 				if x.GetType() == Enemy && x.IsAlive() {
@@ -344,7 +347,6 @@ func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 			}
 		}
 	}
-
 }
 
 func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
@@ -379,6 +381,22 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 				oW,
 				0) {
 				s.BulletCount += 10
+				delete(gameObjects, k)
+			}
+		}
+
+		if o.GetType() == Weapon && o.GetSignature() != s.GetSignature() {
+			sW, _ := s.GetSize()
+			oW, _ := o.GetSize()
+			if engine.CollisionDetection(
+				s.Pos.X,
+				s.Pos.Y,
+				o.GetPos().X,
+				o.GetPos().Y,
+				sW,
+				oW,
+				0) {
+				s.Damage()
 				delete(gameObjects, k)
 			}
 		}

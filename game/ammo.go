@@ -34,6 +34,10 @@ func NewAmmo(initialPos Pos) (*Ammo, error) {
 	}, nil
 }
 
+func (s *Ammo) GetSignature() string {
+	return ""
+}
+
 func (a *Ammo) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(a.Pos.X), float64(a.Pos.Y))

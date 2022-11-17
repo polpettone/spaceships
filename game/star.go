@@ -40,6 +40,10 @@ func (s *Star) Draw(screen *ebiten.Image) {
 	screen.DrawImage(s.Image, op)
 }
 
+func (s *Star) GetSignature() string {
+	return ""
+}
+
 func (s *Star) GetID() string {
 	return s.ID
 }

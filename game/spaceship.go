@@ -42,6 +42,8 @@ type Spaceship struct {
 	MoveDirection int
 
 	SoundOn bool
+
+	Signature string
 }
 
 type SpaceshipKeyboardControlMap struct {
@@ -65,7 +67,8 @@ type SpaceshipGamepadControlMap struct {
 func NewSpaceship(initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
 	gamepadControlMap *SpaceshipGamepadControlMap,
-	img *GameObjectImage) (*Spaceship, error) {
+	img *GameObjectImage,
+	signature string) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
 		"assets/sounds/Laser_shoot 39.wav",
@@ -109,7 +112,12 @@ func NewSpaceship(initialPos Pos,
 		GamepadControlMap:  gamepadControlMap,
 		MoveDirection:      1,
 		SoundOn:            false,
+		Signature:          signature,
 	}, nil
+}
+
+func (s *Spaceship) GetSignature() string {
+	return s.Signature
 }
 
 func (s *Spaceship) GetPos() Pos {
@@ -197,7 +205,7 @@ func (s *Spaceship) DrawState(screen *ebiten.Image, x int, y int) {
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := NewBullet(pos, s.MoveDirection)
+		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
 

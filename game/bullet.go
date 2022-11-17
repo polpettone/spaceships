@@ -18,9 +18,14 @@ type Bullet struct {
 	ID            string
 	Alive         bool
 	MoveDirection int
+	Signature     string
 }
 
-func NewBullet(initialPos Pos, moveDirection int) (*Bullet, error) {
+func (s *Bullet) GetSignature() string {
+	return s.Signature
+}
+
+func NewBullet(initialPos Pos, moveDirection int, signature string) (*Bullet, error) {
 	img, err := createBulletImage(bulletSize)
 
 	if err != nil {
@@ -34,6 +39,7 @@ func NewBullet(initialPos Pos, moveDirection int) (*Bullet, error) {
 		ID:            uuid.New().String(),
 		Alive:         true,
 		MoveDirection: moveDirection,
+		Signature:     signature,
 	}, nil
 }
 

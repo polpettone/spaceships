@@ -44,6 +44,10 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 	}, nil
 }
 
+func (s *SkyObject) GetSignature() string {
+	return ""
+}
+
 func (s *SkyObject) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(float64(s.CurrentImage.Direction)*s.CurrentImage.Scale, s.CurrentImage.Scale)
