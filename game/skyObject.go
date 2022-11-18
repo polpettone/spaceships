@@ -22,12 +22,19 @@ type SkyObject struct {
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 
-	img, err := createSkyObjectImageFromAsset()
+	img, err := createSkyObjectImageFromAsset(
+		"assets/images/spaceships/star-wars-1.png",
+		0.1,
+		-1)
+
 	if err != nil {
 		return nil, err
 	}
 
-	destroyedImg, err := createDestroyedImage(25)
+	destroyedImg, err := createSkyObjectImageFromAsset(
+		"assets/images/figures/pilot1.png",
+		0.03,
+		-1)
 	if err != nil {
 		return nil, err
 	}
@@ -93,9 +100,13 @@ func (s *SkyObject) GetType() GameObjectType {
 	return Enemy
 }
 
-func createSkyObjectImageFromAsset() (*GameObjectImage, error) {
+func createSkyObjectImageFromAsset(
+	filePath string,
+	scale float64,
+	direction int) (*GameObjectImage, error) {
+
 	img, _, err := ebitenutil.NewImageFromFile(
-		"assets/images/spaceships/star-wars-1.png",
+		filePath,
 		ebiten.FilterDefault)
 
 	if err != nil {
@@ -104,8 +115,8 @@ func createSkyObjectImageFromAsset() (*GameObjectImage, error) {
 
 	gameObjectImage := &GameObjectImage{
 		Image:     img,
-		Scale:     0.1,
-		Direction: -1,
+		Scale:     scale,
+		Direction: direction,
 	}
 
 	return gameObjectImage, nil
