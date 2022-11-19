@@ -128,7 +128,7 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 	spaceship1, err := NewSpaceship(
 		NewPos(100, 300),
 		nil,
-		ps3GamepadControlMap,
+		gamepadControlMap,
 		img1,
 		"s1")
 
@@ -195,7 +195,7 @@ func (g *SpaceshipGame) Reset() {
 	g.Spaceship1, _ = NewSpaceship(
 		NewPos(100, 300),
 		nil,
-		ps3GamepadControlMap,
+		gamepadControlMap,
 		img1,
 		"s1")
 
