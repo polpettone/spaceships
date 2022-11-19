@@ -274,11 +274,13 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	//TODO: refactoring!
 	g.UpdateCounter++
+
 	if g.UpdateCounter%100 == 0 {
-		putNewEnemies(g)
+		putNewEnemies(g, 0)
 	}
+
 	if g.UpdateCounter%40 == 0 {
-		putStars(g)
+		putStars(g, 0)
 	}
 	if g.UpdateCounter%500 == 0 {
 		putNewAmmos(g, 1)
@@ -414,17 +416,17 @@ func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
-func putStars(g *SpaceshipGame) {
-	newSkyObjects := CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, 10)
+func putStars(g *SpaceshipGame, count int) {
+	newSkyObjects := CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO
 	}
 }
 
-func putNewEnemies(g *SpaceshipGame) {
+func putNewEnemies(g *SpaceshipGame, count int) {
 	newSkyObjects := CreateSkyObjectAtRandomPosition(
-		(screenWidth/3)*2, 0, screenWidth, screenHeight, 1)
+		(screenWidth/3)*2, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO
