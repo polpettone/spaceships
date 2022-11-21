@@ -190,23 +190,10 @@ func NewGame() (Game, error) {
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
-	img1, _ := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
+	spaceship1, spaceship2, _ := createSpaceships()
 
-	g.Spaceship1, _ = NewSpaceship(
-		NewPos(100, 300),
-		nil,
-		gamepadControlMap,
-		img1,
-		"s1")
-
-	img2, _ := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3.png")
-
-	g.Spaceship2, _ = NewSpaceship(
-		NewPos(800, 300),
-		keyboardControlMap,
-		nil,
-		img2,
-		"s2")
+	g.Spaceship1 = spaceship1
+	g.Spaceship2 = spaceship2
 
 	g.UpdateCounter = 0
 	g.Pause = false
