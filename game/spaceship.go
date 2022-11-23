@@ -19,6 +19,7 @@ const (
 
 type Spaceship struct {
 	Image       *GameObjectImage
+	DamageImage *GameObjectImage
 	Pos         Pos
 	ID          string
 	DamageCount int
@@ -68,6 +69,7 @@ func NewSpaceship(initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
 	gamepadControlMap *SpaceshipGamepadControlMap,
 	img *GameObjectImage,
+	damageImg *GameObjectImage,
 	signature string) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
@@ -99,6 +101,7 @@ func NewSpaceship(initialPos Pos,
 
 	return &Spaceship{
 		Image:              img,
+		DamageImage:        damageImg,
 		Pos:                initialPos,
 		ID:                 uuid.New().String(),
 		DamageCount:        0,

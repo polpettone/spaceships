@@ -125,11 +125,17 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 		return nil, nil, err
 	}
 
+	damageImg1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2-red.png")
+	if err != nil {
+		return nil, nil, err
+	}
+
 	spaceship1, err := NewSpaceship(
 		NewPos(100, 300),
 		nil,
 		gamepadControlMap,
 		img1,
+		damageImg1,
 		"s1")
 
 	if err != nil {
@@ -141,11 +147,17 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 		return nil, nil, err
 	}
 
+	damageImg2, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3-red.png")
+	if err != nil {
+		return nil, nil, err
+	}
+
 	spaceship2, err := NewSpaceship(
 		NewPos(800, 300),
 		keyboardControlMap,
 		nil,
 		img2,
+		damageImg2,
 		"s2")
 
 	if err != nil {
