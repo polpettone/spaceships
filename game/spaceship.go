@@ -18,13 +18,14 @@ const (
 )
 
 type Spaceship struct {
-	Image       *GameObjectImage
-	DamageImage *GameObjectImage
-	Pos         Pos
-	ID          string
-	DamageCount int
-	Size        int
-	ShootBullet bool
+	CurrentImage *GameObjectImage
+	Image        *GameObjectImage
+	DamageImage  *GameObjectImage
+	Pos          Pos
+	ID           string
+	DamageCount  int
+	Size         int
+	ShootBullet  bool
 
 	XAxisForce int
 	YAxisForce int
@@ -100,6 +101,7 @@ func NewSpaceship(initialPos Pos,
 	}
 
 	return &Spaceship{
+		CurrentImage:       img,
 		Image:              img,
 		DamageImage:        damageImg,
 		Pos:                initialPos,
@@ -159,11 +161,17 @@ func (s *Spaceship) Update(g Game) {
 
 	updateWeapons(s, g)
 
+	if g.GetUpdateCounter()%100 == 0 {
+		s.CurrentImage = s.Image
+	}
+
 }
 
 func (s *Spaceship) Damage() {
 	s.DamageCount += 1
 	s.Health -= 1
+
+	s.CurrentImage = s.DamageImage
 
 	if s.SoundOn {
 		if !s.ImpactSound.IsPlaying() {
@@ -175,7 +183,7 @@ func (s *Spaceship) Damage() {
 
 func (s *Spaceship) Draw(screen *ebiten.Image) {
 
-	w, h := s.Image.Image.Size()
+	w, h := s.CurrentImage.Image.Size()
 	op := &ebiten.DrawImageOptions{}
 
 	// Move the image's center to the screen's upper-left corner.
@@ -188,11 +196,11 @@ func (s *Spaceship) Draw(screen *ebiten.Image) {
 
 	op.GeoM.Rotate(float64(360%360) * 2 * math.Pi / 360)
 
-	op.GeoM.Scale(float64(s.MoveDirection)*s.Image.Scale*float64(s.Image.Direction),
-		s.Image.Scale)
+	op.GeoM.Scale(float64(s.MoveDirection)*s.CurrentImage.Scale*float64(s.CurrentImage.Direction),
+		s.CurrentImage.Scale)
 
 	op.GeoM.Translate(float64(s.Pos.X), float64(s.Pos.Y))
-	screen.DrawImage(s.Image.Image, op)
+	screen.DrawImage(s.CurrentImage.Image, op)
 }
 
 func (s *Spaceship) DrawState(screen *ebiten.Image, x int, y int) {
@@ -222,6 +230,7 @@ func updateWeapons(s *Spaceship, g Game) {
 }
 
 func updatePosition(s *Spaceship, g Game) {
+
 	if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {
 		s.Pos.X += s.XAxisForce
 	}
