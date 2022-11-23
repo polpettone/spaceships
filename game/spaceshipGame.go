@@ -319,9 +319,15 @@ func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func checkGameOverCriteria(g *SpaceshipGame) {
+
 	if g.Spaceship1.Health < 0 {
 		g.State = GameOver
 	}
+
+	if g.Spaceship2.Health < 0 {
+		g.State = GameOver
+	}
+
 }
 
 func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
