@@ -17,7 +17,7 @@ type Ammo struct {
 	MoveDirection int
 }
 
-func NewAmmo(initialPos Pos) (*Ammo, error) {
+func NewAmmo(initialPos Pos, moveDirection int) (*Ammo, error) {
 	img, err := createAmmoImage(10)
 
 	if err != nil {
@@ -30,7 +30,7 @@ func NewAmmo(initialPos Pos) (*Ammo, error) {
 		Velocity:      1,
 		ID:            uuid.New().String(),
 		Alive:         true,
-		MoveDirection: -1,
+		MoveDirection: moveDirection,
 	}, nil
 }
 
@@ -99,7 +99,19 @@ func CreateAmmoAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject 
 	for n := 0; n < count; n++ {
 		x := rand.Intn(maxX-minX) + minX
 		y := rand.Intn(maxY-minY) + minY
-		a, _ := NewAmmo(NewPos(x, y))
+		random := rand.Intn(3)
+
+		var moveDirection int
+		switch random {
+		case 0:
+			moveDirection = 0
+		case 1:
+			moveDirection = 1
+		case 2:
+			moveDirection = -1
+		}
+
+		a, _ := NewAmmo(NewPos(x, y), moveDirection)
 		ammos = append(ammos, a)
 	}
 

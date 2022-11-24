@@ -32,7 +32,7 @@ func Test_collisionDetection(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := collisionDetection(
+			if got := CollisionDetection(
 				tt.args.x1,
 				tt.args.y1,
 

@@ -284,7 +284,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	if g.UpdateCounter%40 == 0 {
 		putStars(g, 0)
 	}
-	if g.UpdateCounter%500 == 0 {
+	if g.UpdateCounter%100 == 0 {
 		putNewAmmos(g, 1)
 	}
 	if g.UpdateCounter%10000 == 0 {
