@@ -155,12 +155,13 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 
 	spaceship2, err := NewSpaceship(
 		"Player 2",
-		NewPos(800, 300),
+		NewPos(1900, 300),
 		keyboardControlMap,
 		nil,
 		img2,
 		damageImg2,
 		"s2")
+	spaceship2.MoveDirection *= -1
 
 	if err != nil {
 		return nil, nil, err
