@@ -131,6 +131,7 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 	}
 
 	spaceship1, err := NewSpaceship(
+		"Player 1",
 		NewPos(100, 300),
 		nil,
 		gamepadControlMap,
@@ -153,6 +154,7 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 	}
 
 	spaceship2, err := NewSpaceship(
+		"Player 2",
 		NewPos(800, 300),
 		keyboardControlMap,
 		nil,
@@ -320,11 +322,11 @@ func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func checkGameOverCriteria(g *SpaceshipGame) {
 
-	if g.Spaceship1.Health < 0 {
+	if !g.Spaceship1.Alive() {
 		g.State = GameOver
 	}
 
-	if g.Spaceship2.Health < 0 {
+	if !g.Spaceship2.Alive() {
 		g.State = GameOver
 	}
 
@@ -412,12 +414,21 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 }
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
+
+	var livingSpaceship *Spaceship
+	if g.Spaceship1.Alive() {
+		livingSpaceship = g.Spaceship1
+	} else {
+		livingSpaceship = g.Spaceship2
+	}
+
 	t := fmt.Sprintf(
-		"GAME OVER \n"+
-			"You Killed %d Enemies \n"+
-			"Press R for New Game \n"+
-			"Press Q for Quit",
-		g.KilledEnemies)
+		`GAME OVER 
+%s has won
+Press R for New Game
+Press Q for Quit`,
+		livingSpaceship.PilotName)
+
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 

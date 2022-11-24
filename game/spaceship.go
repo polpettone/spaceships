@@ -18,6 +18,7 @@ const (
 )
 
 type Spaceship struct {
+	PilotName    string
 	CurrentImage *GameObjectImage
 	Image        *GameObjectImage
 	DamageImage  *GameObjectImage
@@ -66,7 +67,9 @@ type SpaceshipGamepadControlMap struct {
 	Shoot ebiten.GamepadButton
 }
 
-func NewSpaceship(initialPos Pos,
+func NewSpaceship(
+	pilotName string,
+	initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
 	gamepadControlMap *SpaceshipGamepadControlMap,
 	img *GameObjectImage,
@@ -101,6 +104,7 @@ func NewSpaceship(initialPos Pos,
 	}
 
 	return &Spaceship{
+		PilotName:          pilotName,
 		CurrentImage:       img,
 		Image:              img,
 		DamageImage:        damageImg,
@@ -111,7 +115,7 @@ func NewSpaceship(initialPos Pos,
 		ShootSound:         shootSound,
 		ImpulseSound:       impulseSound,
 		ImpactSound:        impactSound,
-		Health:             20,
+		Health:             5,
 		BulletCount:        30,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
@@ -148,6 +152,10 @@ func (s *Spaceship) GetCentrePos() Pos {
 
 func (s *Spaceship) GetType() string {
 	return "spaceship"
+}
+
+func (s *Spaceship) Alive() bool {
+	return s.Health > 0
 }
 
 //TODO: err handling
