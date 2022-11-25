@@ -68,6 +68,8 @@ type SpaceshipGamepadControlMap struct {
 }
 
 func NewSpaceship(
+	health int,
+	bulletCount int,
 	pilotName string,
 	initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
@@ -115,8 +117,8 @@ func NewSpaceship(
 		ShootSound:         shootSound,
 		ImpulseSound:       impulseSound,
 		ImpactSound:        impactSound,
-		Health:             5,
-		BulletCount:        30,
+		Health:             health,
+		BulletCount:        bulletCount,
 		KeyboardControlMap: keyboardControlMap,
 		GamepadControlMap:  gamepadControlMap,
 		MoveDirection:      1,

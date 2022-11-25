@@ -94,6 +94,7 @@ func (g *SpaceshipGame) GetSpaceship2() *Spaceship {
 }
 
 type SpaceshipGame struct {
+	GameConfig      GameConfig
 	BackgroundImage *ebiten.Image
 	Spaceship1      *Spaceship
 	Spaceship2      *Spaceship
@@ -118,7 +119,7 @@ type SpaceshipGame struct {
 	GamepadIDs map[int]struct{}
 }
 
-func createSpaceships() (*Spaceship, *Spaceship, error) {
+func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 
 	img1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
 	if err != nil {
@@ -131,6 +132,8 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 	}
 
 	spaceship1, err := NewSpaceship(
+		g.HealthSpaceship1,
+		g.BulletCountSpaceship1,
 		"Player 1",
 		NewPos(100, 300),
 		nil,
@@ -154,6 +157,8 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 	}
 
 	spaceship2, err := NewSpaceship(
+		g.HealthSpaceship2,
+		g.BulletCountSpaceship2,
 		"Player 2",
 		NewPos(1900, 300),
 		keyboardControlMap,
@@ -172,12 +177,14 @@ func createSpaceships() (*Spaceship, *Spaceship, error) {
 
 func NewGame() (Game, error) {
 
+	gameConfig := gameConfig1()
+
 	debugScreen, err := NewDebugScreen(500, screenHeight)
 	if err != nil {
 		return nil, err
 	}
 
-	spaceship1, spaceship2, err := createSpaceships()
+	spaceship1, spaceship2, err := createSpaceships(gameConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -185,6 +192,7 @@ func NewGame() (Game, error) {
 	gameObjects := map[string]GameObject{}
 
 	g := &SpaceshipGame{
+		GameConfig:    gameConfig,
 		GameObjects:   gameObjects,
 		DebugScreen:   debugScreen,
 		Spaceship1:    spaceship1,
@@ -205,7 +213,7 @@ func NewGame() (Game, error) {
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
-	spaceship1, spaceship2, _ := createSpaceships()
+	spaceship1, spaceship2, _ := createSpaceships(g.GameConfig)
 
 	g.Spaceship1 = spaceship1
 	g.Spaceship2 = spaceship2
