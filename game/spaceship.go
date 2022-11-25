@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
+	"github.com/polpettone/gaming/natalito/game/models"
 )
 
 const (
@@ -19,10 +20,10 @@ const (
 
 type Spaceship struct {
 	PilotName    string
-	CurrentImage *GameObjectImage
-	Image        *GameObjectImage
-	DamageImage  *GameObjectImage
-	Pos          Pos
+	CurrentImage *models.GameObjectImage
+	Image        *models.GameObjectImage
+	DamageImage  *models.GameObjectImage
+	Pos          models.Pos
 	ID           string
 	DamageCount  int
 	Size         int
@@ -71,11 +72,11 @@ func NewSpaceship(
 	health int,
 	bulletCount int,
 	pilotName string,
-	initialPos Pos,
+	initialPos models.Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
 	gamepadControlMap *SpaceshipGamepadControlMap,
-	img *GameObjectImage,
-	damageImg *GameObjectImage,
+	img *models.GameObjectImage,
+	damageImg *models.GameObjectImage,
 	signature string) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
@@ -131,7 +132,7 @@ func (s *Spaceship) GetSignature() string {
 	return s.Signature
 }
 
-func (s *Spaceship) GetPos() Pos {
+func (s *Spaceship) GetPos() models.Pos {
 	return s.Pos
 }
 
@@ -145,11 +146,11 @@ func (s *Spaceship) GetSize() (width, height int) {
 
 }
 
-func (s *Spaceship) GetCentrePos() Pos {
+func (s *Spaceship) GetCentrePos() models.Pos {
 	w, h := s.GetSize()
 	x := (w / 2) + s.Pos.X
 	y := (h / 2) + s.Pos.Y
-	return NewPos(x, y)
+	return models.NewPos(x, y)
 }
 
 func (s *Spaceship) GetType() string {
@@ -229,8 +230,8 @@ Bullets %d`,
 //TODO: err handling
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
-		pos := NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature)
+		pos := models.NewPos(s.Pos.X, s.Pos.Y+20)
+		bullet, _ := models.NewBullet(pos, s.MoveDirection, s.Signature)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
 

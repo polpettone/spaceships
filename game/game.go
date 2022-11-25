@@ -1,12 +1,15 @@
 package game
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/hajimehoshi/ebiten"
+	"github.com/polpettone/gaming/natalito/game/models"
+)
 
 type Game interface {
 	GetMaxX() int
 	GetMaxY() int
-	AddGameObject(o GameObject)
-	GetGameObjects() map[string]GameObject
+	AddGameObject(o models.GameObject)
+	GetGameObjects() map[string]models.GameObject
 	GetSpaceship1() *Spaceship
 	GetSpaceship2() *Spaceship
 	GetUpdateCounter() int

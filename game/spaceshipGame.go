@@ -10,6 +10,7 @@ import (
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/natalito/engine"
+	"github.com/polpettone/gaming/natalito/game/models"
 )
 
 const (
@@ -77,11 +78,11 @@ func (g *SpaceshipGame) GetUpdateCounter() int {
 	return g.UpdateCounter
 }
 
-func (g *SpaceshipGame) AddGameObject(o GameObject) {
+func (g *SpaceshipGame) AddGameObject(o models.GameObject) {
 	g.GameObjects[o.GetID()] = o
 }
 
-func (g *SpaceshipGame) GetGameObjects() map[string]GameObject {
+func (g *SpaceshipGame) GetGameObjects() map[string]models.GameObject {
 	return g.GameObjects
 }
 
@@ -98,7 +99,7 @@ type SpaceshipGame struct {
 	BackgroundImage *ebiten.Image
 	Spaceship1      *Spaceship
 	Spaceship2      *Spaceship
-	GameObjects     map[string]GameObject
+	GameObjects     map[string]models.GameObject
 	DebugScreen     *DebugScreen
 	MaxX            int
 	MaxY            int
@@ -135,7 +136,7 @@ func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 		g.HealthSpaceship1,
 		g.BulletCountSpaceship1,
 		"Player 1",
-		NewPos(100, 300),
+		models.NewPos(100, 300),
 		nil,
 		gamepadControlMap,
 		img1,
@@ -160,7 +161,7 @@ func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 		g.HealthSpaceship2,
 		g.BulletCountSpaceship2,
 		"Player 2",
-		NewPos(1900, 300),
+		models.NewPos(1900, 300),
 		keyboardControlMap,
 		nil,
 		img2,
@@ -189,7 +190,7 @@ func NewGame() (Game, error) {
 		return nil, err
 	}
 
-	gameObjects := map[string]GameObject{}
+	gameObjects := map[string]models.GameObject{}
 
 	g := &SpaceshipGame{
 		GameConfig:    gameConfig,
@@ -211,7 +212,7 @@ func NewGame() (Game, error) {
 }
 
 func (g *SpaceshipGame) Reset() {
-	g.GameObjects = map[string]GameObject{}
+	g.GameObjects = map[string]models.GameObject{}
 
 	spaceship1, spaceship2, _ := createSpaceships(g.GameConfig)
 
@@ -344,9 +345,9 @@ func checkGameOverCriteria(g *SpaceshipGame) {
 func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 
 	for k, o := range g.GameObjects {
-		if o.GetType() == Weapon {
+		if o.GetType() == models.Weapon {
 			for _, x := range g.GameObjects {
-				if x.GetType() == Enemy && x.IsAlive() {
+				if x.GetType() == models.Enemy && x.IsAlive() {
 					oW, _ := o.GetSize()
 					xW, _ := x.GetSize()
 					if engine.CollisionDetection(
@@ -367,11 +368,11 @@ func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 	}
 }
 
-func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
+func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]models.GameObject) {
 
 	for k, o := range gameObjects {
 
-		if o.GetType() == Enemy && o.IsAlive() {
+		if o.GetType() == models.Enemy && o.IsAlive() {
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
 			if engine.CollisionDetection(
@@ -387,7 +388,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 			}
 		}
 
-		if o.GetType() == Item {
+		if o.GetType() == models.Item {
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
 			if engine.CollisionDetection(
@@ -403,7 +404,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject
 			}
 		}
 
-		if o.GetType() == Weapon && o.GetSignature() != s.GetSignature() {
+		if o.GetType() == models.Weapon && o.GetSignature() != s.GetSignature() {
 			sW, _ := s.GetSize()
 			oW, _ := o.GetSize()
 			if engine.CollisionDetection(
@@ -442,7 +443,7 @@ Press Q for Quit`,
 }
 
 func putStars(g *SpaceshipGame, count int) {
-	newSkyObjects := CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count)
+	newSkyObjects := models.CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO
@@ -450,7 +451,7 @@ func putStars(g *SpaceshipGame, count int) {
 }
 
 func putNewEnemies(g *SpaceshipGame, count int) {
-	newSkyObjects := CreateSkyObjectAtRandomPosition(
+	newSkyObjects := models.CreateSkyObjectAtRandomPosition(
 		(screenWidth/3)*2, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
@@ -459,7 +460,7 @@ func putNewEnemies(g *SpaceshipGame, count int) {
 }
 
 func putNewAmmos(g *SpaceshipGame, count int) {
-	newAmmos := CreateAmmoAtRandomPosition(
+	newAmmos := models.CreateAmmoAtRandomPosition(
 		0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newAmmos {
@@ -481,7 +482,7 @@ func deleteObjectsOutOfView(g *SpaceshipGame) {
 	}
 }
 
-func createSpaceshipImageFromAsset(filePath string) (*GameObjectImage, error) {
+func createSpaceshipImageFromAsset(filePath string) (*models.GameObjectImage, error) {
 	img, _, err := ebitenutil.NewImageFromFile(
 		filePath,
 		ebiten.FilterDefault)
@@ -490,7 +491,7 @@ func createSpaceshipImageFromAsset(filePath string) (*GameObjectImage, error) {
 		return nil, err
 	}
 
-	gameObjectImage := &GameObjectImage{
+	gameObjectImage := &models.GameObjectImage{
 		Image:     img,
 		Scale:     0.2,
 		Direction: -1,
