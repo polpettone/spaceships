@@ -17,7 +17,7 @@ func main() {
 	}
 
 	ebiten.SetWindowSize(g.GetMaxX(), g.GetMaxY())
-	ebiten.SetWindowTitle("Natalito")
+	ebiten.SetWindowTitle("Spaceships")
 	ebiten.SetWindowResizable(true)
 
 	if err != nil {
