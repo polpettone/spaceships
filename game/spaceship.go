@@ -259,6 +259,14 @@ func updatePosition(s *Spaceship, g Game) {
 		s.Pos.Y += s.YAxisForce
 	}
 
+	if s.Pos.X-spaceshipWallTolerance < 0 || s.Pos.X+spaceshipWallTolerance > g.GetMaxX() {
+		s.XAxisForce = 0
+	}
+
+	if s.Pos.Y-spaceshipWallTolerance < 0 || s.Pos.Y+spaceshipWallTolerance > g.GetMaxY() {
+		s.YAxisForce = 0
+	}
+
 	if s.XAxisForce != 0 {
 		if s.SoundOn {
 			if !s.ImpulseSound.IsPlaying() {
