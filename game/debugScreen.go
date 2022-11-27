@@ -71,9 +71,8 @@ func (d *DebugScreen) Update(g Game) {
 
 	 UpdateCounter: %d 
 
-	 Spaceship Pos: %s
-
-	 Spaceship Damage Count: %d
+	 Spaceship 1 Pos: %s
+	 Spaceship 2 Pos: %s
 
 	 Game Object Count: %d
 
@@ -103,18 +102,6 @@ func (d *DebugScreen) Update(g Game) {
 		)
 	}
 
-	spaceshipPos := "n/a"
-	centrePos := "n/a"
-	if g.GetSpaceship1() != nil {
-		spaceshipPos = g.GetSpaceship1().Pos.Print()
-		centrePos = g.GetSpaceship1().GetCentrePos().Print()
-	}
-	sW, sH := g.GetSpaceship1().GetSize()
-
-	spaceshipText := fmt.Sprintf(
-		"%s - %d,%d - %s", spaceshipPos, sW, sH, centrePos,
-	)
-
 	d.Text = fmt.Sprintf(
 		t,
 		ebiten.CurrentTPS(),
@@ -122,9 +109,23 @@ func (d *DebugScreen) Update(g Game) {
 		g.GetMaxX(),
 		g.GetMaxY(),
 		g.GetUpdateCounter(),
-		spaceshipText,
-		g.GetSpaceship1().DamageCount,
+		spaceshipDebugInfos(g.GetSpaceship1()),
+		spaceshipDebugInfos(g.GetSpaceship2()),
 		len(g.GetGameObjects()),
 		gameObjectsText,
 	)
+}
+
+func spaceshipDebugInfos(s *Spaceship) string {
+	spaceshipPos := "n/a"
+	centrePos := "n/a"
+	if s != nil {
+		spaceshipPos = s.Pos.Print()
+		centrePos = s.GetCentrePos().Print()
+	}
+	sW, sH := s.GetSize()
+	spaceshipText := fmt.Sprintf(
+		"%s - %d,%d - %s : %d - %d ", spaceshipPos, sW, sH, centrePos, s.XAxisForce, s.YAxisForce,
+	)
+	return spaceshipText
 }
