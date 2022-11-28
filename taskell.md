@@ -2,8 +2,8 @@
 
 - 2 controller
 - asset for ammo
-- different control mode: hold button to accelerate
 - menu to select ship
+- different control mode: hold button to accelerate
 - ai player
 - Lego Piloten fallen aus Raumschiffen, wenn diese zerstört werden
 - more weapons
