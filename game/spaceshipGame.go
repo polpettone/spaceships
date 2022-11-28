@@ -14,23 +14,22 @@ import (
 )
 
 const (
-	screenWidth            = 2000
-	screenHeight           = 1000
-	spaceshipWallTolerance = 10
+	screenWidth  = 2000
+	screenHeight = 1000
 )
 
 var (
 	audioContext *audio.Context
 
-	keyboardControlMap   *SpaceshipKeyboardControlMap
-	gamepadControlMap    *SpaceshipGamepadControlMap
-	ps3GamepadControlMap *SpaceshipGamepadControlMap
+	keyboardControlMap   *models.SpaceshipKeyboardControlMap
+	gamepadControlMap    *models.SpaceshipGamepadControlMap
+	ps3GamepadControlMap *models.SpaceshipGamepadControlMap
 )
 
 func init() {
 	audioContext = audio.NewContext(44100)
 
-	keyboardControlMap = &SpaceshipKeyboardControlMap{
+	keyboardControlMap = &models.SpaceshipKeyboardControlMap{
 		Up:    ebiten.KeyK,
 		Down:  ebiten.KeyJ,
 		Left:  ebiten.KeyH,
@@ -39,7 +38,7 @@ func init() {
 		Shoot: ebiten.KeyN,
 	}
 
-	gamepadControlMap = &SpaceshipGamepadControlMap{
+	gamepadControlMap = &models.SpaceshipGamepadControlMap{
 		Up:    ebiten.GamepadButton11,
 		Down:  ebiten.GamepadButton13,
 		Left:  ebiten.GamepadButton14,
@@ -48,7 +47,7 @@ func init() {
 		Shoot: ebiten.GamepadButton0,
 	}
 
-	ps3GamepadControlMap = &SpaceshipGamepadControlMap{
+	ps3GamepadControlMap = &models.SpaceshipGamepadControlMap{
 		Up:    ebiten.GamepadButton13,
 		Down:  ebiten.GamepadButton14,
 		Left:  ebiten.GamepadButton15,
@@ -86,19 +85,19 @@ func (g *SpaceshipGame) GetGameObjects() map[string]models.GameObject {
 	return g.GameObjects
 }
 
-func (g *SpaceshipGame) GetSpaceship1() *Spaceship {
+func (g *SpaceshipGame) GetSpaceship1() *models.Spaceship {
 	return g.Spaceship1
 }
 
-func (g *SpaceshipGame) GetSpaceship2() *Spaceship {
+func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 	return g.Spaceship2
 }
 
 type SpaceshipGame struct {
 	GameConfig      GameConfig
 	BackgroundImage *ebiten.Image
-	Spaceship1      *Spaceship
-	Spaceship2      *Spaceship
+	Spaceship1      *models.Spaceship
+	Spaceship2      *models.Spaceship
 	GameObjects     map[string]models.GameObject
 	DebugScreen     *DebugScreen
 	MaxX            int
@@ -120,7 +119,7 @@ type SpaceshipGame struct {
 	GamepadIDs map[int]struct{}
 }
 
-func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
+func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error) {
 
 	img1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
 	if err != nil {
@@ -132,7 +131,8 @@ func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 		return nil, nil, err
 	}
 
-	spaceship1, err := NewSpaceship(
+	spaceship1, err := models.NewSpaceship(
+		audioContext,
 		g.HealthSpaceship1,
 		g.BulletCountSpaceship1,
 		"Player 1",
@@ -157,7 +157,8 @@ func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 		return nil, nil, err
 	}
 
-	spaceship2, err := NewSpaceship(
+	spaceship2, err := models.NewSpaceship(
+		audioContext,
 		g.HealthSpaceship2,
 		g.BulletCountSpaceship2,
 		"Player 2",
@@ -176,7 +177,7 @@ func createSpaceships(g GameConfig) (*Spaceship, *Spaceship, error) {
 	return spaceship1, spaceship2, nil
 }
 
-func NewGame() (Game, error) {
+func NewGame() (models.Game, error) {
 
 	gameConfig := gameConfig1()
 
@@ -368,7 +369,7 @@ func bulletSkyObjectCollisionDetection(g *SpaceshipGame) {
 	}
 }
 
-func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]models.GameObject) {
+func spaceshipCollisionDetection(s *models.Spaceship, gameObjects map[string]models.GameObject) {
 
 	for k, o := range gameObjects {
 
@@ -425,7 +426,7 @@ func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]models.Gam
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 
-	var livingSpaceship *Spaceship
+	var livingSpaceship *models.Spaceship
 	if g.Spaceship1.Alive() {
 		livingSpaceship = g.Spaceship1
 	} else {

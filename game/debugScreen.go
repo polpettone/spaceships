@@ -6,6 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 type DebugScreen struct {
@@ -18,14 +19,14 @@ func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
 	}, nil
 }
 
-func (d *DebugScreen) Draw(screen *ebiten.Image, g Game) {
+func (d *DebugScreen) Draw(screen *ebiten.Image, g models.Game) {
 	ebitenutil.DebugPrintAt(
 		screen,
 		d.Text, 10, 10)
 	drawDebugCoordinate(screen, g)
 }
 
-func drawDebugCoordinate(screen *ebiten.Image, g Game) {
+func drawDebugCoordinate(screen *ebiten.Image, g models.Game) {
 	marginX := 55
 	marginY := 20
 
@@ -60,7 +61,7 @@ func drawDebugCoordinate(screen *ebiten.Image, g Game) {
 	)
 }
 
-func (d *DebugScreen) Update(g Game) {
+func (d *DebugScreen) Update(g models.Game) {
 
 	t :=
 		`
@@ -116,7 +117,7 @@ func (d *DebugScreen) Update(g Game) {
 	)
 }
 
-func spaceshipDebugInfos(s *Spaceship) string {
+func spaceshipDebugInfos(s *models.Spaceship) string {
 	spaceshipPos := "n/a"
 	centrePos := "n/a"
 	if s != nil {

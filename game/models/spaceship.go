@@ -1,4 +1,4 @@
-package game
+package models
 
 import (
 	"fmt"
@@ -10,19 +10,19 @@ import (
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/spaceships/engine"
-	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 const (
-	spaceshipSize = 10
+	spaceshipSize          = 10
+	spaceshipWallTolerance = 10
 )
 
 type Spaceship struct {
 	PilotName    string
-	CurrentImage *models.GameObjectImage
-	Image        *models.GameObjectImage
-	DamageImage  *models.GameObjectImage
-	Pos          models.Pos
+	CurrentImage *GameObjectImage
+	Image        *GameObjectImage
+	DamageImage  *GameObjectImage
+	Pos          Pos
 	ID           string
 	DamageCount  int
 	Size         int
@@ -68,14 +68,15 @@ type SpaceshipGamepadControlMap struct {
 }
 
 func NewSpaceship(
+	audioContext *audio.Context,
 	health int,
 	bulletCount int,
 	pilotName string,
-	initialPos models.Pos,
+	initialPos Pos,
 	keyboardControlMap *SpaceshipKeyboardControlMap,
 	gamepadControlMap *SpaceshipGamepadControlMap,
-	img *models.GameObjectImage,
-	damageImg *models.GameObjectImage,
+	img *GameObjectImage,
+	damageImg *GameObjectImage,
 	signature string) (*Spaceship, error) {
 
 	shootSound, err := engine.InitSoundPlayer(
@@ -131,7 +132,7 @@ func (s *Spaceship) GetSignature() string {
 	return s.Signature
 }
 
-func (s *Spaceship) GetPos() models.Pos {
+func (s *Spaceship) GetPos() Pos {
 	return s.Pos
 }
 
@@ -145,11 +146,11 @@ func (s *Spaceship) GetSize() (width, height int) {
 
 }
 
-func (s *Spaceship) GetCentrePos() models.Pos {
+func (s *Spaceship) GetCentrePos() Pos {
 	w, h := s.GetSize()
 	x := (w / 2) + s.Pos.X
 	y := (h / 2) + s.Pos.Y
-	return models.NewPos(x, y)
+	return NewPos(x, y)
 }
 
 func (s *Spaceship) GetType() string {
@@ -229,8 +230,8 @@ Bullets %d`,
 //TODO: err handling
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
-		pos := models.NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := models.NewBullet(pos, s.MoveDirection, s.Signature)
+		pos := NewPos(s.Pos.X, s.Pos.Y+20)
+		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
 

@@ -1,15 +1,14 @@
-package game
+package models
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 type Game interface {
 	GetMaxX() int
 	GetMaxY() int
-	AddGameObject(o models.GameObject)
-	GetGameObjects() map[string]models.GameObject
+	AddGameObject(o GameObject)
+	GetGameObjects() map[string]GameObject
 	GetSpaceship1() *Spaceship
 	GetSpaceship2() *Spaceship
 	GetUpdateCounter() int
