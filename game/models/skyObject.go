@@ -1,12 +1,10 @@
 package models
 
 import (
-	"image/color"
 	"math/rand"
 
 	"github.com/google/uuid"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 type SkyObject struct {
@@ -22,7 +20,7 @@ type SkyObject struct {
 
 func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 
-	img, err := createSkyObjectImageFromAsset(
+	img, err := NewGameObjectImage(
 		"assets/images/spaceships/star-wars-1.png",
 		0.1,
 		-1)
@@ -31,7 +29,7 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 		return nil, err
 	}
 
-	destroyedImg, err := createSkyObjectImageFromAsset(
+	destroyedImg, err := NewGameObjectImage(
 		"assets/images/figures/pilot1.png",
 		0.03,
 		-1)
@@ -100,43 +98,6 @@ func (s *SkyObject) GetType() GameObjectType {
 	return Enemy
 }
 
-func createSkyObjectImageFromAsset(
-	filePath string,
-	scale float64,
-	direction int) (*GameObjectImage, error) {
-
-	img, _, err := ebitenutil.NewImageFromFile(
-		filePath,
-		ebiten.FilterDefault)
-
-	if err != nil {
-		return nil, err
-	}
-
-	gameObjectImage := &GameObjectImage{
-		Image:     img,
-		Scale:     scale,
-		Direction: direction,
-	}
-
-	return gameObjectImage, nil
-}
-
-func createDestroyedImage(size int) (*GameObjectImage, error) {
-	img, err := ebiten.NewImage(size, size, ebiten.FilterDefault)
-	if err != nil {
-		return nil, err
-	}
-	img.Fill(color.RGBA{47, 79, 79, 0xff})
-
-	gameObjectImage := &GameObjectImage{
-		Image:     img,
-		Scale:     1,
-		Direction: 1,
-	}
-
-	return gameObjectImage, nil
-}
 func (s *SkyObject) Update() {
 	s.Pos.X -= s.Velocity
 }
