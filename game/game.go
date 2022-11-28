@@ -2,7 +2,7 @@ package game
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/polpettone/gaming/natalito/game/models"
+	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 type Game interface {

@@ -9,8 +9,8 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
-	"github.com/polpettone/gaming/natalito/engine"
-	"github.com/polpettone/gaming/natalito/game/models"
+	"github.com/polpettone/gaming/spaceships/engine"
+	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 const (

@@ -1,4 +1,4 @@
-module github.com/polpettone/gaming/natalito
+module github.com/polpettone/gaming/spaceships
 
 go 1.19
 

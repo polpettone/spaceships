@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/polpettone/gaming/natalito/game"
+	"github.com/polpettone/gaming/spaceships/game"
 )
 
 func main() {
