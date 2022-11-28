@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/spaceships/engine"
@@ -121,12 +120,13 @@ type SpaceshipGame struct {
 
 func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error) {
 
-	img1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2.png")
+	img1, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-2.png", 0.2, -1)
+
 	if err != nil {
 		return nil, nil, err
 	}
 
-	damageImg1, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-2-red.png")
+	damageImg1, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-2-red.png", 0.2, -1)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -147,12 +147,12 @@ func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error
 		return nil, nil, err
 	}
 
-	img2, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3.png")
+	img2, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-3.png", 0.2, -1)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	damageImg2, err := createSpaceshipImageFromAsset("assets/images/spaceships/star-wars-3-red.png")
+	damageImg2, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-3-red.png", 0.2, -1)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -481,22 +481,4 @@ func deleteObjectsOutOfView(g *SpaceshipGame) {
 	for _, k := range ids {
 		delete(g.GameObjects, k)
 	}
-}
-
-func createSpaceshipImageFromAsset(filePath string) (*models.GameObjectImage, error) {
-	img, _, err := ebitenutil.NewImageFromFile(
-		filePath,
-		ebiten.FilterDefault)
-
-	if err != nil {
-		return nil, err
-	}
-
-	gameObjectImage := &models.GameObjectImage{
-		Image:     img,
-		Scale:     0.2,
-		Direction: -1,
-	}
-
-	return gameObjectImage, nil
 }
