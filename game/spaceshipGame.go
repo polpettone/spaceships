@@ -442,7 +442,7 @@ func (g *SpaceshipGame) PutStars(count int) {
 
 func (g *SpaceshipGame) PutNewEnemies(count int) {
 	newSkyObjects := models.CreateSkyObjectAtRandomPosition(
-		(screenWidth/3)*2, 0, screenWidth, screenHeight, count)
+		0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO

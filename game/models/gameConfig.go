@@ -32,8 +32,8 @@ func GameConfig1() GameConfig {
 		BulletVelocity: 7,
 		StarVelocity:   6,
 
-		StarsPerSecond:   5,
+		StarsPerSecond:   0,
 		AmmoPerSecond:    0.3,
-		EnemiesPerSecond: 0,
+		EnemiesPerSecond: 0.1,
 	}
 }

@@ -16,9 +16,10 @@ type SkyObject struct {
 	ID             string
 	Alive          bool
 	ImageScale     float64
+	MoveDirection  int
 }
 
-func NewSkyObject(initialPos Pos) (*SkyObject, error) {
+func NewSkyObject(initialPos Pos, moveDirection int) (*SkyObject, error) {
 
 	img, err := NewGameObjectImage(
 		"assets/images/spaceships/star-wars-1.png",
@@ -46,6 +47,7 @@ func NewSkyObject(initialPos Pos) (*SkyObject, error) {
 		ID:             uuid.New().String(),
 		Alive:          true,
 		ImageScale:     0.1,
+		MoveDirection:  moveDirection,
 	}, nil
 }
 
@@ -99,7 +101,7 @@ func (s *SkyObject) GetType() GameObjectType {
 }
 
 func (s *SkyObject) Update() {
-	s.Pos.X -= s.Velocity
+	s.Pos.X += s.MoveDirection * s.Velocity
 }
 
 func CreateSkyObjectAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {
@@ -109,7 +111,20 @@ func CreateSkyObjectAtRandomPosition(minX, minY, maxX, maxY, count int) []GameOb
 	for n := 0; n < count; n++ {
 		x := rand.Intn(maxX-minX) + minX
 		y := rand.Intn(maxY-minY) + minY
-		a, _ := NewSkyObject(NewPos(x, y))
+
+		random := rand.Intn(3)
+
+		var moveDirection int
+		switch random {
+		case 0:
+			moveDirection = 0
+		case 1:
+			moveDirection = 1
+		case 2:
+			moveDirection = -1
+		}
+
+		a, _ := NewSkyObject(NewPos(x, y), moveDirection)
 		skyObjects = append(skyObjects, a)
 	}
 
