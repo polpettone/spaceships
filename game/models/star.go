@@ -17,7 +17,7 @@ type Star struct {
 	MoveDirection int
 }
 
-func NewStar(initialPos Pos, moveDirection int) (*Star, error) {
+func NewStar(initialPos Pos, moveDirection int, velocity int) (*Star, error) {
 	img, err := createStarImage(2)
 
 	if err != nil {
@@ -27,7 +27,7 @@ func NewStar(initialPos Pos, moveDirection int) (*Star, error) {
 	return &Star{
 		Image:         img,
 		Pos:           initialPos,
-		Velocity:      10,
+		Velocity:      velocity,
 		ID:            uuid.New().String(),
 		Alive:         true,
 		MoveDirection: moveDirection,
@@ -92,14 +92,14 @@ func (s *Star) Update() {
 	s.Pos.X += s.MoveDirection * s.Velocity
 }
 
-func CreateStarAtRandomPosition(minX, minY, maxX, maxY, count int) []GameObject {
+func CreateStarAtRandomPosition(minX, minY, maxX, maxY, count, velocity int) []GameObject {
 
 	ammos := []GameObject{}
 
 	for n := 0; n < count; n++ {
 		x := rand.Intn(maxX-minX) + minX
 		y := rand.Intn(maxY-minY) + minY
-		a, _ := NewStar(NewPos(x, y), -1)
+		a, _ := NewStar(NewPos(x, y), -1, velocity)
 		ammos = append(ammos, a)
 	}
 

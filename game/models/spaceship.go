@@ -231,7 +231,7 @@ Bullets %d`,
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
-		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature)
+		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature, g.GetConfig().BulletVelocity)
 		s.ShootBullet = false
 		g.AddGameObject(bullet)
 

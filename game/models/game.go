@@ -14,4 +14,5 @@ type Game interface {
 	GetTickCounter() int
 	Layout(outsideWidth, outsideHeight int) (int, int)
 	Update(screen *ebiten.Image) error
+	GetConfig() GameConfig
 }

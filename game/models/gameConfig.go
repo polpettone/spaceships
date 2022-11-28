@@ -1,4 +1,4 @@
-package game
+package models
 
 type GameConfig struct {
 	TPS float64
@@ -9,12 +9,15 @@ type GameConfig struct {
 	HealthSpaceship1 int
 	HealthSpaceship2 int
 
+	BulletVelocity int
+	StarVelocity   int
+
 	StarsPerSecond   float64
 	EnemiesPerSecond float64
 	AmmoPerSecond    float64
 }
 
-func gameConfig1() GameConfig {
+func GameConfig1() GameConfig {
 
 	return GameConfig{
 
@@ -26,10 +29,11 @@ func gameConfig1() GameConfig {
 		HealthSpaceship1: 10,
 		HealthSpaceship2: 10,
 
-		StarsPerSecond: 5,
+		BulletVelocity: 7,
+		StarVelocity:   6,
 
-		AmmoPerSecond: 1,
-
+		StarsPerSecond:   5,
+		AmmoPerSecond:    0.3,
 		EnemiesPerSecond: 0,
 	}
 }

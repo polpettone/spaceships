@@ -65,7 +65,7 @@ const (
 )
 
 type SpaceshipGame struct {
-	GameConfig      GameConfig
+	GameConfig      models.GameConfig
 	BackgroundImage *ebiten.Image
 	Spaceship1      *models.Spaceship
 	Spaceship2      *models.Spaceship
@@ -88,6 +88,10 @@ type SpaceshipGame struct {
 	State GameState
 
 	GamepadIDs map[int]struct{}
+}
+
+func (g *SpaceshipGame) GetConfig() models.GameConfig {
+	return g.GameConfig
 }
 
 func (g *SpaceshipGame) GetMaxX() int {
@@ -118,7 +122,7 @@ func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 	return g.Spaceship2
 }
 
-func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error) {
+func createSpaceships(g models.GameConfig) (*models.Spaceship, *models.Spaceship, error) {
 
 	img1, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-2.png", 0.2, -1)
 
@@ -179,7 +183,7 @@ func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error
 
 func NewGame() (models.Game, error) {
 
-	gameConfig := gameConfig1()
+	gameConfig := models.GameConfig1()
 
 	debugScreen, err := NewDebugScreen(500, screenHeight)
 	if err != nil {
@@ -429,7 +433,7 @@ Press Q for Quit`,
 }
 
 func (g *SpaceshipGame) PutStars(count int) {
-	newSkyObjects := models.CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count)
+	newSkyObjects := models.CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count, g.GameConfig.StarVelocity)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO

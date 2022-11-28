@@ -25,7 +25,7 @@ func (s *Bullet) GetSignature() string {
 	return s.Signature
 }
 
-func NewBullet(initialPos Pos, moveDirection int, signature string) (*Bullet, error) {
+func NewBullet(initialPos Pos, moveDirection int, signature string, velocity int) (*Bullet, error) {
 	img, err := createBulletImage(bulletSize)
 
 	if err != nil {
@@ -35,7 +35,7 @@ func NewBullet(initialPos Pos, moveDirection int, signature string) (*Bullet, er
 	return &Bullet{
 		Image:         img,
 		Pos:           initialPos,
-		Velocity:      5,
+		Velocity:      velocity,
 		ID:            uuid.New().String(),
 		Alive:         true,
 		MoveDirection: moveDirection,
