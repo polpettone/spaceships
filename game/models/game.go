@@ -11,7 +11,7 @@ type Game interface {
 	GetGameObjects() map[string]GameObject
 	GetSpaceship1() *Spaceship
 	GetSpaceship2() *Spaceship
-	GetUpdateCounter() int
+	GetTickCounter() int
 	Layout(outsideWidth, outsideHeight int) (int, int)
 	Update(screen *ebiten.Image) error
 }

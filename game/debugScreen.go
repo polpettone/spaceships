@@ -70,7 +70,7 @@ func (d *DebugScreen) Update(g models.Game) {
 
 	 Screen Size:  %d, %d
 
-	 UpdateCounter: %d 
+	 TickCounter: %d 
 
 	 Spaceship 1 Pos: %s
 	 Spaceship 2 Pos: %s
@@ -109,7 +109,7 @@ func (d *DebugScreen) Update(g models.Game) {
 		ebiten.CurrentFPS(),
 		g.GetMaxX(),
 		g.GetMaxY(),
-		g.GetUpdateCounter(),
+		g.GetTickCounter(),
 		spaceshipDebugInfos(g.GetSpaceship1()),
 		spaceshipDebugInfos(g.GetSpaceship2()),
 		len(g.GetGameObjects()),

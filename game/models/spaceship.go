@@ -161,7 +161,7 @@ func (s *Spaceship) Alive() bool {
 	return s.Health > 0
 }
 
-//TODO: err handling
+// TODO: err handling
 func (s *Spaceship) Update(g Game) {
 
 	handleGamepadControls(s)
@@ -172,7 +172,7 @@ func (s *Spaceship) Update(g Game) {
 
 	updateWeapons(s, g)
 
-	if g.GetUpdateCounter()%100 == 0 {
+	if g.GetTickCounter()%100 == 0 {
 		s.CurrentImage = s.Image
 	}
 
@@ -227,7 +227,7 @@ Bullets %d`,
 	text.Draw(screen, t, engine.MplusNormalFont, x, y, color.White)
 }
 
-//TODO: err handling
+// TODO: err handling
 func updateWeapons(s *Spaceship, g Game) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)

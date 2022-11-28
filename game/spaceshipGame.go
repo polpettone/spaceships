@@ -77,7 +77,7 @@ type SpaceshipGame struct {
 
 	BackgroundSound *audio.Player
 
-	UpdateCounter int
+	TickCounter int
 
 	Pause bool
 
@@ -98,8 +98,8 @@ func (g *SpaceshipGame) GetMaxY() int {
 	return g.MaxY
 }
 
-func (g *SpaceshipGame) GetUpdateCounter() int {
-	return g.UpdateCounter
+func (g *SpaceshipGame) GetTickCounter() int {
+	return g.TickCounter
 }
 
 func (g *SpaceshipGame) AddGameObject(o models.GameObject) {
@@ -194,19 +194,19 @@ func NewGame() (models.Game, error) {
 	gameObjects := map[string]models.GameObject{}
 
 	g := &SpaceshipGame{
-		GameConfig:    gameConfig,
-		GameObjects:   gameObjects,
-		DebugScreen:   debugScreen,
-		Spaceship1:    spaceship1,
-		Spaceship2:    spaceship2,
-		UpdateCounter: 0,
-		MaxX:          screenWidth,
-		MaxY:          screenHeight,
-		DebugPrint:    false,
-		Pause:         false,
-		SoundOn:       false,
-		State:         Running,
-		GamepadIDs:    map[int]struct{}{},
+		GameConfig:  gameConfig,
+		GameObjects: gameObjects,
+		DebugScreen: debugScreen,
+		Spaceship1:  spaceship1,
+		Spaceship2:  spaceship2,
+		TickCounter: 0,
+		MaxX:        screenWidth,
+		MaxY:        screenHeight,
+		DebugPrint:  false,
+		Pause:       false,
+		SoundOn:     false,
+		State:       Running,
+		GamepadIDs:  map[int]struct{}{},
 	}
 
 	return g, nil
@@ -220,7 +220,7 @@ func (g *SpaceshipGame) Reset() {
 	g.Spaceship1 = spaceship1
 	g.Spaceship2 = spaceship2
 
-	g.UpdateCounter = 0
+	g.TickCounter = 0
 	g.Pause = false
 	g.State = Running
 	g.KilledEnemies = 0
