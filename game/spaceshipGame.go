@@ -64,6 +64,32 @@ const (
 	GameOver
 )
 
+type SpaceshipGame struct {
+	GameConfig      GameConfig
+	BackgroundImage *ebiten.Image
+	Spaceship1      *models.Spaceship
+	Spaceship2      *models.Spaceship
+	GameObjects     map[string]models.GameObject
+	DebugScreen     *DebugScreen
+	MaxX            int
+	MaxY            int
+	DebugPrint      bool
+
+	BackgroundSound *audio.Player
+
+	UpdateCounter int
+
+	Pause bool
+
+	SoundOn bool
+
+	KilledEnemies int
+
+	State GameState
+
+	GamepadIDs map[int]struct{}
+}
+
 func (g *SpaceshipGame) GetMaxX() int {
 	return g.MaxX
 }
@@ -90,32 +116,6 @@ func (g *SpaceshipGame) GetSpaceship1() *models.Spaceship {
 
 func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 	return g.Spaceship2
-}
-
-type SpaceshipGame struct {
-	GameConfig      GameConfig
-	BackgroundImage *ebiten.Image
-	Spaceship1      *models.Spaceship
-	Spaceship2      *models.Spaceship
-	GameObjects     map[string]models.GameObject
-	DebugScreen     *DebugScreen
-	MaxX            int
-	MaxY            int
-	DebugPrint      bool
-
-	BackgroundSound *audio.Player
-
-	UpdateCounter int
-
-	Pause bool
-
-	SoundOn bool
-
-	KilledEnemies int
-
-	State GameState
-
-	GamepadIDs map[int]struct{}
 }
 
 func createSpaceships(g GameConfig) (*models.Spaceship, *models.Spaceship, error) {
@@ -284,22 +284,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	g.DebugScreen.Update(g)
 
-	//TODO: refactoring!
-	g.UpdateCounter++
-
-	if g.UpdateCounter%100 == 0 {
-		putNewEnemies(g, 0)
-	}
-
-	if g.UpdateCounter%40 == 0 {
-		putStars(g, 0)
-	}
-	if g.UpdateCounter%100 == 0 {
-		putNewAmmos(g, 1)
-	}
-	if g.UpdateCounter%10000 == 0 {
-		g.UpdateCounter = 0
-	}
+	Scence1(g)
 
 	deleteObjectsOutOfView(g)
 
@@ -443,7 +428,7 @@ Press Q for Quit`,
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
-func putStars(g *SpaceshipGame, count int) {
+func (g *SpaceshipGame) PutStars(count int) {
 	newSkyObjects := models.CreateStarAtRandomPosition(0, 0, screenWidth, screenHeight, count)
 
 	for _, nO := range newSkyObjects {
@@ -451,7 +436,7 @@ func putStars(g *SpaceshipGame, count int) {
 	}
 }
 
-func putNewEnemies(g *SpaceshipGame, count int) {
+func (g *SpaceshipGame) PutNewEnemies(count int) {
 	newSkyObjects := models.CreateSkyObjectAtRandomPosition(
 		(screenWidth/3)*2, 0, screenWidth, screenHeight, count)
 
@@ -460,7 +445,7 @@ func putNewEnemies(g *SpaceshipGame, count int) {
 	}
 }
 
-func putNewAmmos(g *SpaceshipGame, count int) {
+func (g *SpaceshipGame) PutNewAmmos(count int) {
 	newAmmos := models.CreateAmmoAtRandomPosition(
 		0, 0, screenWidth, screenHeight, count)
 
