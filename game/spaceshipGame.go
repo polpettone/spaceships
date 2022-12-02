@@ -29,30 +29,33 @@ func init() {
 	audioContext = audio.NewContext(44100)
 
 	keyboardControlMap = &models.SpaceshipKeyboardControlMap{
-		Up:    ebiten.KeyK,
-		Down:  ebiten.KeyJ,
-		Left:  ebiten.KeyH,
-		Right: ebiten.KeyL,
-		Break: ebiten.KeySpace,
-		Shoot: ebiten.KeyN,
+		Up:           ebiten.KeyK,
+		Down:         ebiten.KeyJ,
+		Left:         ebiten.KeyH,
+		Right:        ebiten.KeyL,
+		Break:        ebiten.KeyB,
+		Shoot:        ebiten.KeyN,
+		Acceleration: ebiten.KeySpace,
 	}
 
 	gamepadControlMap = &models.SpaceshipGamepadControlMap{
-		Up:    ebiten.GamepadButton11,
-		Down:  ebiten.GamepadButton13,
-		Left:  ebiten.GamepadButton14,
-		Right: ebiten.GamepadButton12,
-		Break: ebiten.GamepadButton4,
-		Shoot: ebiten.GamepadButton0,
+		Up:           ebiten.GamepadButton11,
+		Down:         ebiten.GamepadButton13,
+		Left:         ebiten.GamepadButton14,
+		Right:        ebiten.GamepadButton12,
+		Break:        ebiten.GamepadButton4,
+		Shoot:        ebiten.GamepadButton0,
+		Acceleration: ebiten.GamepadButton5,
 	}
 
 	ps3GamepadControlMap = &models.SpaceshipGamepadControlMap{
-		Up:    ebiten.GamepadButton13,
-		Down:  ebiten.GamepadButton14,
-		Left:  ebiten.GamepadButton15,
-		Right: ebiten.GamepadButton16,
-		Break: ebiten.GamepadButton6,
-		Shoot: ebiten.GamepadButton0,
+		Up:           ebiten.GamepadButton13,
+		Down:         ebiten.GamepadButton14,
+		Left:         ebiten.GamepadButton15,
+		Right:        ebiten.GamepadButton16,
+		Break:        ebiten.GamepadButton6,
+		Shoot:        ebiten.GamepadButton0,
+		Acceleration: ebiten.GamepadButton5,
 	}
 
 }

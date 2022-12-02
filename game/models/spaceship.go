@@ -31,6 +31,8 @@ type Spaceship struct {
 	XAxisForce int
 	YAxisForce int
 
+	Acceleration bool
+
 	ShootSound   *audio.Player
 	ImpulseSound *audio.Player
 	ImpactSound  *audio.Player
@@ -50,21 +52,23 @@ type Spaceship struct {
 }
 
 type SpaceshipKeyboardControlMap struct {
-	Up    ebiten.Key
-	Down  ebiten.Key
-	Left  ebiten.Key
-	Right ebiten.Key
-	Break ebiten.Key
-	Shoot ebiten.Key
+	Up           ebiten.Key
+	Down         ebiten.Key
+	Left         ebiten.Key
+	Right        ebiten.Key
+	Break        ebiten.Key
+	Shoot        ebiten.Key
+	Acceleration ebiten.Key
 }
 
 type SpaceshipGamepadControlMap struct {
-	Up    ebiten.GamepadButton
-	Down  ebiten.GamepadButton
-	Left  ebiten.GamepadButton
-	Right ebiten.GamepadButton
-	Break ebiten.GamepadButton
-	Shoot ebiten.GamepadButton
+	Up           ebiten.GamepadButton
+	Down         ebiten.GamepadButton
+	Left         ebiten.GamepadButton
+	Right        ebiten.GamepadButton
+	Break        ebiten.GamepadButton
+	Shoot        ebiten.GamepadButton
+	Acceleration ebiten.GamepadButton
 }
 
 func NewSpaceship(
@@ -246,17 +250,19 @@ func updateWeapons(s *Spaceship, g Game) {
 
 func updatePosition(s *Spaceship, g Game) {
 
-	if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {
-		s.Pos.X += s.XAxisForce
-	}
-	if s.Pos.X > spaceshipWallTolerance && s.XAxisForce < 0 {
-		s.Pos.X += s.XAxisForce
-	}
-	if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance && s.YAxisForce > 0 {
-		s.Pos.Y += s.YAxisForce
-	}
-	if s.Pos.Y > spaceshipWallTolerance && s.YAxisForce < 0 {
-		s.Pos.Y += s.YAxisForce
+	if s.Acceleration {
+		if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {
+			s.Pos.X += s.XAxisForce
+		}
+		if s.Pos.X > spaceshipWallTolerance && s.XAxisForce < 0 {
+			s.Pos.X += s.XAxisForce
+		}
+		if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance && s.YAxisForce > 0 {
+			s.Pos.Y += s.YAxisForce
+		}
+		if s.Pos.Y > spaceshipWallTolerance && s.YAxisForce < 0 {
+			s.Pos.Y += s.YAxisForce
+		}
 	}
 
 	if s.Pos.X-spaceshipWallTolerance < 0 || s.Pos.X+spaceshipWallTolerance > g.GetMaxX() {

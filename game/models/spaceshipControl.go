@@ -8,6 +8,17 @@ func handleGamepadControls(s *Spaceship) {
 		return
 	}
 
+	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Acceleration) {
+		s.Acceleration = true
+		s.XAxisForce += 1 * s.MoveDirection
+	}
+
+	if inpututil.IsGamepadButtonJustReleased(0, s.GamepadControlMap.Acceleration) {
+		s.Acceleration = false
+		s.YAxisForce = 0
+		s.XAxisForce = 0
+	}
+
 	if inpututil.IsGamepadButtonJustPressed(0, s.GamepadControlMap.Up) {
 		s.YAxisForce -= 1
 	}
@@ -41,6 +52,17 @@ func handleKeyboardControls(s *Spaceship) {
 
 	if s.KeyboardControlMap == nil {
 		return
+	}
+
+	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Acceleration) {
+		s.Acceleration = true
+		s.XAxisForce += 1 * s.MoveDirection
+	}
+
+	if inpututil.IsKeyJustReleased(s.KeyboardControlMap.Acceleration) {
+		s.Acceleration = false
+		s.YAxisForce = 0
+		s.XAxisForce = 0
 	}
 
 	if inpututil.IsKeyJustPressed(s.KeyboardControlMap.Up) {
