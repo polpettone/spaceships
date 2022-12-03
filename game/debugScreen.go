@@ -13,13 +13,14 @@ type DebugScreen struct {
 	Text string
 }
 
-func NewDebugScreen(Width, Height int) (*DebugScreen, error) {
+func NewDebugScreen() (*DebugScreen, error) {
 	return &DebugScreen{
 		Text: "Debug Screen",
 	}, nil
 }
 
 func (d *DebugScreen) Draw(screen *ebiten.Image, g models.Game) {
+
 	ebitenutil.DebugPrintAt(
 		screen,
 		d.Text, 10, 10)

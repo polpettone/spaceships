@@ -188,7 +188,7 @@ func NewGame() (models.Game, error) {
 
 	gameConfig := models.GameConfig1()
 
-	debugScreen, err := NewDebugScreen(500, screenHeight)
+	debugScreen, err := NewDebugScreen()
 	if err != nil {
 		return nil, err
 	}
