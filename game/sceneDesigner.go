@@ -4,15 +4,15 @@ func Scence1(g *SpaceshipGame) {
 
 	g.TickCounter++
 
-	if shouldDo(g.GameConfig.TPS, g.TickCounter, g.GameConfig.EnemiesPerSecond) {
+	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.EnemiesPerSecond) {
 		g.PutNewEnemies(1)
 	}
 
-	if shouldDo(g.GameConfig.TPS, g.TickCounter, g.GameConfig.StarsPerSecond) {
+	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.StarsPerSecond) {
 		g.PutStars(1)
 	}
 
-	if shouldDo(g.GameConfig.TPS, g.TickCounter, g.GameConfig.AmmoPerSecond) {
+	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.AmmoPerSecond) {
 		g.PutNewAmmos(1)
 	}
 
@@ -21,7 +21,7 @@ func Scence1(g *SpaceshipGame) {
 	}
 }
 
-func shouldDo(TPS float64, currentTick int, actionPerSecond float64) bool {
+func checkCriteria(TPS float64, currentTick int, actionPerSecond float64) bool {
 
 	if actionPerSecond == 0 {
 		return false
