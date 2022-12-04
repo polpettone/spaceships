@@ -9,7 +9,7 @@ import (
 )
 
 type Ammo struct {
-	Image         *ebiten.Image
+	Image         *GameObjectImage
 	Pos           Pos
 	Velocity      int
 	ID            string
@@ -18,7 +18,7 @@ type Ammo struct {
 }
 
 func NewAmmo(initialPos Pos, moveDirection int) (*Ammo, error) {
-	img, err := createAmmoImage(10)
+	img, err := NewGameObjectImage("assets/images/golfball.png", 0.02, 1)
 
 	if err != nil {
 		return nil, err
@@ -40,8 +40,10 @@ func (s *Ammo) GetSignature() string {
 
 func (a *Ammo) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+
+	op.GeoM.Scale(float64(a.Image.Direction)*a.Image.Scale, a.Image.Scale)
 	op.GeoM.Translate(float64(a.Pos.X), float64(a.Pos.Y))
-	screen.DrawImage(a.Image, op)
+	screen.DrawImage(a.Image.Image, op)
 }
 
 func (a *Ammo) GetID() string {
@@ -53,11 +55,13 @@ func (a *Ammo) GetPos() Pos {
 }
 
 func (a *Ammo) GetImage() *ebiten.Image {
-	return a.Image
+	return a.Image.Image
 }
 
 func (a *Ammo) GetSize() (width, height int) {
-	return a.Image.Size()
+	w, h := a.Image.Image.Size()
+	return int(a.Image.Scale * float64(w)), int(a.Image.Scale * float64(h))
+	return a.Image.Image.Size()
 }
 
 func (a *Ammo) GetType() GameObjectType {
