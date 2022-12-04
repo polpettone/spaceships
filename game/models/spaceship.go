@@ -18,37 +18,36 @@ const (
 )
 
 type Spaceship struct {
-	PilotName    string
+	PilotName string
+
 	CurrentImage *GameObjectImage
 	Image        *GameObjectImage
 	DamageImage  *GameObjectImage
-	Pos          Pos
-	ID           string
-	DamageCount  int
-	Size         int
-	ShootBullet  bool
-
-	XAxisForce int
-	YAxisForce int
-
-	Acceleration bool
 
 	ShootSound   *audio.Player
 	ImpulseSound *audio.Player
 	ImpactSound  *audio.Player
 
+	ID        string
+	Signature string
+
+	Pos           Pos
+	MoveDirection int
+	XAxisForce    int
+	YAxisForce    int
+	Acceleration  bool
+	ShootBullet   bool
+
 	BulletCount   int
 	Health        int
 	KilledEnemies int
 
+	Size int
+
 	KeyboardControlMap *SpaceshipKeyboardControlMap
 	GamepadControlMap  *SpaceshipGamepadControlMap
 
-	MoveDirection int
-
 	SoundOn bool
-
-	Signature string
 }
 
 type SpaceshipKeyboardControlMap struct {
@@ -117,7 +116,6 @@ func NewSpaceship(
 		DamageImage:        damageImg,
 		Pos:                initialPos,
 		ID:                 uuid.New().String(),
-		DamageCount:        0,
 		Size:               spaceshipSize,
 		ShootSound:         shootSound,
 		ImpulseSound:       impulseSound,
@@ -183,7 +181,6 @@ func (s *Spaceship) Update(g Game) {
 }
 
 func (s *Spaceship) Damage() {
-	s.DamageCount += 1
 	s.Health -= 1
 
 	s.CurrentImage = s.DamageImage
