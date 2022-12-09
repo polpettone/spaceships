@@ -104,7 +104,7 @@ func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 		return nil, err
 	}
 
-	spaceship1, spaceship2, err := createSpaceships(config)
+	spaceship1, spaceship2, err := models.CreateHumanControledSpaceships(config, audioContext, gamepadControlMap, keyboardControlMap)
 	if err != nil {
 		return nil, err
 	}
@@ -163,68 +163,14 @@ func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 	return g.Spaceship2
 }
 
-func createSpaceships(g models.GameConfig) (*models.Spaceship, *models.Spaceship, error) {
-
-	img1, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-2.png", 0.2, -1)
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	damageImg1, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-2-red.png", 0.2, -1)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	spaceship1, err := models.NewSpaceship(
-		audioContext,
-		g.HealthSpaceship1,
-		g.BulletCountSpaceship1,
-		"Player 1",
-		models.NewPos(100, 300),
-		nil,
-		gamepadControlMap,
-		img1,
-		damageImg1,
-		"s1")
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	img2, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-3.png", 0.2, -1)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	damageImg2, err := models.NewGameObjectImage("assets/images/spaceships/star-wars-3-red.png", 0.2, -1)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	spaceship2, err := models.NewSpaceship(
-		audioContext,
-		g.HealthSpaceship2,
-		g.BulletCountSpaceship2,
-		"Player 2",
-		models.NewPos(1900, 300),
-		keyboardControlMap,
-		nil,
-		img2,
-		damageImg2,
-		"s2")
-	spaceship2.MoveDirection *= -1
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return spaceship1, spaceship2, nil
-}
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]models.GameObject{}
 
-	spaceship1, spaceship2, _ := createSpaceships(g.GameConfig)
+	spaceship1, spaceship2, _ := models.CreateHumanControledSpaceships(
+		g.GameConfig,
+		audioContext,
+		gamepadControlMap,
+		keyboardControlMap)
 
 	g.Spaceship1 = spaceship1
 	g.Spaceship2 = spaceship2
