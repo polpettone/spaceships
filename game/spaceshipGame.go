@@ -67,6 +67,8 @@ const (
 	GameOver
 )
 
+type RunningScene func(g *SpaceshipGame)
+
 type SpaceshipGame struct {
 	GameConfig      models.GameConfig
 	BackgroundImage *ebiten.Image
@@ -91,6 +93,8 @@ type SpaceshipGame struct {
 	State GameState
 
 	GamepadIDs map[int]struct{}
+
+	RunningScene RunningScene
 }
 
 func NewGame() (models.Game, error) {
@@ -110,19 +114,20 @@ func NewGame() (models.Game, error) {
 	gameObjects := map[string]models.GameObject{}
 
 	g := &SpaceshipGame{
-		GameConfig:  gameConfig,
-		GameObjects: gameObjects,
-		DebugScreen: debugScreen,
-		Spaceship1:  spaceship1,
-		Spaceship2:  spaceship2,
-		TickCounter: 0,
-		MaxX:        screenWidth,
-		MaxY:        screenHeight,
-		DebugPrint:  false,
-		Pause:       false,
-		SoundOn:     false,
-		State:       Running,
-		GamepadIDs:  map[int]struct{}{},
+		GameConfig:   gameConfig,
+		GameObjects:  gameObjects,
+		DebugScreen:  debugScreen,
+		Spaceship1:   spaceship1,
+		Spaceship2:   spaceship2,
+		TickCounter:  0,
+		MaxX:         screenWidth,
+		MaxY:         screenHeight,
+		DebugPrint:   false,
+		Pause:        false,
+		SoundOn:      false,
+		State:        Running,
+		GamepadIDs:   map[int]struct{}{},
+		RunningScene: Scene1,
 	}
 
 	return g, nil
@@ -250,7 +255,7 @@ func handleBackgroundSound(g *SpaceshipGame) {
 
 func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
-	Scene1(g)
+	g.RunningScene(g)
 
 	updateGamepads(g)
 
