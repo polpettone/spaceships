@@ -97,16 +97,14 @@ type SpaceshipGame struct {
 	RunningScene RunningScene
 }
 
-func NewGame() (models.Game, error) {
-
-	gameConfig := models.GameConfig1()
+func NewGame(config models.GameConfig) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
 	if err != nil {
 		return nil, err
 	}
 
-	spaceship1, spaceship2, err := createSpaceships(gameConfig)
+	spaceship1, spaceship2, err := createSpaceships(config)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +112,7 @@ func NewGame() (models.Game, error) {
 	gameObjects := map[string]models.GameObject{}
 
 	g := &SpaceshipGame{
-		GameConfig:   gameConfig,
+		GameConfig:   config,
 		GameObjects:  gameObjects,
 		DebugScreen:  debugScreen,
 		Spaceship1:   spaceship1,
