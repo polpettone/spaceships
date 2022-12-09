@@ -1,6 +1,6 @@
 package game
 
-func Scence1(g *SpaceshipGame) {
+func Scene1(g *SpaceshipGame) {
 
 	g.TickCounter++
 

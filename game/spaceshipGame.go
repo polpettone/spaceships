@@ -93,6 +93,41 @@ type SpaceshipGame struct {
 	GamepadIDs map[int]struct{}
 }
 
+func NewGame() (models.Game, error) {
+
+	gameConfig := models.GameConfig1()
+
+	debugScreen, err := NewDebugScreen()
+	if err != nil {
+		return nil, err
+	}
+
+	spaceship1, spaceship2, err := createSpaceships(gameConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	gameObjects := map[string]models.GameObject{}
+
+	g := &SpaceshipGame{
+		GameConfig:  gameConfig,
+		GameObjects: gameObjects,
+		DebugScreen: debugScreen,
+		Spaceship1:  spaceship1,
+		Spaceship2:  spaceship2,
+		TickCounter: 0,
+		MaxX:        screenWidth,
+		MaxY:        screenHeight,
+		DebugPrint:  false,
+		Pause:       false,
+		SoundOn:     false,
+		State:       Running,
+		GamepadIDs:  map[int]struct{}{},
+	}
+
+	return g, nil
+}
+
 func (g *SpaceshipGame) GetConfig() models.GameConfig {
 	return g.GameConfig
 }
@@ -183,42 +218,6 @@ func createSpaceships(g models.GameConfig) (*models.Spaceship, *models.Spaceship
 
 	return spaceship1, spaceship2, nil
 }
-
-func NewGame() (models.Game, error) {
-
-	gameConfig := models.GameConfig1()
-
-	debugScreen, err := NewDebugScreen()
-	if err != nil {
-		return nil, err
-	}
-
-	spaceship1, spaceship2, err := createSpaceships(gameConfig)
-	if err != nil {
-		return nil, err
-	}
-
-	gameObjects := map[string]models.GameObject{}
-
-	g := &SpaceshipGame{
-		GameConfig:  gameConfig,
-		GameObjects: gameObjects,
-		DebugScreen: debugScreen,
-		Spaceship1:  spaceship1,
-		Spaceship2:  spaceship2,
-		TickCounter: 0,
-		MaxX:        screenWidth,
-		MaxY:        screenHeight,
-		DebugPrint:  false,
-		Pause:       false,
-		SoundOn:     false,
-		State:       Running,
-		GamepadIDs:  map[int]struct{}{},
-	}
-
-	return g, nil
-}
-
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]models.GameObject{}
 
@@ -250,6 +249,8 @@ func handleBackgroundSound(g *SpaceshipGame) {
 }
 
 func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
+
+	Scene1(g)
 
 	updateGamepads(g)
 
@@ -290,8 +291,6 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	}
 
 	g.DebugScreen.Update(g)
-
-	Scence1(g)
 
 	deleteObjectsOutOfView(g)
 
