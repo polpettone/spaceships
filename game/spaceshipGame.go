@@ -67,7 +67,7 @@ const (
 	GameOver
 )
 
-type RunningScene func(g *SpaceshipGame)
+type Scene func(g *SpaceshipGame)
 
 type SpaceshipGame struct {
 	GameConfig      models.GameConfig
@@ -94,10 +94,10 @@ type SpaceshipGame struct {
 
 	GamepadIDs map[int]struct{}
 
-	RunningScene RunningScene
+	RunningScene Scene
 }
 
-func NewGame(config models.GameConfig) (models.Game, error) {
+func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
 	if err != nil {
@@ -125,7 +125,7 @@ func NewGame(config models.GameConfig) (models.Game, error) {
 		SoundOn:      false,
 		State:        Running,
 		GamepadIDs:   map[int]struct{}{},
-		RunningScene: Scene1,
+		RunningScene: scene,
 	}
 
 	return g, nil

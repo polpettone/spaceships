@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	g, err := game.NewGame(models.GameConfig1())
+	g, err := game.NewGame(models.GameConfig1(), game.Scene1)
 
 	if err != nil {
 		log.Fatal(err)
