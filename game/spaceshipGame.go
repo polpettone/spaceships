@@ -104,7 +104,12 @@ func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 		return nil, err
 	}
 
-	spaceship1, spaceship2, err := models.CreateHumanControledSpaceships(config, audioContext, gamepadControlMap, keyboardControlMap)
+	spaceship1, spaceship2, err := models.CreateHumanControledSpaceships(
+		config,
+		audioContext,
+		gamepadControlMap,
+		keyboardControlMap)
+
 	if err != nil {
 		return nil, err
 	}

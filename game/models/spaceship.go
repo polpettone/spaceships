@@ -44,30 +44,9 @@ type Spaceship struct {
 
 	Size int
 
-	KeyboardControlMap *SpaceshipKeyboardControlMap
-	GamepadControlMap  *SpaceshipGamepadControlMap
+	Control SpaceshipControl
 
 	SoundOn bool
-}
-
-type SpaceshipKeyboardControlMap struct {
-	Up           ebiten.Key
-	Down         ebiten.Key
-	Left         ebiten.Key
-	Right        ebiten.Key
-	Break        ebiten.Key
-	Shoot        ebiten.Key
-	Acceleration ebiten.Key
-}
-
-type SpaceshipGamepadControlMap struct {
-	Up           ebiten.GamepadButton
-	Down         ebiten.GamepadButton
-	Left         ebiten.GamepadButton
-	Right        ebiten.GamepadButton
-	Break        ebiten.GamepadButton
-	Shoot        ebiten.GamepadButton
-	Acceleration ebiten.GamepadButton
 }
 
 func NewSpaceship(
@@ -76,8 +55,7 @@ func NewSpaceship(
 	bulletCount int,
 	pilotName string,
 	initialPos Pos,
-	keyboardControlMap *SpaceshipKeyboardControlMap,
-	gamepadControlMap *SpaceshipGamepadControlMap,
+	control SpaceshipControl,
 	img *GameObjectImage,
 	damageImg *GameObjectImage,
 	signature string) (*Spaceship, error) {
@@ -110,23 +88,22 @@ func NewSpaceship(
 	}
 
 	return &Spaceship{
-		PilotName:          pilotName,
-		CurrentImage:       img,
-		Image:              img,
-		DamageImage:        damageImg,
-		Pos:                initialPos,
-		ID:                 uuid.New().String(),
-		Size:               spaceshipSize,
-		ShootSound:         shootSound,
-		ImpulseSound:       impulseSound,
-		ImpactSound:        impactSound,
-		Health:             health,
-		BulletCount:        bulletCount,
-		KeyboardControlMap: keyboardControlMap,
-		GamepadControlMap:  gamepadControlMap,
-		MoveDirection:      1,
-		SoundOn:            false,
-		Signature:          signature,
+		PilotName:     pilotName,
+		CurrentImage:  img,
+		Image:         img,
+		DamageImage:   damageImg,
+		Pos:           initialPos,
+		ID:            uuid.New().String(),
+		Size:          spaceshipSize,
+		ShootSound:    shootSound,
+		ImpulseSound:  impulseSound,
+		ImpactSound:   impactSound,
+		Health:        health,
+		BulletCount:   bulletCount,
+		Control:       control,
+		MoveDirection: 1,
+		SoundOn:       false,
+		Signature:     signature,
 	}, nil
 }
 
@@ -166,9 +143,7 @@ func (s *Spaceship) Alive() bool {
 // TODO: err handling
 func (s *Spaceship) Update(g Game) {
 
-	handleGamepadControls(s)
-
-	handleKeyboardControls(s)
+	handleSpaceshipControl(s)
 
 	updatePosition(s, g)
 

@@ -5,8 +5,8 @@ import "github.com/hajimehoshi/ebiten/v2/audio"
 func CreateHumanControledSpaceships(
 	g GameConfig,
 	audioContext *audio.Context,
-	gamepadControlMap *SpaceshipGamepadControlMap,
-	keyboardControlMap *SpaceshipKeyboardControlMap) (*Spaceship, *Spaceship, error) {
+	spaceshipControl1 SpaceshipControl,
+	spaceshipControl2 SpaceshipControl) (*Spaceship, *Spaceship, error) {
 
 	img1, err := NewGameObjectImage("assets/images/spaceships/star-wars-2.png", 0.2, -1)
 
@@ -25,8 +25,7 @@ func CreateHumanControledSpaceships(
 		g.BulletCountSpaceship1,
 		"Player 1",
 		NewPos(100, 300),
-		nil,
-		gamepadControlMap,
+		spaceshipControl1,
 		img1,
 		damageImg1,
 		"s1")
@@ -51,8 +50,7 @@ func CreateHumanControledSpaceships(
 		g.BulletCountSpaceship2,
 		"Player 2",
 		NewPos(1900, 300),
-		keyboardControlMap,
-		nil,
+		spaceshipControl2,
 		img2,
 		damageImg2,
 		"s2")
