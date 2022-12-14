@@ -104,11 +104,19 @@ func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 		return nil, err
 	}
 
-	spaceship1, spaceship2, err := models.CreateHumanControledSpaceships(
+	spaceship1, err := models.CreateSpaceship1(
 		config,
 		audioContext,
-		gamepadControlMap,
 		keyboardControlMap)
+
+	if err != nil {
+		return nil, err
+	}
+
+	spaceship2, err := models.CreateSpaceship2(
+		config,
+		audioContext,
+		gamepadControlMap)
 
 	if err != nil {
 		return nil, err
@@ -171,11 +179,15 @@ func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 func (g *SpaceshipGame) Reset() {
 	g.GameObjects = map[string]models.GameObject{}
 
-	spaceship1, spaceship2, _ := models.CreateHumanControledSpaceships(
+	spaceship1, _ := models.CreateSpaceship1(
 		g.GameConfig,
 		audioContext,
-		gamepadControlMap,
 		keyboardControlMap)
+
+	spaceship2, _ := models.CreateSpaceship2(
+		g.GameConfig,
+		audioContext,
+		gamepadControlMap)
 
 	g.Spaceship1 = spaceship1
 	g.Spaceship2 = spaceship2
