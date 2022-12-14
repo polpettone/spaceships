@@ -15,6 +15,9 @@ type GameConfig struct {
 	StarsPerSecond   float64
 	EnemiesPerSecond float64
 	AmmoPerSecond    float64
+
+	InitialPosSpaceship1 Pos
+	InitialPosSpaceship2 Pos
 }
 
 func GameConfig1() GameConfig {
@@ -35,5 +38,8 @@ func GameConfig1() GameConfig {
 		StarsPerSecond:   0,
 		AmmoPerSecond:    0.3,
 		EnemiesPerSecond: 0.1,
+
+		InitialPosSpaceship1: NewPos(100, 300),
+		InitialPosSpaceship2: NewPos(1900, 300),
 	}
 }
