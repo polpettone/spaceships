@@ -16,6 +16,17 @@ type SpaceshipControl interface {
 	IsShoot() bool
 }
 
+type AIControl struct {
+	Up                   bool
+	Down                 bool
+	Left                 bool
+	Right                bool
+	Break                bool
+	Shoot                bool
+	AccelerationPressed  bool
+	AccelerationReleased bool
+}
+
 type KeyboardControl struct {
 	Up           ebiten.Key
 	Down         ebiten.Key
@@ -34,6 +45,38 @@ type GamepadControl struct {
 	Break        ebiten.GamepadButton
 	Shoot        ebiten.GamepadButton
 	Acceleration ebiten.GamepadButton
+}
+
+func (s *AIControl) IsShoot() bool {
+	return s.Shoot
+}
+
+func (s *AIControl) IsUp() bool {
+	return s.Up
+}
+
+func (s *AIControl) IsAccelerationPressed() bool {
+	return s.AccelerationPressed
+}
+
+func (s *AIControl) IsAccelerationReleased() bool {
+	return s.AccelerationReleased
+}
+
+func (s *AIControl) IsDown() bool {
+	return s.Down
+}
+
+func (s *AIControl) IsLeft() bool {
+	return s.Left
+}
+
+func (s *AIControl) IsRight() bool {
+	return s.Right
+}
+
+func (s *AIControl) IsBreak() bool {
+	return s.Break
 }
 
 func (s *GamepadControl) IsShoot() bool {
