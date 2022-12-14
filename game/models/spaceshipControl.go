@@ -16,7 +16,7 @@ type SpaceshipControl interface {
 	IsShoot() bool
 }
 
-type SpaceshipKeyboardControlMap struct {
+type KeyboardControl struct {
 	Up           ebiten.Key
 	Down         ebiten.Key
 	Left         ebiten.Key
@@ -26,7 +26,7 @@ type SpaceshipKeyboardControlMap struct {
 	Acceleration ebiten.Key
 }
 
-type SpaceshipGamepadControlMap struct {
+type GamepadControl struct {
 	Up           ebiten.GamepadButton
 	Down         ebiten.GamepadButton
 	Left         ebiten.GamepadButton
@@ -36,67 +36,67 @@ type SpaceshipGamepadControlMap struct {
 	Acceleration ebiten.GamepadButton
 }
 
-func (s *SpaceshipGamepadControlMap) IsShoot() bool {
+func (s *GamepadControl) IsShoot() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Shoot)
 }
 
-func (s *SpaceshipGamepadControlMap) IsUp() bool {
+func (s *GamepadControl) IsUp() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Up)
 }
 
-func (s *SpaceshipGamepadControlMap) IsAccelerationPressed() bool {
+func (s *GamepadControl) IsAccelerationPressed() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Acceleration)
 }
 
-func (s *SpaceshipGamepadControlMap) IsAccelerationReleased() bool {
+func (s *GamepadControl) IsAccelerationReleased() bool {
 	return inpututil.IsGamepadButtonJustReleased(0, s.Acceleration)
 }
 
-func (s *SpaceshipGamepadControlMap) IsDown() bool {
+func (s *GamepadControl) IsDown() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Down)
 }
 
-func (s *SpaceshipGamepadControlMap) IsLeft() bool {
+func (s *GamepadControl) IsLeft() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Left)
 }
 
-func (s *SpaceshipGamepadControlMap) IsRight() bool {
+func (s *GamepadControl) IsRight() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Right)
 }
 
-func (s *SpaceshipGamepadControlMap) IsBreak() bool {
+func (s *GamepadControl) IsBreak() bool {
 	return inpututil.IsGamepadButtonJustPressed(0, s.Break)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsShoot() bool {
+func (s *KeyboardControl) IsShoot() bool {
 	return inpututil.IsKeyJustPressed(s.Shoot)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsUp() bool {
+func (s *KeyboardControl) IsUp() bool {
 	return inpututil.IsKeyJustPressed(s.Up)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsAccelerationPressed() bool {
+func (s *KeyboardControl) IsAccelerationPressed() bool {
 	return inpututil.IsKeyJustPressed(s.Acceleration)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsAccelerationReleased() bool {
+func (s *KeyboardControl) IsAccelerationReleased() bool {
 	return inpututil.IsKeyJustReleased(s.Acceleration)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsDown() bool {
+func (s *KeyboardControl) IsDown() bool {
 	return inpututil.IsKeyJustPressed(s.Down)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsLeft() bool {
+func (s *KeyboardControl) IsLeft() bool {
 	return inpututil.IsKeyJustPressed(s.Left)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsRight() bool {
+func (s *KeyboardControl) IsRight() bool {
 	return inpututil.IsKeyJustPressed(s.Right)
 }
 
-func (s *SpaceshipKeyboardControlMap) IsBreak() bool {
+func (s *KeyboardControl) IsBreak() bool {
 	return inpututil.IsKeyJustPressed(s.Break)
 }
 

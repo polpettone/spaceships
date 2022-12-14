@@ -20,15 +20,15 @@ const (
 var (
 	audioContext *audio.Context
 
-	keyboardControlMap   *models.SpaceshipKeyboardControlMap
-	gamepadControlMap    *models.SpaceshipGamepadControlMap
-	ps3GamepadControlMap *models.SpaceshipGamepadControlMap
+	keyboardControlMap   *models.KeyboardControl
+	gamepadControlMap    *models.GamepadControl
+	ps3GamepadControlMap *models.GamepadControl
 )
 
 func init() {
 	audioContext = audio.NewContext(44100)
 
-	keyboardControlMap = &models.SpaceshipKeyboardControlMap{
+	keyboardControlMap = &models.KeyboardControl{
 		Up:           ebiten.KeyK,
 		Down:         ebiten.KeyJ,
 		Left:         ebiten.KeyH,
@@ -38,7 +38,7 @@ func init() {
 		Acceleration: ebiten.KeySpace,
 	}
 
-	gamepadControlMap = &models.SpaceshipGamepadControlMap{
+	gamepadControlMap = &models.GamepadControl{
 		Up:           ebiten.GamepadButton11,
 		Down:         ebiten.GamepadButton13,
 		Left:         ebiten.GamepadButton14,
@@ -48,7 +48,7 @@ func init() {
 		Acceleration: ebiten.GamepadButton5,
 	}
 
-	ps3GamepadControlMap = &models.SpaceshipGamepadControlMap{
+	ps3GamepadControlMap = &models.GamepadControl{
 		Up:           ebiten.GamepadButton13,
 		Down:         ebiten.GamepadButton14,
 		Left:         ebiten.GamepadButton15,
