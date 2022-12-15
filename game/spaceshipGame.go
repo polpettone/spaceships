@@ -144,6 +144,27 @@ func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 	return g, nil
 }
 
+func (g *SpaceshipGame) Reset() {
+	g.GameObjects = map[string]models.GameObject{}
+
+	g.Spaceship1.Reset(
+		g.GameConfig.HealthSpaceship1,
+		g.GameConfig.InitialPosSpaceship1,
+		g.GameConfig.BulletCountSpaceship1,
+		1)
+
+	g.Spaceship2.Reset(
+		g.GameConfig.HealthSpaceship2,
+		g.GameConfig.InitialPosSpaceship2,
+		g.GameConfig.BulletCountSpaceship2,
+		-1)
+
+	g.TickCounter = 0
+	g.Pause = false
+	g.State = Running
+	g.KilledEnemies = 0
+}
+
 func (g *SpaceshipGame) GetConfig() models.GameConfig {
 	return g.GameConfig
 }
@@ -174,28 +195,6 @@ func (g *SpaceshipGame) GetSpaceship1() *models.Spaceship {
 
 func (g *SpaceshipGame) GetSpaceship2() *models.Spaceship {
 	return g.Spaceship2
-}
-
-func (g *SpaceshipGame) Reset() {
-	g.GameObjects = map[string]models.GameObject{}
-
-	spaceship1, _ := models.CreateSpaceship1(
-		g.GameConfig,
-		audioContext,
-		keyboardControlMap)
-
-	spaceship2, _ := models.CreateSpaceship2(
-		g.GameConfig,
-		audioContext,
-		gamepadControlMap)
-
-	g.Spaceship1 = spaceship1
-	g.Spaceship2 = spaceship2
-
-	g.TickCounter = 0
-	g.Pause = false
-	g.State = Running
-	g.KilledEnemies = 0
 }
 
 func handleBackgroundSound(g *SpaceshipGame) {

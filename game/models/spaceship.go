@@ -107,6 +107,13 @@ func NewSpaceship(
 	}, nil
 }
 
+func (s *Spaceship) Reset(health int, pos Pos, bulletCount int, moveDirection int) {
+	s.Health = health
+	s.Pos = pos
+	s.MoveDirection = moveDirection
+	s.BulletCount = bulletCount
+}
+
 func (s *Spaceship) GetSignature() string {
 	return s.Signature
 }
