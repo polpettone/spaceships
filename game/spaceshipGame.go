@@ -17,13 +17,6 @@ const (
 	screenHeight = 1000
 )
 
-type GameState int64
-
-const (
-	Running GameState = iota
-	GameOver
-)
-
 type Scene func(g *SpaceshipGame)
 
 type SpaceshipGame struct {
@@ -45,7 +38,7 @@ type SpaceshipGame struct {
 
 	KilledEnemies int
 
-	State GameState
+	State models.GameState
 
 	GamepadIDs map[int]struct{}
 
@@ -67,7 +60,7 @@ func NewGame(config models.GameConfig, scene models.Scene) (models.Game, error) 
 		DebugPrint:   false,
 		Pause:        false,
 		SoundOn:      false,
-		State:        Running,
+		State:        models.Running,
 		GamepadIDs:   map[int]struct{}{},
 		CurrentScene: scene,
 	}
@@ -81,7 +74,7 @@ func (g *SpaceshipGame) Reset() {
 
 	g.TickCounter = 0
 	g.Pause = false
-	g.State = Running
+	g.State = models.Running
 	g.KilledEnemies = 0
 }
 
@@ -117,22 +110,24 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
-	checkGameOverCriteria(g)
+	if g.CurrentScene.CheckGameOverCriteria() {
+		g.State = models.GameOver
+	}
 
 	if isQuitHit() {
 		os.Exit(0)
 	}
 
-	if handleResetGameControl() && g.State == GameOver {
+	if handleResetGameControl() && g.State == models.GameOver {
 		g.Reset()
-		g.State = Running
+		g.State = models.Running
 	}
 
 	g.Pause = handlePauseControl(g.Pause)
 	g.SoundOn = handleSoundControl(g.SoundOn)
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
-	if g.State == GameOver {
+	if g.State == models.GameOver {
 		return nil
 	}
 
@@ -155,7 +150,7 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 		g.DebugScreen.Draw(screen, g)
 	}
 
-	if g.State == GameOver {
+	if g.State == models.GameOver {
 		drawGameOverScreen(g, screen)
 	}
 }
@@ -181,16 +176,4 @@ Press Q for Quit`,
 		livingSpaceship.PilotName)
 
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
-}
-
-func checkGameOverCriteria(g *SpaceshipGame) {
-
-	if !g.CurrentScene.GetSpaceship1().Alive() {
-		g.State = GameOver
-	}
-
-	if !g.CurrentScene.GetSpaceship2().Alive() {
-		g.State = GameOver
-	}
-
 }

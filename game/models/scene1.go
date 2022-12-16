@@ -213,6 +213,15 @@ func (g *Scene1) PutNewAmmos(count int) {
 	}
 }
 
+func (g *Scene1) CheckGameOverCriteria() bool {
+
+	if !g.GetSpaceship1().Alive() || !g.GetSpaceship2().Alive() {
+		return true
+	}
+
+	return false
+}
+
 func spaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
 
 	for k, o := range gameObjects {

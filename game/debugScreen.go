@@ -119,6 +119,9 @@ func (d *DebugScreen) Update(g models.Scene) {
 }
 
 func spaceshipDebugInfos(s *models.Spaceship) string {
+	if s == nil {
+		return ""
+	}
 	spaceshipPos := "n/a"
 	centrePos := "n/a"
 	if s != nil {

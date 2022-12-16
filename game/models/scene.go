@@ -22,4 +22,6 @@ type Scene interface {
 	GetConfig() GameConfig
 
 	GetTickCounter() int
+
+	CheckGameOverCriteria() bool
 }

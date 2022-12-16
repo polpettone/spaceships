@@ -1,6 +1,13 @@
 package models
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"fmt"
+	"image/color"
+
+	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/text"
+	"github.com/polpettone/gaming/spaceships/engine"
+)
 
 type Menu struct {
 	Spaceship1  *Spaceship
@@ -10,6 +17,13 @@ type Menu struct {
 	TickCounter int
 	MaxX        int
 	MaxY        int
+}
+
+func NewMenu(config GameConfig) (*Menu, error) {
+
+	return &Menu{
+		GameConfig: config,
+	}, nil
 }
 
 func (g *Menu) GetConfig() GameConfig {
@@ -33,6 +47,14 @@ func (g *Menu) Update(screen *ebiten.Image) error {
 }
 
 func (g *Menu) Draw(screen *ebiten.Image) {
+
+	t := fmt.Sprintf(
+		`   SpaceShips 
+
+		Hit Enter to start 
+			Press Q for Quit`)
+
+	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
 
 func (g *Menu) Reset() {
@@ -51,4 +73,12 @@ func (g *Menu) GetSpaceship1() *Spaceship {
 
 func (g *Menu) GetSpaceship2() *Spaceship {
 	return g.Spaceship2
+}
+
+func (g *Menu) PutNewAmmos(count int)   {}
+func (g *Menu) PutStars(count int)      {}
+func (g *Menu) PutNewEnemies(count int) {}
+
+func (g *Menu) CheckGameOverCriteria() bool {
+	return false
 }

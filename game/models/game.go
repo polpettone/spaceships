@@ -10,6 +10,13 @@ const (
 	screenHeight = 1000
 )
 
+type GameState int64
+
+const (
+	Running GameState = iota
+	GameOver
+)
+
 type Game interface {
 	GetMaxX() int
 	GetMaxY() int
