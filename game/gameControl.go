@@ -28,6 +28,13 @@ func handleResetGameControl() bool {
 	return false
 }
 
+func handleBackToMenu() bool {
+	if inpututil.IsKeyJustPressed(ebiten.KeyM) {
+		return true
+	}
+	return false
+}
+
 func handlePauseControl(current bool) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		return !current

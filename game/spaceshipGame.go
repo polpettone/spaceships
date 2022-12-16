@@ -116,6 +116,20 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		g.State = models.Running
 	}
 
+	if handleBackToMenu() && g.State == models.GameOver {
+		g.Reset()
+		g.State = models.ShowMenu
+	}
+
+	if g.State == models.ShowMenu {
+		nextScene, err := models.NewMenu(g.GameConfig)
+		if err != nil {
+			return err
+		}
+		g.CurrentScene = nextScene
+		return nil
+	}
+
 	g.Pause = handlePauseControl(g.Pause)
 	g.SoundOn = handleSoundControl(g.SoundOn)
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
@@ -171,6 +185,7 @@ func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 		`GAME OVER 
 %s has won
 Press R for New Game
+Press M for Menu
 Press Q for Quit`,
 		livingSpaceship.PilotName)
 
