@@ -110,10 +110,6 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
-	if g.CurrentScene.CheckGameOverCriteria() {
-		g.State = models.GameOver
-	}
-
 	if isQuitHit() {
 		os.Exit(0)
 	}
@@ -137,7 +133,13 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	g.DebugScreen.Update(g.CurrentScene)
 
-	g.CurrentScene.Update(screen)
+	state, err := g.CurrentScene.Update(screen)
+
+	if err != nil {
+		return err
+	}
+
+	g.State = state
 
 	return nil
 }

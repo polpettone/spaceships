@@ -42,8 +42,8 @@ func (g *Menu) GetMaxY() int {
 	return g.MaxY
 }
 
-func (g *Menu) Update(screen *ebiten.Image) error {
-	return nil
+func (g *Menu) Update(screen *ebiten.Image) (GameState, error) {
+	return Running, nil
 }
 
 func (g *Menu) Draw(screen *ebiten.Image) {
@@ -78,7 +78,3 @@ func (g *Menu) GetSpaceship2() *Spaceship {
 func (g *Menu) PutNewAmmos(count int)   {}
 func (g *Menu) PutStars(count int)      {}
 func (g *Menu) PutNewEnemies(count int) {}
-
-func (g *Menu) CheckGameOverCriteria() bool {
-	return false
-}

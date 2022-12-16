@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	scene, err := models.NewMenu(models.GameConfig1())
+	scene, err := models.NewScene1(models.GameConfig1())
 
 	g, err := game.NewGame(models.GameConfig1(), scene)
 

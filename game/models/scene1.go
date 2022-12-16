@@ -65,7 +65,7 @@ func (g *Scene1) GetMaxY() int {
 	return g.MaxY
 }
 
-func (g *Scene1) Update(screen *ebiten.Image) error {
+func (g *Scene1) Update(screen *ebiten.Image) (GameState, error) {
 
 	g.TickCounter++
 
@@ -108,7 +108,12 @@ func (g *Scene1) Update(screen *ebiten.Image) error {
 
 	deleteObjectsOutOfView(g)
 
-	return nil
+	result := g.CheckGameOverCriteria()
+	if result {
+		return GameOver, nil
+	}
+
+	return Running, nil
 }
 
 func (g *Scene1) Draw(screen *ebiten.Image) {

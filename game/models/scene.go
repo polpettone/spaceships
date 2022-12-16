@@ -15,13 +15,11 @@ type Scene interface {
 	PutStars(count int)
 	PutNewEnemies(count int)
 
-	Update(screen *ebiten.Image) error
+	Update(screen *ebiten.Image) (GameState, error)
 	Draw(screen *ebiten.Image)
 	Reset()
 
 	GetConfig() GameConfig
 
 	GetTickCounter() int
-
-	CheckGameOverCriteria() bool
 }

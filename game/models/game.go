@@ -14,6 +14,7 @@ type GameState int64
 
 const (
 	Running GameState = iota
+	ShowMenu
 	GameOver
 )
 
