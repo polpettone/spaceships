@@ -38,9 +38,8 @@ type Spaceship struct {
 	Acceleration  bool
 	ShootBullet   bool
 
-	BulletCount   int
-	Health        int
-	KilledEnemies int
+	BulletCount int
+	Health      int
 
 	Size int
 

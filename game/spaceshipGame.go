@@ -36,8 +36,6 @@ type SpaceshipGame struct {
 
 	SoundOn bool
 
-	KilledEnemies int
-
 	State models.GameState
 
 	GamepadIDs map[int]struct{}
@@ -75,7 +73,6 @@ func (g *SpaceshipGame) Reset() {
 	g.TickCounter = 0
 	g.Pause = false
 	g.State = models.Running
-	g.KilledEnemies = 0
 }
 
 func (g *SpaceshipGame) GetConfig() models.GameConfig {
