@@ -148,7 +148,7 @@ func (s *Spaceship) Alive() bool {
 }
 
 // TODO: err handling
-func (s *Spaceship) Update(g Game) {
+func (s *Spaceship) Update(g Scene) {
 
 	handleSpaceshipControl(s)
 
@@ -211,7 +211,7 @@ Bullets %d`,
 }
 
 // TODO: err handling
-func updateWeapons(s *Spaceship, g Game) {
+func updateWeapons(s *Spaceship, g Scene) {
 	if s.ShootBullet && s.BulletCount > 0 {
 		pos := NewPos(s.Pos.X, s.Pos.Y+20)
 		bullet, _ := NewBullet(pos, s.MoveDirection, s.Signature, g.GetConfig().BulletVelocity)
@@ -227,7 +227,7 @@ func updateWeapons(s *Spaceship, g Game) {
 	}
 }
 
-func updatePosition(s *Spaceship, g Game) {
+func updatePosition(s *Spaceship, g Scene) {
 
 	if s.Acceleration {
 		if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {

@@ -62,7 +62,7 @@ func drawDebugCoordinate(screen *ebiten.Image, g models.Game) {
 	)
 }
 
-func (d *DebugScreen) Update(g models.Game) {
+func (d *DebugScreen) Update(g models.Scene) {
 
 	t :=
 		`
