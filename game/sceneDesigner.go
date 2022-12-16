@@ -1,18 +1,28 @@
 package game
 
+
 func Scene1(g *SpaceshipGame) {
 
 	g.TickCounter++
 
-	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.EnemiesPerSecond) {
+	if checkCriteria(
+    g.GameConfig.TPS, 
+    g.TickCounter, 
+    g.GameConfig.EnemiesPerSecond) {
 		g.PutNewEnemies(1)
 	}
 
-	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.StarsPerSecond) {
+	if checkCriteria(
+    g.GameConfig.TPS,
+    g.TickCounter, 
+    g.GameConfig.StarsPerSecond) {
 		g.PutStars(1)
 	}
 
-	if checkCriteria(g.GameConfig.TPS, g.TickCounter, g.GameConfig.AmmoPerSecond) {
+	if checkCriteria(
+    g.GameConfig.TPS, 
+    g.TickCounter, 
+    g.GameConfig.AmmoPerSecond) {
 		g.PutNewAmmos(1)
 	}
 
