@@ -93,11 +93,9 @@ type SpaceshipGame struct {
 	State GameState
 
 	GamepadIDs map[int]struct{}
-
-	RunningScene Scene
 }
 
-func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
+func NewGame(config models.GameConfig) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
 	if err != nil {
@@ -125,20 +123,19 @@ func NewGame(config models.GameConfig, scene Scene) (models.Game, error) {
 	gameObjects := map[string]models.GameObject{}
 
 	g := &SpaceshipGame{
-		GameConfig:   config,
-		GameObjects:  gameObjects,
-		DebugScreen:  debugScreen,
-		Spaceship1:   spaceship1,
-		Spaceship2:   spaceship2,
-		TickCounter:  0,
-		MaxX:         screenWidth,
-		MaxY:         screenHeight,
-		DebugPrint:   false,
-		Pause:        false,
-		SoundOn:      false,
-		State:        Running,
-		GamepadIDs:   map[int]struct{}{},
-		RunningScene: scene,
+		GameConfig:  config,
+		GameObjects: gameObjects,
+		DebugScreen: debugScreen,
+		Spaceship1:  spaceship1,
+		Spaceship2:  spaceship2,
+		TickCounter: 0,
+		MaxX:        screenWidth,
+		MaxY:        screenHeight,
+		DebugPrint:  false,
+		Pause:       false,
+		SoundOn:     false,
+		State:       Running,
+		GamepadIDs:  map[int]struct{}{},
 	}
 
 	return g, nil
@@ -215,7 +212,7 @@ func handleBackgroundSound(g *SpaceshipGame) {
 
 func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
-	g.RunningScene(g)
+	Scene1(g)
 
 	updateGamepads(g)
 
