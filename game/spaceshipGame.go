@@ -130,6 +130,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	g.Pause = handlePauseControl(g.Pause)
 	g.SoundOn = handleSoundControl(g.SoundOn)
+	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	if g.State == GameOver {
 		return nil
@@ -138,8 +139,6 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	if g.Pause {
 		return nil
 	}
-
-	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	g.DebugScreen.Update(g.CurrentScene)
 
