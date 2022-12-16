@@ -1,28 +1,27 @@
 package game
 
-
 func Scene1(g *SpaceshipGame) {
 
 	g.TickCounter++
 
 	if checkCriteria(
-    g.GameConfig.TPS, 
-    g.TickCounter, 
-    g.GameConfig.EnemiesPerSecond) {
+		g.GameConfig.TPS,
+		g.TickCounter,
+		g.GameConfig.EnemiesPerSecond) {
 		g.PutNewEnemies(1)
 	}
 
 	if checkCriteria(
-    g.GameConfig.TPS,
-    g.TickCounter, 
-    g.GameConfig.StarsPerSecond) {
+		g.GameConfig.TPS,
+		g.TickCounter,
+		g.GameConfig.StarsPerSecond) {
 		g.PutStars(1)
 	}
 
 	if checkCriteria(
-    g.GameConfig.TPS, 
-    g.TickCounter, 
-    g.GameConfig.AmmoPerSecond) {
+		g.GameConfig.TPS,
+		g.TickCounter,
+		g.GameConfig.AmmoPerSecond) {
 		g.PutNewAmmos(1)
 	}
 
@@ -31,7 +30,10 @@ func Scene1(g *SpaceshipGame) {
 	}
 }
 
-func checkCriteria(TPS float64, currentTick int, actionPerSecond float64) bool {
+func checkCriteria(
+	TPS float64,
+	currentTick int,
+	actionPerSecond float64) bool {
 
 	if actionPerSecond == 0 {
 		return false
