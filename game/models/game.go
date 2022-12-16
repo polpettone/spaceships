@@ -5,6 +5,11 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/audio"
 )
 
+const (
+	screenWidth  = 2000
+	screenHeight = 1000
+)
+
 type Game interface {
 	GetMaxX() int
 	GetMaxY() int
@@ -55,10 +60,4 @@ func init() {
 		Shoot:        ebiten.GamepadButton0,
 		Acceleration: ebiten.GamepadButton5,
 	}
-
 }
-
-const (
-	screenWidth  = 2000
-	screenHeight = 1000
-)
