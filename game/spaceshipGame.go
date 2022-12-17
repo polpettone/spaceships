@@ -136,7 +136,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	if g.State == models.ScenePreparation {
 		g.Reset()
-		nextScene, err := models.NewScene1(g.GameConfig)
+		nextScene, err := models.NewScene2(g.GameConfig)
 		if err != nil {
 			return err
 		}
