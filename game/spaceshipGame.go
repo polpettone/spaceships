@@ -199,7 +199,7 @@ func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
 %s has won
 Press R for New Game
 Press M for Menu
-Press Q for Quit`,
+Press Q to quit`,
 		livingSpaceship.PilotName)
 
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)

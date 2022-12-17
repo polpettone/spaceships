@@ -51,8 +51,8 @@ func (g *Menu) Draw(screen *ebiten.Image) {
 	t := fmt.Sprintf(
 		`   SpaceShips 
 
-		Hit Enter to start 
-			Press Q for Quit`)
+Press Enter to start 
+Press Q to quit`)
 
 	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
 }
