@@ -103,21 +103,20 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
-	if isQuitHit() {
+	g.State = handleControl(g.State)
+
+	if g.State == models.Quit {
 		os.Exit(0)
 	}
 
-	if handleResetGameControl() && g.State == models.GameOver {
+	if g.State == models.Reset {
 		g.Reset()
 		g.State = models.Running
-	}
-
-	if handleBackToMenu() && g.State == models.GameOver {
-		g.Reset()
-		g.State = models.ShowMenu
+		return nil
 	}
 
 	if g.State == models.ShowMenu {
+		g.Reset()
 		nextScene, err := models.NewMenu(g.GameConfig)
 		if err != nil {
 			return err
@@ -125,11 +124,6 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		g.CurrentScene = nextScene
 		return nil
 	}
-
-	g.State = handleControl(g.State)
-
-	g.SoundOn = handleSoundControl(g.SoundOn)
-	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
 	if g.State == models.GameOver {
 		return nil
@@ -139,6 +133,8 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
+	g.SoundOn = handleSoundControl(g.SoundOn)
+	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 	g.DebugScreen.Update(g.CurrentScene)
 
 	state, err := g.CurrentScene.Update(screen)

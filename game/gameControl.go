@@ -22,27 +22,6 @@ func isQuitHit() bool {
 	return false
 }
 
-func handleResetGameControl() bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyR) {
-		return true
-	}
-	return false
-}
-
-func handleBackToMenu() bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyM) {
-		return true
-	}
-	return false
-}
-
-func handlePauseControl(current bool) bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
-		return !current
-	}
-	return current
-}
-
 func handleDebugPrintControl(current bool) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
 		return !current
@@ -52,6 +31,17 @@ func handleDebugPrintControl(current bool) bool {
 
 func handleControl(currentState models.GameState) models.GameState {
 
+	if (currentState == models.GameOver ||
+		currentState == models.ShowMenu) &&
+		inpututil.IsKeyJustPressed(ebiten.KeyQ) {
+		return models.Quit
+	}
+
+	if currentState == models.GameOver &&
+		inpututil.IsKeyJustPressed(ebiten.KeyR) {
+		return models.Reset
+	}
+
 	if currentState != models.Pause &&
 		inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		return models.Pause
@@ -60,6 +50,10 @@ func handleControl(currentState models.GameState) models.GameState {
 	if currentState == models.Pause &&
 		inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		return models.Running
+	}
+	if currentState == models.GameOver &&
+		inpututil.IsKeyJustPressed(ebiten.KeyM) {
+		return models.ShowMenu
 	}
 
 	return currentState

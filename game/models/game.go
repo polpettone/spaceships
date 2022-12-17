@@ -17,6 +17,8 @@ const (
 	ShowMenu
 	GameOver
 	Pause
+	Reset
+	Quit
 )
 
 type Game interface {
