@@ -19,6 +19,8 @@ const (
 	Pause
 	Reset
 	Quit
+	MenuPreparation
+	ScenePreparation
 )
 
 type Game interface {
@@ -29,6 +31,7 @@ type Game interface {
 	Update(screen *ebiten.Image) error
 
 	GetConfig() GameConfig
+	SetState(state GameState)
 }
 
 var (

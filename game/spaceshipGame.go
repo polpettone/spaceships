@@ -68,7 +68,14 @@ func (g *SpaceshipGame) Reset() {
 	g.CurrentScene.Reset()
 
 	g.TickCounter = 0
-	g.State = models.Running
+}
+
+func (g *SpaceshipGame) SetState(state models.GameState) {
+	if g.State == state {
+		return
+	}
+	fmt.Printf("Change State %d -> %d \n", g.State, state)
+	g.State = state
 }
 
 func (g *SpaceshipGame) GetConfig() models.GameConfig {
@@ -103,7 +110,8 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
-	g.State = handleControl(g.State)
+	state := handleControl(g.State)
+	g.SetState(state)
 
 	if g.State == models.Quit {
 		os.Exit(0)
@@ -111,17 +119,29 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	if g.State == models.Reset {
 		g.Reset()
-		g.State = models.Running
+		g.SetState(models.Running)
 		return nil
 	}
 
-	if g.State == models.ShowMenu {
+	if g.State == models.MenuPreparation {
 		g.Reset()
 		nextScene, err := models.NewMenu(g.GameConfig)
 		if err != nil {
 			return err
 		}
 		g.CurrentScene = nextScene
+		g.SetState(models.ShowMenu)
+		return nil
+	}
+
+	if g.State == models.ScenePreparation {
+		g.Reset()
+		nextScene, err := models.NewScene1(g.GameConfig)
+		if err != nil {
+			return err
+		}
+		g.CurrentScene = nextScene
+		g.SetState(models.Running)
 		return nil
 	}
 
@@ -143,7 +163,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		return err
 	}
 
-	g.State = state
+	g.SetState(state)
 
 	return nil
 }

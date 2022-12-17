@@ -43,7 +43,7 @@ func (g *Menu) GetMaxY() int {
 }
 
 func (g *Menu) Update(screen *ebiten.Image) (GameState, error) {
-	return Running, nil
+	return ShowMenu, nil
 }
 
 func (g *Menu) Draw(screen *ebiten.Image) {

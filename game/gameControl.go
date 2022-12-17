@@ -30,6 +30,11 @@ func handleControl(currentState models.GameState) models.GameState {
 		return models.Quit
 	}
 
+	if currentState == models.Running &&
+		inpututil.IsKeyJustPressed(ebiten.KeyQ) {
+		return models.MenuPreparation
+	}
+
 	if currentState == models.GameOver &&
 		inpututil.IsKeyJustPressed(ebiten.KeyR) {
 		return models.Reset
@@ -46,7 +51,12 @@ func handleControl(currentState models.GameState) models.GameState {
 	}
 	if currentState == models.GameOver &&
 		inpututil.IsKeyJustPressed(ebiten.KeyM) {
-		return models.ShowMenu
+		return models.MenuPreparation
+	}
+
+	if currentState == models.ShowMenu &&
+		inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		return models.ScenePreparation
 	}
 
 	return currentState
