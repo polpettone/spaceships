@@ -15,13 +15,6 @@ func handleSoundControl(current bool) bool {
 	return current
 }
 
-func isQuitHit() bool {
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return true
-	}
-	return false
-}
-
 func handleDebugPrintControl(current bool) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
 		return !current
