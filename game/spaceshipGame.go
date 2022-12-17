@@ -39,11 +39,14 @@ type SpaceshipGame struct {
 	GamepadIDs map[int]struct{}
 
 	CurrentScene models.Scene
+
+	Menu *models.Menu
 }
 
-func NewGame(config models.GameConfig, scene models.Scene) (models.Game, error) {
+func NewGame(config models.GameConfig, menu *models.Menu) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
+
 	if err != nil {
 		return nil, err
 	}
@@ -55,9 +58,10 @@ func NewGame(config models.GameConfig, scene models.Scene) (models.Game, error) 
 		MaxY:         screenHeight,
 		DebugPrint:   false,
 		SoundOn:      false,
-		State:        models.Running,
+		State:        models.ShowMenu,
 		GamepadIDs:   map[int]struct{}{},
-		CurrentScene: scene,
+		CurrentScene: menu.GetSelectedScene(),
+		Menu:         menu,
 	}
 
 	return g, nil
@@ -125,22 +129,13 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	if g.State == models.MenuPreparation {
 		g.Reset()
-		nextScene, err := models.NewMenu(g.GameConfig)
-		if err != nil {
-			return err
-		}
-		g.CurrentScene = nextScene
 		g.SetState(models.ShowMenu)
 		return nil
 	}
 
 	if g.State == models.ScenePreparation {
 		g.Reset()
-		nextScene, err := models.NewScene2(g.GameConfig)
-		if err != nil {
-			return err
-		}
-		g.CurrentScene = nextScene
+		g.CurrentScene = g.Menu.GetSelectedScene()
 		g.SetState(models.Running)
 		return nil
 	}
@@ -157,20 +152,30 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 	g.DebugScreen.Update(g.CurrentScene)
 
-	state, err := g.CurrentScene.Update(screen)
+	if state != models.ShowMenu {
 
-	if err != nil {
-		return err
+		state, err := g.CurrentScene.Update(screen)
+
+		if err != nil {
+			return err
+		}
+
+		g.SetState(state)
+
+	} else {
+		g.Menu.Update()
 	}
-
-	g.SetState(state)
 
 	return nil
 }
 
 func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 
-	g.CurrentScene.Draw(screen)
+	if g.State == models.ShowMenu {
+		g.Menu.Draw(screen)
+	} else {
+		g.CurrentScene.Draw(screen)
+	}
 
 	if g.DebugPrint {
 		g.DebugScreen.Draw(screen, g)

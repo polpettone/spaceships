@@ -49,6 +49,7 @@ func handleControl(currentState models.GameState) models.GameState {
 		inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		return models.Running
 	}
+
 	if currentState == models.GameOver &&
 		inpututil.IsKeyJustPressed(ebiten.KeyM) {
 		return models.MenuPreparation

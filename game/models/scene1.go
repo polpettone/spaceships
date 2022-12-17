@@ -49,6 +49,10 @@ func NewScene1(config GameConfig) (*Scene1, error) {
 
 }
 
+func (g *Scene1) GetName() string {
+	return "Scene 1"
+}
+
 func (g *Scene1) GetConfig() GameConfig {
 	return g.GameConfig
 }

@@ -10,9 +10,26 @@ import (
 
 func main() {
 
-	scene, err := models.NewMenu(models.GameConfig1())
+	scene1, err := models.NewScene1(models.GameConfig1())
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	scene2, err := models.NewScene2(models.GameConfig1())
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-	g, err := game.NewGame(models.GameConfig1(), scene)
+	scenes := map[string]models.Scene{"1": scene1, "2": scene2}
+
+	menu, err := models.NewMenu(models.GameConfig1(), scenes)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	g, err := game.NewGame(models.GameConfig1(), menu)
 
 	if err != nil {
 		log.Fatal(err)

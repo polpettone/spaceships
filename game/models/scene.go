@@ -3,6 +3,8 @@ package models
 import "github.com/hajimehoshi/ebiten"
 
 type Scene interface {
+	GetName() string
+
 	GetMaxX() int
 	GetMaxY() int
 
