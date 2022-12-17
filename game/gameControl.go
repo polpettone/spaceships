@@ -5,6 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
 func handleSoundControl(current bool) bool {
@@ -47,6 +48,21 @@ func handleDebugPrintControl(current bool) bool {
 		return !current
 	}
 	return current
+}
+
+func handleControl(currentState models.GameState) models.GameState {
+
+	if currentState != models.Pause &&
+		inpututil.IsKeyJustPressed(ebiten.KeyO) {
+		return models.Pause
+	}
+
+	if currentState == models.Pause &&
+		inpututil.IsKeyJustPressed(ebiten.KeyO) {
+		return models.Running
+	}
+
+	return currentState
 }
 
 func updateGamepads(g *SpaceshipGame) {

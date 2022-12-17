@@ -16,6 +16,7 @@ const (
 	Running GameState = iota
 	ShowMenu
 	GameOver
+	Pause
 )
 
 type Game interface {

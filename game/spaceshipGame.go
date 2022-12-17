@@ -32,8 +32,6 @@ type SpaceshipGame struct {
 
 	TickCounter int
 
-	Pause bool
-
 	SoundOn bool
 
 	State models.GameState
@@ -56,7 +54,6 @@ func NewGame(config models.GameConfig, scene models.Scene) (models.Game, error) 
 		MaxX:         screenWidth,
 		MaxY:         screenHeight,
 		DebugPrint:   false,
-		Pause:        false,
 		SoundOn:      false,
 		State:        models.Running,
 		GamepadIDs:   map[int]struct{}{},
@@ -71,7 +68,6 @@ func (g *SpaceshipGame) Reset() {
 	g.CurrentScene.Reset()
 
 	g.TickCounter = 0
-	g.Pause = false
 	g.State = models.Running
 }
 
@@ -89,7 +85,7 @@ func (g *SpaceshipGame) GetMaxY() int {
 
 func handleBackgroundSound(g *SpaceshipGame) {
 	if g.BackgroundSound != nil {
-		if g.Pause {
+		if g.State == models.Pause {
 			g.BackgroundSound.Pause()
 		}
 
@@ -130,7 +126,8 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
-	g.Pause = handlePauseControl(g.Pause)
+	g.State = handleControl(g.State)
+
 	g.SoundOn = handleSoundControl(g.SoundOn)
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
 
@@ -138,7 +135,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
-	if g.Pause {
+	if g.State == models.Pause {
 		return nil
 	}
 
