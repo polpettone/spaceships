@@ -39,7 +39,7 @@ func SceneConfig1() SceneConfig {
 		AmmoPerSecond:    0.3,
 		EnemiesPerSecond: 0.1,
 
-		InitialPosSpaceship1: NewPos(100, 300),
-		InitialPosSpaceship2: NewPos(1900, 300),
+		InitialPosSpaceship1: NewPos(100, 500),
+		InitialPosSpaceship2: NewPos(1900, 500),
 	}
 }
