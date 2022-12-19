@@ -3,7 +3,7 @@ package models
 import "github.com/hajimehoshi/ebiten/v2/audio"
 
 func CreateSpaceship1(
-	g GameConfig,
+	g SceneConfig,
 	audioContext *audio.Context,
 	spaceshipControl SpaceshipControl) (*Spaceship, error) {
 
@@ -38,7 +38,7 @@ func CreateSpaceship1(
 }
 
 func CreateSpaceship2(
-	g GameConfig,
+	g SceneConfig,
 	audioContext *audio.Context,
 	spaceshipControl SpaceshipControl) (*Spaceship, error) {
 

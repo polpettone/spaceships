@@ -22,7 +22,6 @@ type Scene func(g *SpaceshipGame)
 type SpaceshipGame struct {
 	MaxX            int
 	MaxY            int
-	GameConfig      models.GameConfig
 	BackgroundImage *ebiten.Image
 	DebugScreen     *DebugScreen
 
@@ -43,7 +42,7 @@ type SpaceshipGame struct {
 	Menu *models.Menu
 }
 
-func NewGame(config models.GameConfig, menu *models.Menu) (models.Game, error) {
+func NewGame(menu *models.Menu) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
 
@@ -52,7 +51,6 @@ func NewGame(config models.GameConfig, menu *models.Menu) (models.Game, error) {
 	}
 
 	g := &SpaceshipGame{
-		GameConfig:   config,
 		DebugScreen:  debugScreen,
 		MaxX:         screenWidth,
 		MaxY:         screenHeight,
@@ -80,10 +78,6 @@ func (g *SpaceshipGame) SetState(state models.GameState) {
 	}
 	fmt.Printf("Change State %d -> %d \n", g.State, state)
 	g.State = state
-}
-
-func (g *SpaceshipGame) GetConfig() models.GameConfig {
-	return g.GameConfig
 }
 
 func (g *SpaceshipGame) GetMaxX() int {

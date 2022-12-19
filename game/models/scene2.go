@@ -7,13 +7,13 @@ import (
 type Scene2 struct {
 	Spaceship1  *Spaceship
 	GameObjects map[string]GameObject
-	GameConfig  GameConfig
+	SceneConfig SceneConfig
 	TickCounter int
 	MaxX        int
 	MaxY        int
 }
 
-func NewScene2(config GameConfig) (*Scene2, error) {
+func NewScene2(config SceneConfig) (*Scene2, error) {
 
 	spaceship1, err := CreateSpaceship1(
 		config,
@@ -29,7 +29,7 @@ func NewScene2(config GameConfig) (*Scene2, error) {
 	return &Scene2{
 		Spaceship1:  spaceship1,
 		GameObjects: gameObjects,
-		GameConfig:  config,
+		SceneConfig: config,
 		TickCounter: 0,
 		MaxX:        screenWidth,
 		MaxY:        screenHeight,
@@ -41,8 +41,8 @@ func (g *Scene2) GetName() string {
 	return "2 - One ship nothing more"
 }
 
-func (g *Scene2) GetConfig() GameConfig {
-	return g.GameConfig
+func (g *Scene2) GetConfig() SceneConfig {
+	return g.SceneConfig
 }
 
 func (g *Scene2) GetTickCounter() int {
@@ -91,9 +91,9 @@ func (g *Scene2) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
 	g.Spaceship1.Reset(
-		g.GameConfig.HealthSpaceship1,
-		g.GameConfig.InitialPosSpaceship1,
-		g.GameConfig.BulletCountSpaceship1,
+		g.SceneConfig.HealthSpaceship1,
+		g.SceneConfig.InitialPosSpaceship1,
+		g.SceneConfig.BulletCountSpaceship1,
 		1)
 }
 

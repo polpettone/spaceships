@@ -11,14 +11,12 @@ import (
 )
 
 type Menu struct {
-	GameConfig    GameConfig
 	Scenes        map[string]Scene
 	SelectedScene Scene
 }
 
-func NewMenu(config GameConfig, scenes map[string]Scene) (*Menu, error) {
+func NewMenu(scenes map[string]Scene) (*Menu, error) {
 	return &Menu{
-		GameConfig:    config,
 		Scenes:        scenes,
 		SelectedScene: scenes["1"],
 	}, nil
@@ -26,10 +24,6 @@ func NewMenu(config GameConfig, scenes map[string]Scene) (*Menu, error) {
 
 func (g *Menu) GetSelectedScene() Scene {
 	return g.SelectedScene
-}
-
-func (g *Menu) GetConfig() GameConfig {
-	return g.GameConfig
 }
 
 func (g *Menu) Update() (GameState, error) {

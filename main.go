@@ -10,19 +10,19 @@ import (
 
 func main() {
 
-	scene1, err := models.NewScene1(models.GameConfig1())
+	scene1, err := models.NewScene1(models.SceneConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	scene2, err := models.NewScene2(models.GameConfig1())
+	scene2, err := models.NewScene2(models.SceneConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	scene3, err := models.NewScene3(models.GameConfig1())
+	scene3, err := models.NewScene3(models.SceneConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -33,13 +33,13 @@ func main() {
 		"2": scene2,
 		"3": scene3}
 
-	menu, err := models.NewMenu(models.GameConfig1(), scenes)
+	menu, err := models.NewMenu(scenes)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	g, err := game.NewGame(models.GameConfig1(), menu)
+	g, err := game.NewGame(menu)
 
 	if err != nil {
 		log.Fatal(err)

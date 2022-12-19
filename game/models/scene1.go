@@ -8,13 +8,13 @@ type Scene1 struct {
 	Spaceship1  *Spaceship
 	Spaceship2  *Spaceship
 	GameObjects map[string]GameObject
-	GameConfig  GameConfig
+	SceneConfig SceneConfig
 	TickCounter int
 	MaxX        int
 	MaxY        int
 }
 
-func NewScene1(config GameConfig) (*Scene1, error) {
+func NewScene1(config SceneConfig) (*Scene1, error) {
 
 	spaceship1, err := CreateSpaceship1(
 		config,
@@ -40,7 +40,7 @@ func NewScene1(config GameConfig) (*Scene1, error) {
 		Spaceship1:  spaceship1,
 		Spaceship2:  spaceship2,
 		GameObjects: gameObjects,
-		GameConfig:  config,
+		SceneConfig: config,
 		TickCounter: 0,
 		MaxX:        screenWidth,
 		MaxY:        screenHeight,
@@ -52,8 +52,8 @@ func (g *Scene1) GetName() string {
 	return "1 - Two ships, ammo and enemies"
 }
 
-func (g *Scene1) GetConfig() GameConfig {
-	return g.GameConfig
+func (g *Scene1) GetConfig() SceneConfig {
+	return g.SceneConfig
 }
 
 func (g *Scene1) GetTickCounter() int {
@@ -73,23 +73,23 @@ func (g *Scene1) Update(screen *ebiten.Image) (GameState, error) {
 	g.TickCounter++
 
 	if checkCriteria(
-		g.GameConfig.TPS,
+		g.SceneConfig.GameConfig.TPS,
 		g.TickCounter,
-		g.GameConfig.EnemiesPerSecond) {
+		g.SceneConfig.EnemiesPerSecond) {
 		g.PutNewEnemies(1)
 	}
 
 	if checkCriteria(
-		g.GameConfig.TPS,
+		g.SceneConfig.GameConfig.TPS,
 		g.TickCounter,
-		g.GameConfig.StarsPerSecond) {
+		g.SceneConfig.StarsPerSecond) {
 		g.PutStars(1)
 	}
 
 	if checkCriteria(
-		g.GameConfig.TPS,
+		g.SceneConfig.GameConfig.TPS,
 		g.TickCounter,
-		g.GameConfig.AmmoPerSecond) {
+		g.SceneConfig.AmmoPerSecond) {
 		g.PutNewAmmos(1)
 	}
 
@@ -137,15 +137,15 @@ func (g *Scene1) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
 	g.Spaceship1.Reset(
-		g.GameConfig.HealthSpaceship1,
-		g.GameConfig.InitialPosSpaceship1,
-		g.GameConfig.BulletCountSpaceship1,
+		g.SceneConfig.HealthSpaceship1,
+		g.SceneConfig.InitialPosSpaceship1,
+		g.SceneConfig.BulletCountSpaceship1,
 		1)
 
 	g.Spaceship2.Reset(
-		g.GameConfig.HealthSpaceship2,
-		g.GameConfig.InitialPosSpaceship2,
-		g.GameConfig.BulletCountSpaceship2,
+		g.SceneConfig.HealthSpaceship2,
+		g.SceneConfig.InitialPosSpaceship2,
+		g.SceneConfig.BulletCountSpaceship2,
 		-1)
 }
 
@@ -172,7 +172,7 @@ func (g *Scene1) PutStars(count int) {
 		screenWidth,
 		screenHeight,
 		count,
-		g.GameConfig.StarVelocity)
+		g.SceneConfig.StarVelocity)
 
 	for _, nO := range newSkyObjects {
 		g.GameObjects[nO.GetID()] = nO

@@ -6,13 +6,13 @@ type Scene3 struct {
 	Spaceship1  *Spaceship
 	Spaceship2  *Spaceship
 	GameObjects map[string]GameObject
-	GameConfig  GameConfig
+	SceneConfig SceneConfig
 	TickCounter int
 	MaxX        int
 	MaxY        int
 }
 
-func NewScene3(config GameConfig) (*Scene3, error) {
+func NewScene3(config SceneConfig) (*Scene3, error) {
 
 	spaceship1, err := CreateSpaceship1(
 		config,
@@ -38,7 +38,7 @@ func NewScene3(config GameConfig) (*Scene3, error) {
 		Spaceship1:  spaceship1,
 		Spaceship2:  spaceship2,
 		GameObjects: gameObjects,
-		GameConfig:  config,
+		SceneConfig: config,
 		TickCounter: 0,
 		MaxX:        screenWidth,
 		MaxY:        screenHeight,
@@ -50,8 +50,8 @@ func (g *Scene3) GetName() string {
 	return "3 - Two ships and ammo"
 }
 
-func (g *Scene3) GetConfig() GameConfig {
-	return g.GameConfig
+func (g *Scene3) GetConfig() SceneConfig {
+	return g.SceneConfig
 }
 
 func (g *Scene3) GetTickCounter() int {
@@ -71,9 +71,9 @@ func (g *Scene3) Update(screen *ebiten.Image) (GameState, error) {
 	g.TickCounter++
 
 	if checkCriteria(
-		g.GameConfig.TPS,
+		g.SceneConfig.GameConfig.TPS,
 		g.TickCounter,
-		g.GameConfig.AmmoPerSecond) {
+		g.SceneConfig.AmmoPerSecond) {
 		g.PutNewAmmos(1)
 	}
 
@@ -121,15 +121,15 @@ func (g *Scene3) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
 	g.Spaceship1.Reset(
-		g.GameConfig.HealthSpaceship1,
-		g.GameConfig.InitialPosSpaceship1,
-		g.GameConfig.BulletCountSpaceship1,
+		g.SceneConfig.HealthSpaceship1,
+		g.SceneConfig.InitialPosSpaceship1,
+		g.SceneConfig.BulletCountSpaceship1,
 		1)
 
 	g.Spaceship2.Reset(
-		g.GameConfig.HealthSpaceship2,
-		g.GameConfig.InitialPosSpaceship2,
-		g.GameConfig.BulletCountSpaceship2,
+		g.SceneConfig.HealthSpaceship2,
+		g.SceneConfig.InitialPosSpaceship2,
+		g.SceneConfig.BulletCountSpaceship2,
 		-1)
 }
 

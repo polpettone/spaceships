@@ -21,7 +21,7 @@ type Scene interface {
 	Draw(screen *ebiten.Image)
 	Reset()
 
-	GetConfig() GameConfig
+	GetConfig() SceneConfig
 
 	GetTickCounter() int
 }

@@ -30,7 +30,6 @@ type Game interface {
 	Layout(outsideWidth, outsideHeight int) (int, int)
 	Update(screen *ebiten.Image) error
 
-	GetConfig() GameConfig
 	SetState(state GameState)
 }
 
