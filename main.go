@@ -28,10 +28,18 @@ func main() {
 		return
 	}
 
+	scene4, err := models.NewScene4(models.SceneConfig1())
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	scenes := map[string]models.Scene{
 		"1": scene1,
 		"2": scene2,
-		"3": scene3}
+		"3": scene3,
+		"4": scene4,
+	}
 
 	menu, err := models.NewMenu(scenes)
 	if err != nil {

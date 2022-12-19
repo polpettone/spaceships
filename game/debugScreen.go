@@ -130,7 +130,13 @@ func spaceshipDebugInfos(s *models.Spaceship) string {
 	}
 	sW, sH := s.GetSize()
 	spaceshipText := fmt.Sprintf(
-		"%s - %d,%d - %s : %d - %d ", spaceshipPos, sW, sH, centrePos, s.XAxisForce, s.YAxisForce,
+		"%s - %d,%d - %s : %d - %d ",
+		spaceshipPos,
+		sW,
+		sH,
+		centrePos,
+		s.XAxisForce,
+		s.YAxisForce,
 	)
 	return spaceshipText
 }
