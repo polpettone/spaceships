@@ -66,7 +66,7 @@ func (g *Scene2) Update(screen *ebiten.Image) (GameState, error) {
 		o.Update()
 	}
 
-	deleteObjectsOutOfView(g)
+	DeleteObjectsOutOfView(g)
 
 	result := g.CheckGameOverCriteria()
 	if result {
