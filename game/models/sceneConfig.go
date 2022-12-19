@@ -24,7 +24,7 @@ func SceneConfig1() SceneConfig {
 
 	return SceneConfig{
 
-		GameConfig: GameConfig{TPS: 60},
+		GameConfig: GameConfig1(),
 
 		BulletCountSpaceship1: 10,
 		BulletCountSpaceship2: 10,

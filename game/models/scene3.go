@@ -40,8 +40,8 @@ func NewScene3(config SceneConfig) (*Scene3, error) {
 		GameObjects: gameObjects,
 		SceneConfig: config,
 		TickCounter: 0,
-		MaxX:        screenWidth,
-		MaxY:        screenHeight,
+		MaxX:        config.GameConfig.MaxX,
+		MaxY:        config.GameConfig.MaxY,
 	}, nil
 
 }

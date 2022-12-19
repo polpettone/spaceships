@@ -39,7 +39,7 @@ func main() {
 		return
 	}
 
-	g, err := game.NewGame(menu)
+	g, err := game.NewGame(menu, models.GameConfig1())
 
 	if err != nil {
 		log.Fatal(err)

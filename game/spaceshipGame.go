@@ -12,11 +12,6 @@ import (
 	"github.com/polpettone/gaming/spaceships/game/models"
 )
 
-const (
-	screenWidth  = 2000
-	screenHeight = 1000
-)
-
 type Scene func(g *SpaceshipGame)
 
 type SpaceshipGame struct {
@@ -40,9 +35,11 @@ type SpaceshipGame struct {
 	CurrentScene models.Scene
 
 	Menu *models.Menu
+
+	config models.GameConfig
 }
 
-func NewGame(menu *models.Menu) (models.Game, error) {
+func NewGame(menu *models.Menu, config models.GameConfig) (models.Game, error) {
 
 	debugScreen, err := NewDebugScreen()
 
@@ -52,8 +49,8 @@ func NewGame(menu *models.Menu) (models.Game, error) {
 
 	g := &SpaceshipGame{
 		DebugScreen:  debugScreen,
-		MaxX:         screenWidth,
-		MaxY:         screenHeight,
+		MaxX:         config.MaxX,
+		MaxY:         config.MaxY,
 		DebugPrint:   false,
 		SoundOn:      false,
 		State:        models.ShowMenu,
@@ -181,7 +178,7 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 }
 
 func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
+	return g.MaxX, g.MaxY
 }
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {
