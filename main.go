@@ -15,13 +15,23 @@ func main() {
 		log.Fatal(err)
 		return
 	}
+
 	scene2, err := models.NewScene2(models.GameConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	scenes := map[string]models.Scene{"1": scene1, "2": scene2}
+	scene3, err := models.NewScene3(models.GameConfig1())
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	scenes := map[string]models.Scene{
+		"1": scene1,
+		"2": scene2,
+		"3": scene3}
 
 	menu, err := models.NewMenu(models.GameConfig1(), scenes)
 	if err != nil {

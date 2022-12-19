@@ -1,10 +1,8 @@
 package models
 
-import (
-	"github.com/hajimehoshi/ebiten"
-)
+import "github.com/hajimehoshi/ebiten"
 
-type Scene1 struct {
+type Scene3 struct {
 	Spaceship1  *Spaceship
 	Spaceship2  *Spaceship
 	GameObjects map[string]GameObject
@@ -14,7 +12,7 @@ type Scene1 struct {
 	MaxY        int
 }
 
-func NewScene1(config GameConfig) (*Scene1, error) {
+func NewScene3(config GameConfig) (*Scene3, error) {
 
 	spaceship1, err := CreateSpaceship1(
 		config,
@@ -36,7 +34,7 @@ func NewScene1(config GameConfig) (*Scene1, error) {
 
 	gameObjects := map[string]GameObject{}
 
-	return &Scene1{
+	return &Scene3{
 		Spaceship1:  spaceship1,
 		Spaceship2:  spaceship2,
 		GameObjects: gameObjects,
@@ -48,43 +46,29 @@ func NewScene1(config GameConfig) (*Scene1, error) {
 
 }
 
-func (g *Scene1) GetName() string {
-	return "1 - Two ships, ammo and enemies"
+func (g *Scene3) GetName() string {
+	return "3 - Two ships and ammo"
 }
 
-func (g *Scene1) GetConfig() GameConfig {
+func (g *Scene3) GetConfig() GameConfig {
 	return g.GameConfig
 }
 
-func (g *Scene1) GetTickCounter() int {
+func (g *Scene3) GetTickCounter() int {
 	return g.TickCounter
 }
 
-func (g *Scene1) GetMaxX() int {
+func (g *Scene3) GetMaxX() int {
 	return g.MaxX
 }
 
-func (g *Scene1) GetMaxY() int {
+func (g *Scene3) GetMaxY() int {
 	return g.MaxY
 }
 
-func (g *Scene1) Update(screen *ebiten.Image) (GameState, error) {
+func (g *Scene3) Update(screen *ebiten.Image) (GameState, error) {
 
 	g.TickCounter++
-
-	if checkCriteria(
-		g.GameConfig.TPS,
-		g.TickCounter,
-		g.GameConfig.EnemiesPerSecond) {
-		g.PutNewEnemies(1)
-	}
-
-	if checkCriteria(
-		g.GameConfig.TPS,
-		g.TickCounter,
-		g.GameConfig.StarsPerSecond) {
-		g.PutStars(1)
-	}
 
 	if checkCriteria(
 		g.GameConfig.TPS,
@@ -119,7 +103,7 @@ func (g *Scene1) Update(screen *ebiten.Image) (GameState, error) {
 	return Running, nil
 }
 
-func (g *Scene1) Draw(screen *ebiten.Image) {
+func (g *Scene3) Draw(screen *ebiten.Image) {
 
 	for _, o := range g.GameObjects {
 		o.Draw(screen)
@@ -133,7 +117,7 @@ func (g *Scene1) Draw(screen *ebiten.Image) {
 
 }
 
-func (g *Scene1) Reset() {
+func (g *Scene3) Reset() {
 	g.GameObjects = map[string]GameObject{}
 
 	g.Spaceship1.Reset(
@@ -149,50 +133,23 @@ func (g *Scene1) Reset() {
 		-1)
 }
 
-func (g *Scene1) AddGameObject(o GameObject) {
+func (g *Scene3) AddGameObject(o GameObject) {
 	g.GameObjects[o.GetID()] = o
 }
 
-func (g *Scene1) GetGameObjects() map[string]GameObject {
+func (g *Scene3) GetGameObjects() map[string]GameObject {
 	return g.GameObjects
 }
 
-func (g *Scene1) GetSpaceship1() *Spaceship {
+func (g *Scene3) GetSpaceship1() *Spaceship {
 	return g.Spaceship1
 }
 
-func (g *Scene1) GetSpaceship2() *Spaceship {
+func (g *Scene3) GetSpaceship2() *Spaceship {
 	return g.Spaceship2
 }
 
-func (g *Scene1) PutStars(count int) {
-	newSkyObjects := CreateStarAtRandomPosition(
-		0,
-		0,
-		screenWidth,
-		screenHeight,
-		count,
-		g.GameConfig.StarVelocity)
-
-	for _, nO := range newSkyObjects {
-		g.GameObjects[nO.GetID()] = nO
-	}
-}
-
-func (g *Scene1) PutNewEnemies(count int) {
-	newSkyObjects := CreateSkyObjectAtRandomPosition(
-		0,
-		0,
-		screenWidth,
-		screenHeight,
-		count)
-
-	for _, nO := range newSkyObjects {
-		g.GameObjects[nO.GetID()] = nO
-	}
-}
-
-func (g *Scene1) PutNewAmmos(count int) {
+func (g *Scene3) PutNewAmmos(count int) {
 	newAmmos := CreateAmmoAtRandomPosition(
 		0, 0, screenWidth, screenHeight, count)
 
@@ -201,7 +158,7 @@ func (g *Scene1) PutNewAmmos(count int) {
 	}
 }
 
-func (g *Scene1) CheckGameOverCriteria() bool {
+func (g *Scene3) CheckGameOverCriteria() bool {
 
 	if !g.GetSpaceship1().Alive() || !g.GetSpaceship2().Alive() {
 		return true
@@ -209,3 +166,6 @@ func (g *Scene1) CheckGameOverCriteria() bool {
 
 	return false
 }
+
+func (g *Scene3) PutStars(count int)      {}
+func (g *Scene3) PutNewEnemies(count int) {}

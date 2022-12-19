@@ -42,6 +42,10 @@ func (g *Menu) Update() (GameState, error) {
 		g.SelectedScene = g.Scenes["2"]
 	}
 
+	if inpututil.IsKeyJustPressed(ebiten.Key3) {
+		g.SelectedScene = g.Scenes["3"]
+	}
+
 	return ShowMenu, nil
 }
 
