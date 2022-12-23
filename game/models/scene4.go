@@ -68,7 +68,9 @@ func (g *Scene4) GetMaxY() int {
 func (g *Scene4) Update(screen *ebiten.Image) (GameState, error) {
 	g.TickCounter++
 
-	control(g.Spaceship1)
+	if g.TickCounter%60 == 0 {
+		chanceControl(g.Spaceship1, g.GetMaxX(), g.GetMaxY())
+	}
 
 	g.Spaceship1.Update(g)
 
@@ -84,13 +86,6 @@ func (g *Scene4) Update(screen *ebiten.Image) (GameState, error) {
 	}
 
 	return Running, nil
-}
-
-func control(s *Spaceship) {
-
-	s.Acceleration = true
-	s.XAxisForce = 1
-
 }
 
 func (g *Scene4) Draw(screen *ebiten.Image) {
