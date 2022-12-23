@@ -6,6 +6,7 @@ import (
 
 type Scene4 struct {
 	Spaceship1  *Spaceship
+	Spaceship2  *Spaceship
 	GameObjects map[string]GameObject
 	SceneConfig SceneConfig
 	TickCounter int
@@ -23,6 +24,11 @@ func NewScene4(config SceneConfig) (*Scene4, error) {
 		audioContext,
 		aiControl)
 
+	spaceship2, err := CreateSpaceship2(
+		config,
+		audioContext,
+		keyboardControlMap)
+
 	if err != nil {
 		return nil, err
 	}
@@ -31,6 +37,7 @@ func NewScene4(config SceneConfig) (*Scene4, error) {
 
 	return &Scene4{
 		Spaceship1:  spaceship1,
+		Spaceship2:  spaceship2,
 		GameObjects: gameObjects,
 		SceneConfig: config,
 		TickCounter: 0,
@@ -68,11 +75,28 @@ func (g *Scene4) GetMaxY() int {
 func (g *Scene4) Update(screen *ebiten.Image) (GameState, error) {
 	g.TickCounter++
 
+	if checkCriteria(
+		g.SceneConfig.GameConfig.TPS,
+		g.TickCounter,
+		g.SceneConfig.AmmoPerSecond) {
+		g.PutNewAmmos(1)
+	}
+
+	if g.TickCounter%10000 == 0 {
+		g.TickCounter = 0
+	}
+
 	if g.TickCounter%60 == 0 {
 		chanceControl(g.Spaceship1, g.GetMaxX(), g.GetMaxY())
 	}
 
+	SpaceshipCollisionDetection(g.Spaceship1, g.GameObjects)
+	SpaceshipCollisionDetection(g.Spaceship2, g.GameObjects)
+
+	BulletSkyObjectCollisionDetection(g.GetGameObjects())
+
 	g.Spaceship1.Update(g)
+	g.Spaceship2.Update(g)
 
 	for _, o := range g.GameObjects {
 		o.Update()
@@ -95,8 +119,11 @@ func (g *Scene4) Draw(screen *ebiten.Image) {
 	}
 
 	g.Spaceship1.Draw(screen)
-
 	g.Spaceship1.DrawState(screen, 100, 10)
+
+	g.Spaceship2.Draw(screen)
+	g.Spaceship2.DrawState(screen, g.GetMaxX()-200, 10)
+
 }
 
 func (g *Scene4) Reset() {
@@ -107,6 +134,13 @@ func (g *Scene4) Reset() {
 		g.SceneConfig.InitialPosSpaceship1,
 		g.SceneConfig.BulletCountSpaceship1,
 		1)
+
+	g.Spaceship2.Reset(
+		g.SceneConfig.HealthSpaceship2,
+		g.SceneConfig.InitialPosSpaceship2,
+		g.SceneConfig.BulletCountSpaceship2,
+		-1)
+
 }
 
 func (g *Scene4) AddGameObject(o GameObject) {
@@ -122,18 +156,25 @@ func (g *Scene4) GetSpaceship1() *Spaceship {
 }
 
 func (g *Scene4) GetSpaceship2() *Spaceship {
-	return nil
+	return g.Spaceship2
 }
 
 func (g *Scene4) CheckGameOverCriteria() bool {
 
-	if !g.GetSpaceship1().Alive() {
+	if !g.GetSpaceship1().Alive() || !g.GetSpaceship2().Alive() {
 		return true
 	}
 
 	return false
 }
 
-func (g *Scene4) PutNewAmmos(count int)   {}
+func (g *Scene4) PutNewAmmos(count int) {
+	newAmmos := CreateAmmoAtRandomPosition(
+		0, 0, screenWidth, screenHeight, count)
+
+	for _, nO := range newAmmos {
+		g.GameObjects[nO.GetID()] = nO
+	}
+}
 func (g *Scene4) PutStars(count int)      {}
 func (g *Scene4) PutNewEnemies(count int) {}
