@@ -10,13 +10,16 @@ import (
 
 func main() {
 
-	scene1, err := models.NewScene1(models.SceneConfig1())
+	simpleScene1, err := models.NewSimpleScene(
+		"1 on 1", models.SceneConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	scene2, err := models.NewScene2(models.SceneConfig1())
+	simpleScene2, err := models.NewSimpleScene(
+		"Just one ship",
+		models.SceneConfig2())
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -35,8 +38,8 @@ func main() {
 	}
 
 	scenes := map[string]models.Scene{
-		"1": scene1,
-		"2": scene2,
+		"1": simpleScene1,
+		"2": simpleScene2,
 		"3": scene3,
 		"4": scene4,
 	}

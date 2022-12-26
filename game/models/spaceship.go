@@ -149,6 +149,10 @@ func (s *Spaceship) Alive() bool {
 // TODO: err handling
 func (s *Spaceship) Update(g Scene) {
 
+	if s == nil {
+		return
+	}
+
 	handleSpaceshipControl(s)
 
 	updatePosition(s, g)

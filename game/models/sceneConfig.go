@@ -18,6 +18,8 @@ type SceneConfig struct {
 
 	InitialPosSpaceship1 Pos
 	InitialPosSpaceship2 Pos
+
+	SecondShipEnabled bool
 }
 
 func SceneConfig1() SceneConfig {
@@ -41,6 +43,34 @@ func SceneConfig1() SceneConfig {
 
 		InitialPosSpaceship1: NewPos(100, 500),
 		InitialPosSpaceship2: NewPos(1900, 500),
+
+		SecondShipEnabled: true,
+	}
+}
+
+func SceneConfig2() SceneConfig {
+
+	return SceneConfig{
+
+		GameConfig: GameConfig1(),
+
+		BulletCountSpaceship1: 10,
+		BulletCountSpaceship2: 10,
+
+		HealthSpaceship1: 10,
+		HealthSpaceship2: 10,
+
+		BulletVelocity: 7,
+		StarVelocity:   6,
+
+		StarsPerSecond:   0,
+		AmmoPerSecond:    0,
+		EnemiesPerSecond: 0,
+
+		InitialPosSpaceship1: NewPos(100, 500),
+		InitialPosSpaceship2: NewPos(1900, 500),
+
+		SecondShipEnabled: false,
 	}
 }
 

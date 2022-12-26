@@ -4,6 +4,10 @@ import "github.com/polpettone/gaming/spaceships/engine"
 
 func SpaceshipCollisionDetection(s *Spaceship, gameObjects map[string]GameObject) {
 
+	if s == nil {
+		return
+	}
+
 	for k, o := range gameObjects {
 
 		if o.GetType() == Enemy && o.IsAlive() {
