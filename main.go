@@ -28,7 +28,7 @@ func main() {
 		return
 	}
 
-	scene4, err := models.NewScene4(models.SceneConfig1())
+	scene4, err := models.NewScene4(models.SceneConfig4())
 	if err != nil {
 		log.Fatal(err)
 		return

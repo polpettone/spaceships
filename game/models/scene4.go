@@ -53,7 +53,7 @@ func createControl() *AIControl {
 }
 
 func (g *Scene4) GetName() string {
-	return "4 - AI controled ship, nothing more"
+	return "4 - AI controled ships"
 }
 
 func (g *Scene4) GetConfig() SceneConfig {
