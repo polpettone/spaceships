@@ -26,8 +26,8 @@ func SceneConfig1() SceneConfig {
 
 		GameConfig: GameConfig1(),
 
-		BulletCountSpaceship1: 10,
-		BulletCountSpaceship2: 10,
+		BulletCountSpaceship1: 1000,
+		BulletCountSpaceship2: 1000,
 
 		HealthSpaceship1: 10,
 		HealthSpaceship2: 10,
@@ -36,7 +36,7 @@ func SceneConfig1() SceneConfig {
 		StarVelocity:   6,
 
 		StarsPerSecond:   0,
-		AmmoPerSecond:    0.3,
+		AmmoPerSecond:    0,
 		EnemiesPerSecond: 0.1,
 
 		InitialPosSpaceship1: NewPos(100, 500),

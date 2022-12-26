@@ -11,7 +11,7 @@ func chanceControl(s *Spaceship, maxX, maxY int) {
 	s.Acceleration = false
 	s.XAxisForce = 1
 
-	shootByChance(s, 50)
+	shootByChance(s, 80)
 	accelerationByChance(s, 100)
 	changeDirectionByChance(s, 50)
 	changeXAxisForceByChance(s, 30, maxX, maxY)
@@ -83,6 +83,6 @@ func accelerationByChance(s *Spaceship, chance int) {
 func calcChance() int {
 	max := 100
 	min := 1
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min) + min
 }

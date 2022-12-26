@@ -88,6 +88,7 @@ func (g *Scene4) Update(screen *ebiten.Image) (GameState, error) {
 
 	if g.TickCounter%60 == 0 {
 		chanceControl(g.Spaceship1, g.GetMaxX(), g.GetMaxY())
+		chanceControl(g.Spaceship2, g.GetMaxX(), g.GetMaxY())
 	}
 
 	SpaceshipCollisionDetection(g.Spaceship1, g.GameObjects)
