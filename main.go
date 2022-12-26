@@ -11,7 +11,7 @@ import (
 func main() {
 
 	simpleScene1, err := models.NewSimpleScene(
-		"1 on 1", models.SceneConfig1())
+		"1 on 1 with enemies", models.SceneConfig1())
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -25,7 +25,9 @@ func main() {
 		return
 	}
 
-	scene3, err := models.NewScene3(models.SceneConfig1())
+	scene3, err := models.NewSimpleScene(
+		"1 on 1 without enemies",
+		models.SceneConfig3())
 	if err != nil {
 		log.Fatal(err)
 		return
