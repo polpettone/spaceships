@@ -102,6 +102,16 @@ func (g *SimpleScene) Update(screen *ebiten.Image) (GameState, error) {
 		g.TickCounter = 0
 	}
 
+	if g.TickCounter%60 == 0 {
+		if g.SceneConfig.AIControlSpaceship1 {
+			chanceControl(g.Spaceship1, g.GetMaxX(), g.GetMaxY())
+		}
+
+		if g.SceneConfig.AIControlSpaceship2 {
+			chanceControl(g.Spaceship2, g.GetMaxX(), g.GetMaxY())
+		}
+	}
+
 	SpaceshipCollisionDetection(g.Spaceship1, g.GameObjects)
 	SpaceshipCollisionDetection(g.Spaceship2, g.GameObjects)
 
