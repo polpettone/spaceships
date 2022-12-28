@@ -62,5 +62,26 @@ Press Enter to start
 Press Q to quit`,
 		g.GetSelectedScene().GetName())
 
-	text.Draw(screen, t, engine.MplusBigFont, 700, 300, color.White)
+	text.Draw(screen, t, engine.MplusBigFont, 800, 100, color.White)
+
+	text.Draw(screen, sceneSelectionText(*g), engine.MplusBigFont, 100, 300, color.White)
+
+}
+
+func sceneSelectionText(g Menu) string {
+
+	return fmt.Sprintf(
+		`
+%s: %s
+%s: %s
+%s: %s
+%s: %s
+%s: %s
+`,
+		"1", g.Scenes["1"].GetName(),
+		"2", g.Scenes["2"].GetName(),
+		"3", g.Scenes["3"].GetName(),
+		"4", g.Scenes["4"].GetName(),
+		"5", g.Scenes["5"].GetName(),
+	)
 }
