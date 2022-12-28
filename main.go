@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/hajimehoshi/ebiten"
@@ -41,12 +42,23 @@ func main() {
 		return
 	}
 
+	scene5, err := models.NewSimpleScene(
+		"Human vs AI",
+		models.SceneConfig5())
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
 	scenes := map[string]models.Scene{
 		"1": scene1,
 		"2": scene2,
 		"3": scene3,
 		"4": scene4,
+		"5": scene5,
 	}
+
+	fmt.Println(len(scenes))
 
 	menu, err := models.NewMenu(scenes)
 	if err != nil {
