@@ -156,7 +156,7 @@ func SceneConfig5() SceneConfig {
 
 		SecondShipEnabled: true,
 
-		AIControlSpaceship1: false,
-		AIControlSpaceship2: true,
+		AIControlSpaceship1: true,
+		AIControlSpaceship2: false,
 	}
 }
