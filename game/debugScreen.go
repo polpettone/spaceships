@@ -10,7 +10,8 @@ import (
 )
 
 type DebugScreen struct {
-	Text string
+	Text      string
+	ShortMode bool
 }
 
 func NewDebugScreen() (*DebugScreen, error) {
@@ -27,7 +28,9 @@ func (d *DebugScreen) Draw(screen *ebiten.Image, g models.Game) {
 		10,
 		10)
 
-	drawDebugCoordinates(screen, g)
+	if !d.ShortMode {
+		drawDebugCoordinates(screen, g)
+	}
 }
 
 func drawDebugCoordinates(screen *ebiten.Image, g models.Game) {
@@ -67,37 +70,50 @@ func drawDebugCoordinates(screen *ebiten.Image, g models.Game) {
 
 func (d *DebugScreen) Update(g models.Scene) {
 
-	t :=
+	longText :=
 		`
-	 TPS: %f2.2f
-	 FPS: %f2.2f
+TPS: %f2.2f
+FPS: %f2.2f
 
-	 Screen Size:  %d, %d
+Screen Size:  %d, %d
 
-	 TickCounter: %d 
+TickCounter: %d 
 
-	 Spaceship 1 Pos: %s
-	 Spaceship 2 Pos: %s
+Spaceship 1 Pos: %s
+Spaceship 2 Pos: %s
 
-	 Game Object Count: %d
+Game Object Count: %d
 
-	 Game Objects: 
-	 %s
+Game Objects: 
+%s
 
-	 `
+`
+	shortText :=
+		`
+TPS: %f2.2f
+FPS: %f2.2f
+`
 
-	d.Text = fmt.Sprintf(
-		t,
-		ebiten.CurrentTPS(),
-		ebiten.CurrentFPS(),
-		g.GetMaxX(),
-		g.GetMaxY(),
-		g.GetTickCounter(),
-		spaceshipDebugInfos(g.GetSpaceship1()),
-		spaceshipDebugInfos(g.GetSpaceship2()),
-		len(g.GetGameObjects()),
-		generateGameObjectsDebugOutput(g),
-	)
+	if d.ShortMode {
+		d.Text = fmt.Sprintf(
+			shortText,
+			ebiten.CurrentTPS(),
+			ebiten.CurrentFPS(),
+		)
+	} else {
+		d.Text = fmt.Sprintf(
+			longText,
+			ebiten.CurrentTPS(),
+			ebiten.CurrentFPS(),
+			g.GetMaxX(),
+			g.GetMaxY(),
+			g.GetTickCounter(),
+			spaceshipDebugInfos(g.GetSpaceship1()),
+			spaceshipDebugInfos(g.GetSpaceship2()),
+			len(g.GetGameObjects()),
+			generateGameObjectsDebugOutput(g),
+		)
+	}
 }
 
 func generateGameObjectsDebugOutput(s models.Scene) string {

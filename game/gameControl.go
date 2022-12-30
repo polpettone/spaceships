@@ -22,6 +22,13 @@ func handleDebugPrintControl(current bool) bool {
 	return current
 }
 
+func handleDebugPrintModeControl(current bool) bool {
+	if inpututil.IsKeyJustPressed(ebiten.KeyZ) {
+		return !current
+	}
+	return current
+}
+
 func handleControl(currentState models.GameState) models.GameState {
 
 	if (currentState == models.GameOver ||

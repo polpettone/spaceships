@@ -141,6 +141,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	g.SoundOn = handleSoundControl(g.SoundOn)
 	g.DebugPrint = handleDebugPrintControl(g.DebugPrint)
+	g.DebugScreen.ShortMode = handleDebugPrintModeControl(g.DebugScreen.ShortMode)
 	g.DebugScreen.Update(g.CurrentScene)
 
 	if state != models.ShowMenu {
