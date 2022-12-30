@@ -23,11 +23,14 @@ func (d *DebugScreen) Draw(screen *ebiten.Image, g models.Game) {
 
 	ebitenutil.DebugPrintAt(
 		screen,
-		d.Text, 10, 10)
-	drawDebugCoordinate(screen, g)
+		d.Text,
+		10,
+		10)
+
+	drawDebugCoordinates(screen, g)
 }
 
-func drawDebugCoordinate(screen *ebiten.Image, g models.Game) {
+func drawDebugCoordinates(screen *ebiten.Image, g models.Game) {
 	marginX := 55
 	marginY := 20
 
@@ -83,27 +86,6 @@ func (d *DebugScreen) Update(g models.Scene) {
 
 	 `
 
-	var keys []string
-
-	for k, _ := range g.GetGameObjects() {
-		keys = append(keys, k)
-	}
-
-	sort.Strings(keys)
-
-	gameObjectsText := ""
-	for _, k := range keys {
-		gameObject := g.GetGameObjects()[k]
-		w, h := gameObject.GetSize()
-		gameObjectsText += fmt.Sprintf(
-			"%s - %s - (%d, %d) - %s \n",
-			gameObject.GetID(),
-			gameObject.GetPos().Print(),
-			w, h,
-			gameObject.GetCentrePos().Print(),
-		)
-	}
-
 	d.Text = fmt.Sprintf(
 		t,
 		ebiten.CurrentTPS(),
@@ -114,8 +96,29 @@ func (d *DebugScreen) Update(g models.Scene) {
 		spaceshipDebugInfos(g.GetSpaceship1()),
 		spaceshipDebugInfos(g.GetSpaceship2()),
 		len(g.GetGameObjects()),
-		gameObjectsText,
+		generateGameObjectsDebugOutput(g),
 	)
+}
+
+func generateGameObjectsDebugOutput(s models.Scene) string {
+	var keys []string
+	for k, _ := range s.GetGameObjects() {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	gameObjectsText := ""
+	for _, k := range keys {
+		gameObject := s.GetGameObjects()[k]
+		w, h := gameObject.GetSize()
+		gameObjectsText += fmt.Sprintf(
+			"%s - %s - (%d, %d) - %s \n",
+			gameObject.GetID(),
+			gameObject.GetPos().Print(),
+			w, h,
+			gameObject.GetCentrePos().Print(),
+		)
+	}
+	return gameObjectsText
 }
 
 func spaceshipDebugInfos(s *models.Spaceship) string {
