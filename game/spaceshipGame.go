@@ -105,7 +105,7 @@ func (g *SpaceshipGame) Update(screen *ebiten.Image) error {
 
 	updateGamepads(g)
 
-	state := handleControl(g.State)
+	state := handleStateControl(g.State)
 	g.SetState(state)
 
 	if g.State == models.Quit {

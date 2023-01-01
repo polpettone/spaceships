@@ -29,7 +29,7 @@ func handleDebugPrintModeControl(current bool) bool {
 	return current
 }
 
-func handleControl(currentState models.GameState) models.GameState {
+func handleStateControl(currentState models.GameState) models.GameState {
 
 	if (currentState == models.GameOver ||
 		currentState == models.ShowMenu) &&
