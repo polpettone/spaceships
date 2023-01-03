@@ -161,7 +161,8 @@ func (s *Spaceship) Update(g Scene) {
 	s.SimpleImpetusUnit.UpdatePosition(
 		s,
 		g.GetMaxX(),
-		g.GetMaxY())
+		g.GetMaxY(),
+		spaceshipWallTolerance)
 
 	updateWeapons(s, g)
 
