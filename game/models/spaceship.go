@@ -46,6 +46,8 @@ type Spaceship struct {
 	Control SpaceshipControl
 
 	SoundOn bool
+
+	SimpleImpetusUnit SimpleImpetusUnit
 }
 
 func NewSpaceship(
@@ -87,22 +89,23 @@ func NewSpaceship(
 	}
 
 	return &Spaceship{
-		PilotName:     pilotName,
-		CurrentImage:  img,
-		Image:         img,
-		DamageImage:   damageImg,
-		Pos:           initialPos,
-		ID:            uuid.New().String(),
-		Size:          spaceshipSize,
-		ShootSound:    shootSound,
-		ImpulseSound:  impulseSound,
-		ImpactSound:   impactSound,
-		Health:        health,
-		BulletCount:   bulletCount,
-		Control:       control,
-		MoveDirection: 1,
-		SoundOn:       false,
-		Signature:     signature,
+		PilotName:         pilotName,
+		CurrentImage:      img,
+		Image:             img,
+		DamageImage:       damageImg,
+		Pos:               initialPos,
+		ID:                uuid.New().String(),
+		Size:              spaceshipSize,
+		ShootSound:        shootSound,
+		ImpulseSound:      impulseSound,
+		ImpactSound:       impactSound,
+		Health:            health,
+		BulletCount:       bulletCount,
+		Control:           control,
+		MoveDirection:     1,
+		SoundOn:           false,
+		Signature:         signature,
+		SimpleImpetusUnit: SimpleImpetusUnit{},
 	}, nil
 }
 
@@ -155,7 +158,7 @@ func (s *Spaceship) Update(g Scene) {
 
 	handleSpaceshipControl(s)
 
-	updatePosition(s, g)
+	s.SimpleImpetusUnit.UpdatePosition(s, g)
 
 	updateWeapons(s, g)
 
@@ -227,47 +230,5 @@ func updateWeapons(s *Spaceship, g Scene) {
 		}
 
 		s.BulletCount = s.BulletCount - 1
-	}
-}
-
-func updatePosition(s *Spaceship, g Scene) {
-
-	if s.Acceleration {
-		if s.Pos.X < g.GetMaxX()-spaceshipWallTolerance && s.XAxisForce > 0 {
-			s.Pos.X += s.XAxisForce
-		}
-		if s.Pos.X > spaceshipWallTolerance && s.XAxisForce < 0 {
-			s.Pos.X += s.XAxisForce
-		}
-		if s.Pos.Y < g.GetMaxY()-spaceshipWallTolerance && s.YAxisForce > 0 {
-			s.Pos.Y += s.YAxisForce
-		}
-		if s.Pos.Y > spaceshipWallTolerance && s.YAxisForce < 0 {
-			s.Pos.Y += s.YAxisForce
-		}
-	}
-
-	if s.Pos.X-spaceshipWallTolerance < 0 || s.Pos.X+spaceshipWallTolerance > g.GetMaxX() {
-		s.XAxisForce = 0
-	}
-
-	if s.Pos.Y-spaceshipWallTolerance < 0 || s.Pos.Y+spaceshipWallTolerance > g.GetMaxY() {
-		s.YAxisForce = 0
-	}
-
-	if s.XAxisForce != 0 {
-		if s.SoundOn {
-			if !s.ImpulseSound.IsPlaying() {
-				s.ImpulseSound.Rewind()
-				s.ImpulseSound.Play()
-			}
-		}
-	}
-	if s.XAxisForce == 0 {
-		if s.SoundOn {
-			if !s.ImpulseSound.IsPlaying() {
-				s.ImpulseSound.Pause()
-			}
-		}
 	}
 }
