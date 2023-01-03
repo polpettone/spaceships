@@ -158,7 +158,10 @@ func (s *Spaceship) Update(g Scene) {
 
 	handleSpaceshipControl(s)
 
-	s.SimpleImpetusUnit.UpdatePosition(s, g)
+	s.SimpleImpetusUnit.UpdatePosition(
+		s,
+		g.GetMaxX(),
+		g.GetMaxY())
 
 	updateWeapons(s, g)
 
