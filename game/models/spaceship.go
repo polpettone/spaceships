@@ -158,11 +158,18 @@ func (s *Spaceship) Update(g Scene) {
 
 	handleSpaceshipControl(s)
 
-	s.SimpleImpetusUnit.UpdatePosition(
-		s,
+	pos, xAxisForce, yAxisForce := s.SimpleImpetusUnit.UpdatePosition(
+		s.Acceleration,
+		s.Pos,
+		s.XAxisForce,
+		s.YAxisForce,
 		g.GetMaxX(),
 		g.GetMaxY(),
 		spaceshipWallTolerance)
+
+	s.Pos = pos
+	s.XAxisForce = xAxisForce
+	s.YAxisForce = yAxisForce
 
 	updateWeapons(s, g)
 

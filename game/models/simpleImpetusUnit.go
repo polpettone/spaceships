@@ -4,33 +4,37 @@ type SimpleImpetusUnit struct {
 }
 
 func (i *SimpleImpetusUnit) UpdatePosition(
-	s *Spaceship,
+	acceleration bool,
+	pos Pos,
+	xAxisForce,
+	yAxisForce,
 	maxX,
 	maxY,
-	wallTolerance int) {
+	wallTolerance int) (Pos, int, int) {
 
-	if s.Acceleration {
-		if s.Pos.X < maxX-wallTolerance && s.XAxisForce > 0 {
-			s.Pos.X += s.XAxisForce
+	if acceleration {
+		if pos.X < maxX-wallTolerance && xAxisForce > 0 {
+			pos.X += xAxisForce
 		}
-		if s.Pos.X > wallTolerance && s.XAxisForce < 0 {
-			s.Pos.X += s.XAxisForce
+		if pos.X > wallTolerance && xAxisForce < 0 {
+			pos.X += xAxisForce
 		}
-		if s.Pos.Y < maxY-wallTolerance && s.YAxisForce > 0 {
-			s.Pos.Y += s.YAxisForce
+		if pos.Y < maxY-wallTolerance && yAxisForce > 0 {
+			pos.Y += yAxisForce
 		}
-		if s.Pos.Y > wallTolerance && s.YAxisForce < 0 {
-			s.Pos.Y += s.YAxisForce
+		if pos.Y > wallTolerance && yAxisForce < 0 {
+			pos.Y += yAxisForce
 		}
 	}
 
-	if s.Pos.X-wallTolerance < 0 ||
-		s.Pos.X+wallTolerance > maxX {
-		s.XAxisForce = 0
+	if pos.X-wallTolerance < 0 ||
+		pos.X+wallTolerance > maxX {
+		xAxisForce = 0
 	}
 
-	if s.Pos.Y-wallTolerance < 0 ||
-		s.Pos.Y+wallTolerance > maxY {
-		s.YAxisForce = 0
+	if pos.Y-wallTolerance < 0 ||
+		pos.Y+wallTolerance > maxY {
+		yAxisForce = 0
 	}
+	return pos, xAxisForce, yAxisForce
 }
