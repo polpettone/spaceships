@@ -26,20 +26,4 @@ func (i *SimpleImpetusUnit) UpdatePosition(s *Spaceship, g Scene) {
 	if s.Pos.Y-spaceshipWallTolerance < 0 || s.Pos.Y+spaceshipWallTolerance > g.GetMaxY() {
 		s.YAxisForce = 0
 	}
-
-	if s.XAxisForce != 0 {
-		if s.SoundOn {
-			if !s.ImpulseSound.IsPlaying() {
-				s.ImpulseSound.Rewind()
-				s.ImpulseSound.Play()
-			}
-		}
-	}
-	if s.XAxisForce == 0 {
-		if s.SoundOn {
-			if !s.ImpulseSound.IsPlaying() {
-				s.ImpulseSound.Pause()
-			}
-		}
-	}
 }
