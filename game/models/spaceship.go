@@ -149,7 +149,44 @@ func (s *Spaceship) Alive() bool {
 	return s.Health > 0
 }
 
-// TODO: err handling
+func updateSpaceshipPosition(
+	s *Spaceship,
+	g Scene,
+	pos Pos,
+	xAxisForce,
+	yAxisForce int) {
+
+	if pos.X < g.GetMaxX()-spaceshipWallTolerance {
+		s.Pos.X = pos.X
+	}
+
+	if pos.X > spaceshipWallTolerance {
+		s.Pos.X = pos.X
+	}
+
+	if pos.Y < g.GetMaxY()-spaceshipWallTolerance {
+		s.Pos.Y = pos.Y
+	}
+
+	if pos.Y > spaceshipWallTolerance {
+		s.Pos.Y = pos.Y
+	}
+
+	if pos.X-spaceshipWallTolerance < 0 ||
+		pos.X+spaceshipWallTolerance > g.GetMaxX() {
+		xAxisForce = 0
+	}
+
+	if pos.Y-spaceshipWallTolerance < 0 ||
+		pos.Y+spaceshipWallTolerance > g.GetMaxY() {
+		yAxisForce = 0
+	}
+
+	s.XAxisForce = xAxisForce
+	s.YAxisForce = yAxisForce
+
+}
+
 func (s *Spaceship) Update(g Scene) {
 
 	if s == nil {
@@ -158,18 +195,18 @@ func (s *Spaceship) Update(g Scene) {
 
 	handleSpaceshipControl(s)
 
-	pos, xAxisForce, yAxisForce := s.SimpleImpetusUnit.UpdatePosition(
-		s.Acceleration,
-		s.Pos,
-		s.XAxisForce,
-		s.YAxisForce,
-		g.GetMaxX(),
-		g.GetMaxY(),
-		spaceshipWallTolerance)
+	if s.Acceleration {
 
-	s.Pos = pos
-	s.XAxisForce = xAxisForce
-	s.YAxisForce = yAxisForce
+		pos,
+			xAxisForce,
+			yAxisForce := s.SimpleImpetusUnit.Accelerate(
+			s.Pos,
+			s.XAxisForce,
+			s.YAxisForce)
+
+		updateSpaceshipPosition(s, g, pos, xAxisForce, yAxisForce)
+
+	}
 
 	updateWeapons(s, g)
 
