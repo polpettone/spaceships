@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"github.com/hajimehoshi/ebiten/text"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/polpettone/gaming/spaceships/engine"
@@ -176,10 +177,41 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 	if g.State == models.GameOver {
 		drawGameOverScreen(g, screen)
 	}
+
+	drawDisplayPanel(g, screen)
+
+}
+
+func drawDisplayPanel(g *SpaceshipGame, screen *ebiten.Image) {
+
+	displayPanelImage, _, err := ebitenutil.NewImageFromFile(
+		"assets/images/whiteBackground.png",
+		ebiten.FilterDefault)
+
+	if err != nil {
+		panic(1)
+	}
+
+	display1, err := models.NewSpaceshipDisplay(*g.CurrentScene.GetSpaceship1())
+	if err != nil {
+		panic(1)
+	}
+
+	op1 := &ebiten.DrawImageOptions{}
+	op1.GeoM.Translate(20, 0)
+	displayPanelImage.DrawImage(display1.Image, op1)
+
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(1, 0.5)
+	op.GeoM.Translate(0, 1000)
+	screen.DrawImage(displayPanelImage, op)
+
+	display1.Draw()
+
 }
 
 func (g *SpaceshipGame) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return g.MaxX, g.MaxY
+	return g.MaxX, g.MaxY + 300
 }
 
 func drawGameOverScreen(g *SpaceshipGame, screen *ebiten.Image) {

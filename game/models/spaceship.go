@@ -14,7 +14,7 @@ import (
 
 const (
 	spaceshipSize          = 10
-	spaceshipWallTolerance = 10
+	spaceshipWallTolerance = 50
 )
 
 type Spaceship struct {
