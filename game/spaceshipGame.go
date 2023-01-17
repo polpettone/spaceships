@@ -178,8 +178,6 @@ func (g *SpaceshipGame) Draw(screen *ebiten.Image) {
 		drawGameOverScreen(g, screen)
 	}
 
-	drawDisplayPanel(g, screen)
-
 }
 
 func drawDisplayPanel(g *SpaceshipGame, screen *ebiten.Image) {

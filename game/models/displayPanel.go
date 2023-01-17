@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten"
@@ -34,6 +35,6 @@ func NewSpaceshipDisplay(s Spaceship) (*SpaceshipDisplay, error) {
 }
 
 func (d *SpaceshipDisplay) Draw() {
-	t := d.Spaceship.PilotName
-	text.Draw(d.Image, t, engine.MplusBigFont, 20, 20, color.White)
+	t := fmt.Sprintf("Pilot: %s", d.Spaceship.PilotName)
+	text.Draw(d.Image, t, engine.MplusBigFont, 0, 0, color.White)
 }
